@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>IDS XAI Dashboard</title>
+	<link rel="stylesheet" href="style.css" />
+	<style>
+		/* Modal styles for image zoom */
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 1000;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,0.9);
+		}
+
+		.modal-content {
+			margin: auto;
+			display: block;
+			width: 90%;
+			height: 90%;
+			max-width: 1200px;
+			max-height: 800px;
+			object-fit: contain;
+		}
+
+		.close {
+			position: absolute;
+			top: 15px;
+			right: 35px;
+			color: #f1f1f1;
+			font-size: 40px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: #bbb;
+			text-decoration: none;
+		}
+	</style>
+</head>
+<body>
+	<header class="site-header">
+		<div class="inner">
+			<h1>IDS XAI Dashboard</h1>
+			<p class="subtitle">Explore the IDS workflow with interpretable ML: dataset → binary/multi-class models → XAI</p>
+		</div>
+	</header>
+
+	<section class="dataset-control">
+		<div class="control-group">
+			<label for="datasetSelect">Dataset</label>
+			<select id="datasetSelect"></select>
+		</div>
+	</section>
+
+	<nav class="phase-nav" id="phaseNav">
+		<button class="phase-tab active" data-phase="overview">Overview</button>
+		<button class="phase-tab" data-phase="phase1">Phase 1</button>
+		<button class="phase-tab" data-phase="phase2">Phase 2 (Binary)</button>
+		<button class="phase-tab" data-phase="phase3">Phase 3</button>
+		<button class="phase-tab" data-phase="phase4">Phase 4 (Multi-class)</button>
+	</nav>
+
+	<section id="overviewSection" class="card phase-section">
+		<h2>Workflow Overview</h2>
+		<div class="workflow-image">
+			<img src="workflow.png" alt="IDS XAI Workflow" class="zoomable" />
+			<p class="note">The workflow shows the four-phase process: Binary Feature Selection → Binary Classification & XAI → Multiclass Feature Re-selection → Multiclass Classification & Attack-Type XAI</p>
+		</div>
+	<ul class="overview-list">
+		<li><strong>Phase 1: Binary Feature Selection</strong> — Preprocess dataset, train initial LightGBM binary classifier (benign vs. malicious), generate SHAP importance rankings, and select top features for downstream modeling.</li>
+		<li><strong>Phase 2: Binary Classification & XAI Analysis</strong> — Train multiple binary models (DecisionTree, RandomForest, XGBoost, DNN, MLP) on selected features. Generate dual XAI explanations (SHAP + LIME), perform multi-dimensional quality assessment (faithfulness, robustness, complexity), and produce LLM-powered global & individual interpretations for benign vs. malicious traffic patterns.</li>
+		<li><strong>Phase 3: Multiclass Feature Re-selection</strong> — Filter malicious-only samples, train LightGBM multiclass classifier to distinguish attack types, re-rank features via SHAP, and select top attack-discriminative features.</li>
+		<li><strong>Phase 4: Multiclass Classification & Attack-Type XAI</strong> — Train multiclass models on attack-specific features, generate class-wise XAI explanations (per-class SHAP, LIME), evaluate explanation quality, produce LLM-generated attack-type insights, and synthesize all results into an interactive dashboard.</li>
+	</ul>
+	</section>
+
+	<section id="phase1Section" class="card phase-section" style="display:none;">
+		<h2>Phase 1 — Initial Processing (LightGBM Model)</h2>
+		<p class="note">Feature screening via interpretable ML. The global importance bar and beeswarm plot show the top feature set used in subsequent phases.</p>
+		
+		<div class="model-results">
+			<h3>Model Results</h3>
+			<div class="media">
+				<img id="phase1ConfusionImg" alt="Confusion Matrix" class="zoomable" />
+				<p class="media-msg" id="phase1ConfusionMsg" style="display:none;">Confusion matrix not found.</p>
+			</div>
+			<div class="media">
+				<img id="phase1ClsReportImg" alt="Classification Report" class="zoomable" />
+				<p class="media-msg" id="phase1ClsReportMsg" style="display:none;">Classification report not found.</p>
+			</div>
+		</div>
+		
+		<div class="xai-grid">
+			<div class="xai-item">
+				<h3>Feature Importance</h3>
+				<div class="media">
+					<img id="phase1ImportanceImg" alt="Global Feature Importance (Top features)" class="zoomable" />
+					<p class="media-msg" id="phase1ImportanceMsg" style="display:none;">Global feature importance not found.</p>
+				</div>
+			</div>
+			
+			<div class="xai-item">
+				<h3>SHAP Beeswarm</h3>
+				<div class="media">
+					<img id="phase1BeeswarmImg" alt="SHAP Beeswarm Plot" class="zoomable" />
+					<p class="media-msg" id="phase1BeeswarmMsg" style="display:none;">SHAP beeswarm plot not found.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="xai-interpretation">
+			<h3>LLM Global Explanation</h3>
+			<div id="phase1LLMGlobal"></div>
+		</div>
+
+		<div class="media">
+			<img id="phase1ShapGlobalRadarImg" alt="SHAP Global Radar" class="zoomable" />
+			<p class="media-msg" id="phase1ShapGlobalRadarMsg" style="display:none;">SHAP global radar not found.</p>
+		</div>
+		<p class="note" id="phase1ShapGlobalScore"></p>
+	</section>
+
+	<section id="phase2Section" class="card phase-section" style="display:none;">
+		<h2>Phase 2 — Binary Classification</h2>
+		<div class="phase-controls">
+			<div class="control-group">
+				<label for="phase2ModelSelect">Model</label>
+				<select id="phase2ModelSelect">
+					<option value="DecisionTree">Decision Tree</option>
+					<option value="DNN">DNN</option>
+					<option value="MLP">MLP</option>
+					<option value="RandomForest">Random Forest</option>
+					<option value="XGBoost">XGBoost</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="model-results">
+			<h3>Model Results</h3>
+			<div class="media">
+				<img id="phase2ConfusionImg" alt="Confusion Matrix" class="zoomable" />
+				<p class="media-msg" id="phase2ConfusionMsg" style="display:none;">Confusion matrix not found.</p>
+			</div>
+			<div class="media">
+				<img id="phase2ClsReportImg" alt="Classification Report" class="zoomable" />
+				<p class="media-msg" id="phase2ClsReportMsg" style="display:none;">Classification report not found.</p>
+			</div>
+		</div>
+
+		<div class="global-xai">
+			<h3>Global XAI Analysis</h3>
+			<div class="media">
+				<img id="phase2ShapSummaryImg" alt="SHAP Summary Plot" class="zoomable" />
+				<p class="media-msg" id="phase2ShapSummaryMsg" style="display:none;">SHAP summary plot not found.</p>
+			</div>
+			<div class="xai-interpretation">
+				<h4>LLM Global Explanation</h4>
+				<div id="phase2LLMGlobal"></div>
+			</div>
+			<div class="media">
+				<img id="phase2ShapGlobalRadarImg" alt="SHAP Global Radar" class="zoomable" />
+				<p class="media-msg" id="phase2ShapGlobalRadarMsg" style="display:none;">SHAP global radar not found.</p>
+			</div>
+			<p class="note" id="phase2ShapGlobalScore"></p>
+		</div>
+
+		<div class="local-xai">
+			<h3>Local XAI Analysis</h3>
+			<div class="phase-controls">
+				<div class="control-group">
+					<label for="phase2IndexSelect">Sample Index</label>
+					<select id="phase2IndexSelect">
+						<option value="173593">173593</option>
+						<option value="196880">196880</option>
+						<option value="241760">241760</option>
+						<option value="32754">32754</option>
+						<option value="51596">51596</option>
+						<option value="57403">57403</option>
+					</select>
+				</div>
+			</div>
+			<div class="local-xai-content">
+				<div class="xai-grid">
+					<div class="xai-item">
+						<h4>SHAP Force Plot</h4>
+						<div class="media">
+							<img id="phase2ForcePlotImg" alt="SHAP Force Plot" class="zoomable" />
+							<p class="media-msg" id="phase2ForcePlotMsg" style="display:none;">SHAP force plot not found.</p>
+						</div>
+						<div class="media">
+							<img id="phase2ShapLocalRadarImg" alt="SHAP Local Radar" class="zoomable" />
+							<p class="media-msg" id="phase2ShapLocalRadarMsg" style="display:none;">SHAP local radar not found.</p>
+						</div>
+						<p class="note" id="phase2ShapLocalScore"></p>
+					</div>
+					
+					<div class="xai-item">
+						<h4>LIME Explanation</h4>
+						<div class="media" id="phase2LimeContainer">
+							<img id="phase2LimeImg" alt="LIME Explanation" class="zoomable" />
+							<p class="media-msg" id="phase2LimeMsg" style="display:none;">LIME explanation not found.</p>
+						</div>
+						<div class="media">
+							<img id="phase2LimeLocalRadarImg" alt="LIME Local Radar" class="zoomable" />
+							<p class="media-msg" id="phase2LimeLocalRadarMsg" style="display:none;">LIME local radar not found.</p>
+						</div>
+						<p class="note" id="phase2LimeLocalScore"></p>
+					</div>
+				</div>
+				
+				<div class="xai-interpretation">
+					<h4>Local LLM Explanation</h4>
+					<div id="phase2LLMSampleLocal"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="phase3Section" class="card phase-section" style="display:none;">
+		<h2>Phase 3 — Multi-class Classification (LightGBM Model)</h2>
+		
+		<div class="model-results">
+			<h3>Model Results</h3>
+			<div class="media">
+				<img id="phase3ConfusionImg" alt="Confusion Matrix" class="zoomable" />
+				<p class="media-msg" id="phase3ConfusionMsg" style="display:none;">Confusion matrix not found.</p>
+			</div>
+			<div class="media">
+				<img id="phase3ClsReportImg" alt="Classification Report" class="zoomable" />
+				<p class="media-msg" id="phase3ClsReportMsg" style="display:none;">Classification report not found.</p>
+			</div>
+		</div>
+
+		<div class="global-xai">
+			<h3>Global XAI Analysis</h3>
+			<div class="media">
+				<img id="phase3ImportanceImg" alt="Feature Importance" class="zoomable" />
+				<p class="media-msg" id="phase3ImportanceMsg" style="display:none;">Feature importance not found.</p>
+			</div>
+			<div class="xai-interpretation">
+				<h4>LLM Global Explanation</h4>
+				<div id="phase3LLMGlobal"></div>
+			</div>
+			<div class="media">
+				<img id="phase3ShapGlobalRadarImg" alt="SHAP Global Radar" class="zoomable" />
+				<p class="media-msg" id="phase3ShapGlobalRadarMsg" style="display:none;">SHAP global radar not found.</p>
+			</div>
+			<p class="note" id="phase3ShapGlobalScore"></p>
+		</div>
+
+		<div class="class-specific-xai">
+			<h3>Class-Specific XAI Analysis</h3>
+			<div class="control-group">
+				<label for="phase3ClassSelect">Attack Class</label>
+				<select id="phase3ClassSelect">
+					<!-- Options populated by JavaScript based on dataset -->
+				</select>
+			</div>
+			<div class="media">
+				<img id="phase3ClassBeeswarmImg" alt="Class-specific SHAP Beeswarm" class="zoomable" />
+				<p class="media-msg" id="phase3ClassBeeswarmMsg" style="display:none;">Class-specific beeswarm not found.</p>
+			</div>
+		</div>
+	</section>
+
+	<section id="phase4Section" class="card phase-section" style="display:none;">
+		<h2>Phase 4 — Multi-class Classification (Model Comparison)</h2>
+		
+		<div class="phase-controls">
+			<div class="control-group">
+				<label for="phase4ModelSelect">Model</label>
+				<select id="phase4ModelSelect">
+					<option value="DecisionTree">Decision Tree</option>
+					<option value="DNN">DNN</option>
+					<option value="MLP">MLP</option>
+					<option value="RandomForest">Random Forest</option>
+					<option value="XGBoost">XGBoost</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="model-results">
+			<h3>Model Results</h3>
+			<div class="media">
+				<img id="phase4ConfusionImg" alt="Confusion Matrix" class="zoomable" />
+				<p class="media-msg" id="phase4ConfusionMsg" style="display:none;">Confusion matrix not found.</p>
+			</div>
+			<div class="media">
+				<img id="phase4ClsReportImg" alt="Classification Report" class="zoomable" />
+				<p class="media-msg" id="phase4ClsReportMsg" style="display:none;">Classification report not found.</p>
+			</div>
+		</div>
+
+		<div class="global-xai">
+			<h3>Global XAI Analysis</h3>
+			<div class="media">
+				<img id="phase4ImportanceImg" alt="Feature Importance" class="zoomable" />
+				<p class="media-msg" id="phase4ImportanceMsg" style="display:none;">Feature importance not found.</p>
+			</div>
+			<div class="xai-interpretation">
+				<h4>LLM Global Explanation</h4>
+				<div id="phase4LLMGlobal"></div>
+			</div>
+			<div class="media">
+				<img id="phase4ShapGlobalRadarImg" alt="SHAP Global Radar" class="zoomable" />
+				<p class="media-msg" id="phase4ShapGlobalRadarMsg" style="display:none;">SHAP global radar not found.</p>
+			</div>
+			<p class="note" id="phase4ShapGlobalScore"></p>
+		</div>
+
+		<div class="class-specific-xai">
+			<h3>Class-Specific XAI Analysis</h3>
+			<div class="control-group">
+				<label for="phase4ClassSelect">Attack Class</label>
+				<select id="phase4ClassSelect">
+					<!-- Options populated by JavaScript based on dataset -->
+				</select>
+			</div>
+			<div class="media">
+				<img id="phase4ClassBeeswarmImg" alt="Class-specific SHAP Beeswarm" class="zoomable" />
+				<p class="media-msg" id="phase4ClassBeeswarmMsg" style="display:none;">Class-specific beeswarm not found.</p>
+			</div>
+		</div>
+
+		<div class="local-xai">
+			<h3>Local XAI Analysis</h3>
+			<div class="phase-controls">
+				<div class="control-group">
+					<label for="phase4IndexSelect">Sample Index</label>
+					<select id="phase4IndexSelect">
+						<option value="26918">26918</option>
+						<option value="37340">37340</option>
+						<option value="48243">48243</option>
+						<option value="629">629</option>
+						<option value="87757">87757</option>
+						<option value="96548">96548</option>
+					</select>
+				</div>
+			</div>
+			<div class="local-xai-content">
+				<div class="xai-grid">
+					<div class="xai-item">
+						<h4>SHAP Force Plot</h4>
+						<div class="media">
+							<img id="phase4ForcePlotImg" alt="SHAP Force Plot" class="zoomable" />
+							<p class="media-msg" id="phase4ForcePlotMsg" style="display:none;">SHAP force plot not found.</p>
+						</div>
+						<div class="media">
+							<img id="phase4ShapLocalRadarImg" alt="SHAP Local Radar" class="zoomable" />
+							<p class="media-msg" id="phase4ShapLocalRadarMsg" style="display:none;">SHAP local radar not found.</p>
+						</div>
+						<p class="note" id="phase4ShapLocalScore"></p>
+					</div>
+					
+					<div class="xai-item">
+						<h4>LIME Explanation</h4>
+						<div class="media" id="phase4LimeContainer">
+							<img id="phase4LimeImg" alt="LIME Explanation" class="zoomable" />
+							<p class="media-msg" id="phase4LimeMsg" style="display:none;">LIME explanation not found.</p>
+						</div>
+						<div class="media">
+							<img id="phase4LimeLocalRadarImg" alt="LIME Local Radar" class="zoomable" />
+							<p class="media-msg" id="phase4LimeLocalRadarMsg" style="display:none;">LIME local radar not found.</p>
+						</div>
+						<p class="note" id="phase4LimeLocalScore"></p>
+					</div>
+				</div>
+				
+				<div class="xai-interpretation">
+					<h4>Local LLM Explanation</h4>
+					<div id="phase4LLMSampleLocal"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Modal for image zoom -->
+	<div id="imageModal" class="modal">
+		<span class="close">&times;</span>
+		<img class="modal-content" id="modalImg">
+	</div>
+
+	<footer class="site-footer">
+		<p>© IDS XAI Dashboard</p>
+	</footer>
+
+	<!-- Markdown rendering libs -->
+	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
+	<script src="app.js?v=2.6"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Large Data files
+*.csv
+*.mp4
+*.png
+
+# Environments
+venv/
+.env
+
+# Folders for results or archives
+archive/
+results/
+results_benchmark/

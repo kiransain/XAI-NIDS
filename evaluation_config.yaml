@@ -1,0 +1,85 @@
+# XAI Quality Assessment Configuration File
+
+# Basic assessment settings
+evaluation_settings:
+  sample_size: 200                     # Number of assessment samples
+  random_seed: 42                     # Random seed to ensure reproducible results
+  parallel_processing: true           # Whether to enable parallel processing
+  max_workers: 4                      # Maximum number of worker threads
+
+# Dimension weight configuration
+dimension_weights:
+  faithfulness: 0.40                  # Faithfulness weight (most important)
+  robustness: 0.35                    # Robustness weight (stability)
+  complexity: 0.25                    # Complexity weight (simplicity)
+
+# Faithfulness assessment configuration
+faithfulness_config:
+  threshold: 0.8                      # Faithfulness threshold
+  deletion_test:
+    top_k_features: 5                 # Number of features for deletion test
+    perturbation_method: "zero"       # Perturbation method: zero, mean, random
+  insertion_test:
+    baseline: "zero"                  # Baseline: zero, mean, random
+    top_k_features: 5
+  perturbation_test:
+    noise_levels: [0.01, 0.02, 0.05] # Noise levels
+    num_samples: 10                   # Number of perturbation samples
+
+# Robustness assessment configuration
+robustness_config:
+  threshold: 0.85                     # Robustness threshold
+  jaccard_similarity_weight: 0.6      # Jaccard similarity weight
+  importance_variance_weight: 0.4     # Importance variance weight
+  perturbation_levels: [0.01, 0.02, 0.05]  # Perturbation levels
+  bootstrap_samples: 10              # Bootstrap sampling count
+
+# Complexity assessment configuration
+complexity_config:
+  sparsity_weight: 0.6                # Sparsity weight
+  effective_complexity_weight: 0.4    # Effective complexity weight
+  complexity_threshold: 0.01         # Complexity threshold
+  max_features: 15                   # Maximum number of features
+
+# Report generation configuration
+reporting_config:
+  output_format: ["markdown", "html", "json"]  # Output formats
+  include_visualizations: true        # Whether to include visualizations
+  detailed_metrics: true              # Whether to include detailed metrics
+  comparison_baseline: null           # Comparison baseline (optional)
+  export_raw_data: false             # Whether to export raw data
+
+# Visualization configuration
+visualization_config:
+  radar_chart:
+    figure_size: [10, 10]            # Figure size
+    color_scheme: "blue"             # Color scheme
+    transparency: 0.25               # Transparency
+    font_size: 12                    # Font size
+    save_dpi: 300                    # Save resolution
+  bar_chart:
+    figure_size: [12, 8]
+    color_palette: "viridis"
+  heatmap:
+    figure_size: [10, 8]
+    colormap: "RdYlBu_r"
+
+
+# Quality level definitions
+quality_levels:
+  excellent:
+    threshold: 0.9
+    description: "Excellent quality, meets all high standards"
+    color: "#2E8B57"  # Dark green
+  good:
+    threshold: 0.7
+    description: "Good quality, meets most requirements"
+    color: "#32CD32"  # Green
+  acceptable:
+    threshold: 0.5
+    description: "Acceptable quality, meets basic requirements"
+    color: "#FFD700"  # Gold
+  needs_improvement:
+    threshold: 0.0
+    description: "Needs improvement, has obvious deficiencies"
+    color: "#FF6347"  # Tomato

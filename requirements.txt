@@ -1,0 +1,51 @@
+# XAI Multi-dimensional Quality Assessment Framework Dependencies
+
+# Core scientific computing packages
+numpy>=1.21.0
+pandas>=1.3.0
+scipy>=1.7.0
+
+# Machine learning packages
+scikit-learn>=1.0.0
+lightgbm>=3.3.0
+xgboost>=1.5.0
+tensorflow[and-cuda]==2.16.2
+
+# Visualization packages
+matplotlib>=3.4.0
+seaborn>=0.11.0
+plotly>=5.0.0
+
+# Explainability/Model interpretation
+shap>=0.41.0
+lime>=0.2.0
+
+# System monitoring
+psutil>=5.8.0
+
+# Configuration file processing
+PyYAML>=6.0
+
+# Statistical analysis
+statsmodels>=0.12.0
+
+# Progress bar
+tqdm>=4.62.0
+
+# Logging
+loguru>=0.6.0
+
+# Data validation
+pydantic>=1.8.0
+
+# Parallel processing
+joblib>=1.1.0
+
+# Optional packages (for advanced features)
+# jupyter>=1.0.0          # Jupyter notebook support
+# dash>=2.0.0             # Interactive dashboard
+# streamlit>=1.0.0        # Web application framework
+# flask>=2.0.0            # Web service
+# fastapi>=0.70.0         # API framework
+# sqlalchemy>=1.4.0       # Database ORM
+# redis>=4.0.0            # Cache system
