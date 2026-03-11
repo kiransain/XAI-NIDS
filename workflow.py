@@ -3547,32 +3547,39 @@ def data_preprocess(data_name):
     print("Encoded Labels:", y)
     return X, y, le, df_new
 
+
 if __name__ == "__main__":
+
     import os
     import numpy as np
     from sklearn.preprocessing import LabelEncoder
-    from sklearn.metrics import roc_auc_score, classification_report
-    import lightgbm as lgb
+    from sklearn.metrics import roc_auc_score
     from sklearn.model_selection import GroupShuffleSplit
+
     # === Config ===
-    dataset = '5GAD'  # Change as needed
+    dataset = '5GC_PFCP'  # change if needed
     cwd = os.getcwd()
     RESULT_DIR = f"{cwd}/results/{dataset}"
     os.makedirs(RESULT_DIR, exist_ok=True)
-    # === Data preprocess ===
+
+    # === Data preprocessing ===
     X, y, le, df_new = data_preprocess(dataset)
 
+    # show label encoding
+    for label, encoded in zip(le.classes_, range(len(le.classes_))):
+        print(f"Original label '{label}' is encoded as {encoded}")
 
-    # === SESSION-AWARE SPLIT for 5GAD ===
-    # SESSION-AWARE SPLIT for 5GAD
-    if dataset=='5GAD':
-        session_cols = ['src_ip','dst_ip','src_port','dst_port']
+    # ============================================================
+    # SESSION-AWARE SPLIT (FIXES DATA LEAKAGE)
+    # ============================================================
 
-        # Convert all session columns to strings safely
+    if dataset == '5GAD':
+
+        session_cols = ['src_ip', 'dst_ip', 'src_port', 'dst_port']
+
         for c in session_cols:
-            df_new[c] = df_new[c].fillna(0).astype(str)  # no int cast for IPs
+            df_new[c] = df_new[c].fillna(0).astype(str)
 
-        # Create session_id
         df_new['session_id'] = df_new[session_cols].agg('-'.join, axis=1)
 
         gss = GroupShuffleSplit(n_splits=1, test_size=0.4, random_state=42)
@@ -3593,53 +3600,65 @@ if __name__ == "__main__":
         X_test = X_temp.iloc[val_end:].copy()
         y_test = y_temp[val_end:]
 
-        # Drop session columns before training
+        # remove identifiers before training
         X_train = X_train.drop(session_cols, axis=1)
         X_val   = X_val.drop(session_cols, axis=1)
         X_test  = X_test.drop(session_cols, axis=1)
 
     else:
-        # 60/20/20 split for other datasets
+
+        # simple split for other datasets
         n = len(X)
+
         train_end = int(0.6 * n)
         val_end   = int(0.8 * n)
-        X_train, X_val, X_test = X.iloc[:train_end], X.iloc[train_end:val_end], X.iloc[val_end:]
-        y_train, y_val, y_test = y[:train_end], y[train_end:val_end], y[val_end:]
 
+        X_train = X.iloc[:train_end]
+        X_val   = X.iloc[train_end:val_end]
+        X_test  = X.iloc[val_end:]
 
-    # === SHOW LABEL ENCODING ===
-    for label, encoded in zip(le.classes_, range(len(le.classes_))):
-        print(f"Original label '{label}' is encoded as {encoded}")
+        y_train = y[:train_end]
+        y_val   = y[train_end:val_end]
+        y_test  = y[val_end:]
 
+    # ============================================================
+    # BINARY LIGHTGBM
+    # ============================================================
 
-    # === BINARY LIGHTGBM TRAINING ===
-    model = train_lightgbm_with_scale_pos_weight(X_train, y_train, X_val, y_val)
+    model = train_lightgbm_with_scale_pos_weight(
+        X_train, y_train,
+        X_val, y_val
+    )
 
-
-    # === EVALUATION ===
     val_probs = model.predict(X_val, num_iteration=model.best_iteration)
     test_probs = model.predict(X_test, num_iteration=model.best_iteration)
 
     print("Validation AUC:", roc_auc_score(y_val, val_probs))
     print("Test AUC:", roc_auc_score(y_test, test_probs))
+
     print("\n=== Class Ratio Check ===")
     print("Train malicious ratio:", y_train.mean())
     print("Test malicious ratio :", y_test.mean())
     print("Train size:", len(y_train))
     print("Test size :", len(y_test))
 
-    # === SHAP explanation ===
-    try:
-        explainer, shap_values, top_30_df, cum99_df = shap_plots_Tree(
-    model, X_train, feature_names=X_train.columns.tolist()
-)
-        # Reduce X to top cumulative 99% SHAP features safely
-        selected_features = cum99_df['Feature'].tolist()
-        X_reduced = df_new[selected_features]
+    # ============================================================
+    # SHAP EXPLANATIONS
+    # ============================================================
 
-        # Optional: save SHAP global importance
+    try:
+
+        explainer, shap_values, top_30_df, cum99_df = shap_plots_Tree(
+            model,
+            X_train,
+            feature_names=X_train.columns.tolist()
+        )
+
+        selected_features = cum99_df['Feature'].tolist()
+
         shap_values_for_summary = shap_values[1] if isinstance(shap_values, list) else shap_values
         global_importance = np.mean(np.abs(shap_values_for_summary), axis=0)
+
         fi_global = {int(idx): float(val) for idx, val in enumerate(global_importance)}
 
         _evaluate_and_save(
@@ -3658,7 +3677,83 @@ if __name__ == "__main__":
             global_importance=fi_global
         )
 
-    except Exception as _e:
-        print(f"SHAP evaluation failed: {_e}")
+    except Exception as e:
+        print(f"SHAP evaluation failed: {e}")
 
-    
+    # ============================================================
+    # BINARY MULTI-MODEL STAGE
+    # ============================================================
+
+    try:
+        X_binary = pd.concat([X_train, X_test])
+        y_binary = np.concatenate([y_train, y_test])
+
+        models_binary = train_and_explain_binary_models(X_binary, y_binary)
+
+    except Exception as e:
+        print(f"Binary multi-model stage failed: {e}")
+
+    # ============================================================
+    # MULTICLASS STAGE (ATTACK TYPE)
+    # ============================================================
+
+    try:
+
+        train_df = df_new.iloc[train_idx]
+        test_df  = df_new.iloc[test_val_idx]
+
+        train_malicious = train_df[train_df['Label'] == 'Malicious']
+        test_malicious  = test_df[test_df['Label'] == 'Malicious']
+
+        features = train_malicious.columns.tolist()
+        exclude_cols = ['Label', 'Attack Type', 'src_ip', 'dst_ip', 'src_port', 'dst_port', 'session_id']
+
+        for col in ['Label','Attack Type']:
+            if col in features:
+                features.remove(col)
+
+        X_multi_train = train_malicious[features]
+        X_multi_test  = test_malicious[features]
+
+        le_multi = LabelEncoder()
+
+        y_multi_train = le_multi.fit_transform(train_malicious['Attack Type'])
+        y_multi_test  = le_multi.transform(test_malicious['Attack Type'])
+
+        class_names = le_multi.classes_.tolist()
+
+        model_multi, X_train_m, X_test_m, y_train_m, y_test_m = train_lightgbm_multiclass(
+            X_multi_train,
+            y_multi_train,
+            class_names
+        )
+
+        train_and_explain_multi_models(
+            X_multi_train,
+            y_multi_train,
+            class_names,
+            top_n=10
+        )
+
+    except Exception as e:
+        print(f"Multiclass stage failed: {e}")
+
+    # ============================================================
+    # LLM EXPLANATIONS
+    # ============================================================
+
+    GENERATE_LLM_EXPLANATIONS = os.environ.get(
+        'GENERATE_LLM_EXPLANATIONS', '1'
+    ) == '1'
+
+    if GENERATE_LLM_EXPLANATIONS:
+
+        print("\n" + "="*60)
+        print("LLM Explanation Generation")
+        print("="*60)
+
+        generate_llm_explanations()
+
+    else:
+
+        print("\nLLM explanation generation disabled.")
