@@ -33,7 +33,20 @@ def audit_dataset(file_path, name):
     # Normalize labels
     df[label_col] = df[label_col].astype(str).str.strip().str.lower()
 
-    benign_mask = df[label_col] == 'benign'
+    BENIGN_LABELS = {
+    '5GAD': ['normal'],
+    '5GC_PFCP': ['normal'],
+    '5G-NIDD': ['benign']
+}
+    
+    possible_labels = [c for c in df.columns if c.strip().lower() == 'label']
+    if not possible_labels:
+        print(f"ERROR: No label column found in {name}")
+        return
+    label_col = possible_labels[0]  # preserves original casing
+
+    # Then safely detect benign vs malicious
+    benign_mask = df[label_col].str.lower().isin([l.lower() for l in BENIGN_LABELS.get(name, ['benign'])])
     malicious_mask = ~benign_mask
 
     benign_df = df[benign_mask]
@@ -76,3 +89,6 @@ def audit_dataset(file_path, name):
     print("Audit complete.")
 
 audit_dataset('5G-NIDD.csv', '5G-NIDD')
+audit_dataset('5GAD.csv', '5GAD')
+audit_dataset('5GC_PFCP.csv', '5GC_PFCP')
+
