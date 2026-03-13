@@ -27,7 +27,7 @@ class DeepseekLLMExplainer:
     Efficient LLM explainer using Deepseek API for XAI model explanations
     """
     
-    def __init__(self, api_key: str, model: str = "deepseek-chat", max_tokens: int = 4000, timeout_seconds: Optional[int] = None, max_retries: Optional[int] = None, backoff_base_seconds: Optional[float] = None):
+    def __init__(self, api_key="ollama", model = "llama3.2", max_tokens: int = 4000, timeout_seconds: Optional[int] = None, max_retries: Optional[int] = None, backoff_base_seconds: Optional[float] = None):
         """
         Initialize the Deepseek LLM explainer
         
@@ -36,16 +36,18 @@ class DeepseekLLMExplainer:
             model: Model name to use
             max_tokens: Maximum tokens per request
         """
+
         self.api_key = api_key
         self.model = model
         self.max_tokens = max_tokens
-        self.base_url = "https://api.deepseek.com/v1/chat/completions"
+        # self.base_url = "https://api.deepseek.com/v1/chat/completions"
+        self.base_url = "http://localhost:11434/v1/chat/completions"
         self.headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json"
         }
         # Tunables (env overrides supported)
-        self.timeout_seconds = int(os.getenv('DEEPSEEK_TIMEOUT', str(timeout_seconds or 60)))
+        self.timeout_seconds = int(os.getenv('DEEPSEEK_TIMEOUT', str(timeout_seconds or 10000)))
         self.max_retries = int(os.getenv('DEEPSEEK_MAX_RETRIES', str(max_retries or 4)))
         self.backoff_base_seconds = float(os.getenv('DEEPSEEK_BACKOFF_BASE', str(backoff_base_seconds or 1.5)))
         self.max_samples = int(os.getenv('DEEPSEEK_MAX_SAMPLES', '3'))

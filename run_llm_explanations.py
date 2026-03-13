@@ -15,9 +15,18 @@ import os
 
 # 1. API Key
 # 2. activating explainer module
-explainer = llm_explanation_module.DeepseekLLMExplainer(api_key="sk-728829d9483141b386e566d3f68402d1")
+explainer = llm_explanation_module.DeepseekLLMExplainer(timeout_seconds=10000)
 
 if __name__ == "__main__":
-    print("Starting LLM Explanation Phase...")
-    # This matches the 'process_results_directory' you found!
-    explainer.process_results_directory(results_dir="results", task_type="binary")
+    # Point directly to the folder containing the actual files
+    target_path = "results/5GC_PFCP/binary/DecisionTree"
+    
+    # Use process_model_directory instead of process_results_directory
+    # to bypass the folder-looping logic
+    results = explainer.process_model_directory(
+        model_dir=target_path, 
+        task_type="binary", 
+        model_name="DecisionTree"
+    )
+    
+    explainer.save_results(results, output_dir="results/5GC_PFCP/binary/DecisionTree/LLM")

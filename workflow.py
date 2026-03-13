@@ -3557,7 +3557,7 @@ if __name__ == "__main__":
     from sklearn.model_selection import GroupShuffleSplit
 
     # === Config ===
-    dataset = '5GC_PFCP'  # change if needed
+    dataset = '5G-NIDD'  # change if needed
     cwd = os.getcwd()
     RESULT_DIR = f"{cwd}/results/{dataset}"
     os.makedirs(RESULT_DIR, exist_ok=True)
