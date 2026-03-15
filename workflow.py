@@ -1080,17 +1080,17 @@ def train_and_explain_binary_models(X, y):
     X = X.apply(pd.to_numeric, errors='coerce').fillna(0)
     feature_names = X.columns.astype(str).tolist()
 
-    y = np.array(y)
-    # X_train, X_test, y_train, y_test = train_test_split(
-    #     X, y, test_size=0.2, random_state=42, stratify=y
-    # )
-    split_idx = int(0.8 * len(X))
+    # y = np.array(y)
+    # # X_train, X_test, y_train, y_test = train_test_split(
+    # #     X, y, test_size=0.2, random_state=42, stratify=y
+    # # )
+    # split_idx = int(0.8 * len(X))
 
-    X_train = X.iloc[:split_idx]
-    X_test  = X.iloc[split_idx:]
+    # X_train = X.iloc[:split_idx]
+    # X_test  = X.iloc[split_idx:]
 
-    y_train = y[:split_idx]
-    y_test  = y[split_idx:]
+    # y_train = y[:split_idx]
+    # y_test  = y[split_idx:]
 
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
@@ -3382,114 +3382,6 @@ def _process_task_type_llm(explainer, results_dir: str, task_type: str):
         import traceback
         traceback.print_exc()
 
-# if __name__ == "__main__":
-#     import os
-#     import numpy as np
-#     from sklearn.preprocessing import LabelEncoder
-#     from sklearn.metrics import roc_auc_score, classification_report
-#     import lightgbm as lgb
-
-#     # === Config ===
-#     # dataset = '5G-NIDD'
-#     dataset = '5GAD'
-#     # dataset = '5GC_PFCP'
-#     cwd = os.getcwd()
-#     RESULT_DIR = f"{cwd}/results/{dataset}"
-#     os.makedirs(RESULT_DIR, exist_ok=True)
-
-#     # === Data preprocess ===
-#     X, y, le, df_new = data_preprocess(dataset)
-    
-#     n = len(X)
-
-#     # 60/20/20 split (train / val / test)
-#     train_end = int(0.6 * n)
-#     val_end   = int(0.8 * n)
-
-#     X_train = X.iloc[:train_end]
-#     y_train = y[:train_end]
-
-#     X_val = X.iloc[train_end:val_end]
-#     y_val = y[train_end:val_end]
-
-#     X_test = X.iloc[val_end:]
-#     y_test = y[val_end:]
-
-#     # --- SHUFFLE LABELS FOR LEAKAGE TEST ---
-#     y_shuffled = np.random.permutation(y)
-
-#     y_train = y_shuffled[:train_end]
-#     y_val   = y_shuffled[train_end:val_end]
-#     y_test  = y_shuffled[val_end:]
-#     # Show label encoding
-#     for label, encoded in zip(le.classes_, range(len(le.classes_))):
-#         print(f"Original label '{label}' is encoded as {encoded}")
-
-#     # === Binary LightGBM training ===
-#     model = train_lightgbm_with_scale_pos_weight(X_train, y_train, X_val, y_val)
-
-#     # === Evaluate ===
-#     val_probs = model.predict(X_val, num_iteration=model.best_iteration)
-#     test_probs = model.predict(X_test, num_iteration=model.best_iteration)
-
-#     print("Validation AUC:", roc_auc_score(y_val, val_probs))
-#     print("Test AUC:", roc_auc_score(y_test, test_probs))
-#     print("\n=== Class Ratio Check ===")
-#     print("Train malicious ratio:", y_train.mean())
-#     print("Test malicious ratio :", y_test.mean())
-#     print("Train size:", len(y_train))
-#     print("Test size :", len(y_test))
-
-#     # === SHAP explanation ===
-#     try:
-#         explainer, shap_values, top_30_df, cum99_df = shap_plots_Tree(
-#             model, X_train, feature_names=X.columns.tolist()
-#         )
-#         # Reduce X to top cumulative 99% SHAP features safely
-#         selected_features = cum99_df['Feature'].tolist()
-#         X_reduced = df_new[selected_features]
-
-#         # Optional: save SHAP global importance
-#         shap_values_for_summary = shap_values[1] if isinstance(shap_values, list) else shap_values
-#         global_importance = np.mean(np.abs(shap_values_for_summary), axis=0)
-#         fi_global = {int(idx): float(val) for idx, val in enumerate(global_importance)}
-
-#         _evaluate_and_save(
-#             model_name="LightGBM",
-#             model=model,
-#             X_test_df=X_test,
-#             y_test=y_test,
-#             shap_values_for_plot=None,
-#             scaler=None,
-#             uses_scaled=False,
-#             class_names=['Benign','Malicious'],
-#             explanations=None,
-#             method_name="shap_global",
-#             task_type="binary",
-#             explainer=explainer,
-#             global_importance=fi_global
-#         )
-
-#     except Exception as _e:
-#         print(f"SHAP evaluation failed: {_e}")
-
-#     # === Rolling window placeholder ===
-#     """
-#     # Example pseudocode:
-#     window_size = 200_000
-#     step = 50_000
-#     for start in range(0, len(X) - window_size, step):
-#         end = start + window_size
-#         X_train_win = X.iloc[start:start+train_size]
-#         X_val_win   = X.iloc[start+train_size:end]
-#         y_train_win = y[start:start+train_size]
-#         y_val_win   = y[start+train_size:end]
-
-#         model_win = train_lightgbm_with_scale_pos_weight(X_train_win, y_train_win, X_val_win, y_val_win)
-#         # Evaluate on next chunk, etc.
-#     """
-
-
 
 def data_preprocess(data_name):
     if data_name=='5G-NIDD':
@@ -3557,7 +3449,7 @@ if __name__ == "__main__":
     from sklearn.model_selection import GroupShuffleSplit
 
     # === Config ===
-    dataset = '5G-NIDD'  # change if needed
+    dataset = '5GAD'  # change if needed
     cwd = os.getcwd()
     RESULT_DIR = f"{cwd}/results/{dataset}"
     os.makedirs(RESULT_DIR, exist_ok=True)
@@ -3606,20 +3498,39 @@ if __name__ == "__main__":
         X_test  = X_test.drop(session_cols, axis=1)
 
     else:
+        from sklearn.model_selection import train_test_split
 
-        # simple split for other datasets
-        n = len(X)
+        # 60% train
+        X_train, X_temp, y_train, y_temp = train_test_split(
+            X,
+            y,
+            test_size=0.4,
+            stratify=y,
+            random_state=42
+        )
 
-        train_end = int(0.6 * n)
-        val_end   = int(0.8 * n)
+        # 20% validation / 20% test
+        X_val, X_test, y_val, y_test = train_test_split(
+            X_temp,
+            y_temp,
+            test_size=0.5,
+            stratify=y_temp,
+            random_state=42
+        )
+        
+        # # simple split for other datasets
+        # n = len(X)
 
-        X_train = X.iloc[:train_end]
-        X_val   = X.iloc[train_end:val_end]
-        X_test  = X.iloc[val_end:]
+        # train_end = int(0.6 * n)
+        # val_end   = int(0.8 * n)
 
-        y_train = y[:train_end]
-        y_val   = y[train_end:val_end]
-        y_test  = y[val_end:]
+        # X_train = X.iloc[:train_end]
+        # X_val   = X.iloc[train_end:val_end]
+        # X_test  = X.iloc[val_end:]
+
+        # y_train = y[:train_end]
+        # y_val   = y[train_end:val_end]
+        # y_test  = y[val_end:]
 
     # ============================================================
     # BINARY LIGHTGBM
@@ -3630,8 +3541,30 @@ if __name__ == "__main__":
         X_val, y_val
     )
 
+    from sklearn.metrics import f1_score
+
+    # Get probabilities for validation set
     val_probs = model.predict(X_val, num_iteration=model.best_iteration)
     test_probs = model.predict(X_test, num_iteration=model.best_iteration)
+
+    # Test a range of thresholds
+    thresholds = np.linspace(0, 1, 100)
+    f1_scores = [f1_score(y_val, (val_probs >= t).astype(int)) for t in thresholds]
+
+    # Find the best one
+    best_threshold = thresholds[np.argmax(f1_scores)]
+
+    # Apply to Test Set
+    test_preds = (test_probs >= best_threshold).astype(int)
+    print(f"Optimal Threshold: {best_threshold}")
+    print("Best threshold:", best_threshold)
+
+    pred_default = (test_probs >= 0.5).astype(int)
+    pred_best = (test_probs >= best_threshold).astype(int)
+
+    print("Pred positives (0.5):", pred_default.sum())
+    print("Pred positives (best):", pred_best.sum())
+
 
     print("Validation AUC:", roc_auc_score(y_val, val_probs))
     print("Test AUC:", roc_auc_score(y_test, test_probs))
@@ -3685,8 +3618,11 @@ if __name__ == "__main__":
     # ============================================================
 
     try:
-        X_binary = pd.concat([X_train, X_test])
-        y_binary = np.concatenate([y_train, y_test])
+        X_binary = X_train
+        y_binary = y_train
+
+        # X_binary = pd.concat([X_train, X_test])
+        # y_binary = np.concatenate([y_train, y_test])
 
         models_binary = train_and_explain_binary_models(X_binary, y_binary)
 
@@ -3719,6 +3655,59 @@ if __name__ == "__main__":
 
         y_multi_train = le_multi.fit_transform(train_malicious['Attack Type'])
         y_multi_test  = le_multi.transform(test_malicious['Attack Type'])
+
+        class_names = le_multi.classes_.tolist()
+
+        model_multi, X_train_m, X_test_m, y_train_m, y_test_m = train_lightgbm_multiclass(
+            X_multi_train,
+            y_multi_train,
+            class_names
+        )
+
+        train_and_explain_multi_models(
+            X_multi_train,
+            y_multi_train,
+            class_names,
+            top_n=10
+        )
+
+        train_df = X_train.copy()
+        train_df['Label'] = y_train
+
+        test_df = X_test.copy()
+        test_df['Label'] = y_test
+
+        # Convert numeric labels back to strings if needed
+        if train_df['Label'].dtype != object:
+            train_df['Label'] = train_df['Label'].map({0: 'Benign', 1: 'Malicious'})
+            test_df['Label']  = test_df['Label'].map({0: 'Benign', 1: 'Malicious'})
+
+        # Keep only malicious samples
+        train_malicious = train_df[train_df['Label'] == 'Malicious']
+        test_malicious  = test_df[test_df['Label'] == 'Malicious']
+
+        # Ensure Attack Type exists
+        if 'Attack Type' not in df_new.columns:
+            raise ValueError("Attack Type column not available for multiclass classification")
+
+        # Get attack types for those rows
+        y_multi_train_raw = df_new.loc[train_malicious.index, 'Attack Type']
+        y_multi_test_raw  = df_new.loc[test_malicious.index, 'Attack Type']
+
+        # Feature selection
+        features = train_malicious.columns.tolist()
+        exclude_cols = ['Label', 'Attack Type', 'src_ip', 'dst_ip', 'src_port', 'dst_port', 'session_id']
+
+        features = [f for f in features if f not in exclude_cols]
+
+        X_multi_train = train_malicious[features]
+        X_multi_test  = test_malicious[features]
+
+        # Encode attack types
+        le_multi = LabelEncoder()
+
+        y_multi_train = le_multi.fit_transform(y_multi_train_raw)
+        y_multi_test  = le_multi.transform(y_multi_test_raw)
 
         class_names = le_multi.classes_.tolist()
 
