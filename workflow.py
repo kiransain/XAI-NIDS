@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
+from sklearn.metrics import roc_auc_score
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
@@ -1070,27 +1071,26 @@ def create_mlp_model_bi(input_shape):
     )
     return model
 
-def train_and_explain_binary_models(X, y):
+def train_and_explain_binary_models(X_train, y_train, X_test, y_test):
     """
     Trains, evaluates, and explains multiple models with enhanced performance
     metrics and individual prediction analysis using SHAP and LIME.
     """
-    if not isinstance(X, pd.DataFrame):
-        X = pd.DataFrame(X, columns=[f'feature_{i}' for i in range(X.shape[1])])
-    X = X.apply(pd.to_numeric, errors='coerce').fillna(0)
-    feature_names = X.columns.astype(str).tolist()
+    # if not isinstance(X, pd.DataFrame):
+    #     X = pd.DataFrame(X, columns=[f'feature_{i}' for i in range(X.shape[1])])
+    # X = X.apply(pd.to_numeric, errors='coerce').fillna(0)
+    # feature_names = X.columns.astype(str).tolist()
 
-    # y = np.array(y)
-    # # X_train, X_test, y_train, y_test = train_test_split(
-    # #     X, y, test_size=0.2, random_state=42, stratify=y
-    # # )
-    # split_idx = int(0.8 * len(X))
+    X_train = X_train.copy()
+    X_test = X_test.copy()
 
-    # X_train = X.iloc[:split_idx]
-    # X_test  = X.iloc[split_idx:]
+    X_train = X_train.apply(pd.to_numeric, errors='coerce').fillna(0)
+    X_test  = X_test.apply(pd.to_numeric, errors='coerce').fillna(0)
 
-    # y_train = y[:split_idx]
-    # y_test  = y[split_idx:]
+    feature_names = X_train.columns.astype(str).tolist()
+
+    y_train = np.array(y_train)
+    y_test  = np.array(y_test)
 
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
@@ -1197,6 +1197,12 @@ def train_and_explain_binary_models(X, y):
                 y_score = model.predict(current_X_test, verbose=0).flatten()
             else:
                 y_score = model.predict_proba(current_X_test)[:, 1] if hasattr(model, 'predict_proba') else preds
+
+            auc = roc_auc_score(y_test, y_score)
+
+            print("\n--- Model Performance ---")
+            print(f"Accuracy: {accuracy_score(y_test, preds):.4f}")
+            print(f"ROC-AUC: {auc:.4f}")
 
             precisions, recalls, _ = precision_recall_curve(y_test, y_score)
             ap = float(average_precision_score(y_test, y_score))
@@ -3441,7 +3447,10 @@ def data_preprocess(data_name):
 
 
 if __name__ == "__main__":
-
+    import sys
+    log_file_path = "5GC_PFCP_results_log.txt"
+    sys.stdout = open(log_file_path, "w", encoding="utf-8")
+    sys.stderr = sys.stdout
     import os
     import numpy as np
     from sklearn.preprocessing import LabelEncoder
@@ -3449,7 +3458,7 @@ if __name__ == "__main__":
     from sklearn.model_selection import GroupShuffleSplit
 
     # === Config ===
-    dataset = '5GAD'  # change if needed
+    dataset = '5GC_PFCP'  # change if needed
     cwd = os.getcwd()
     RESULT_DIR = f"{cwd}/results/{dataset}"
     os.makedirs(RESULT_DIR, exist_ok=True)
@@ -3518,19 +3527,6 @@ if __name__ == "__main__":
             random_state=42
         )
         
-        # # simple split for other datasets
-        # n = len(X)
-
-        # train_end = int(0.6 * n)
-        # val_end   = int(0.8 * n)
-
-        # X_train = X.iloc[:train_end]
-        # X_val   = X.iloc[train_end:val_end]
-        # X_test  = X.iloc[val_end:]
-
-        # y_train = y[:train_end]
-        # y_val   = y[train_end:val_end]
-        # y_test  = y[val_end:]
 
     # ============================================================
     # BINARY LIGHTGBM
@@ -3556,6 +3552,12 @@ if __name__ == "__main__":
 
     # Apply to Test Set
     test_preds = (test_probs >= best_threshold).astype(int)
+
+    from sklearn.metrics import classification_report, confusion_matrix
+
+    print("\n=== Classification Report (Optimal Threshold) ===")
+    print(classification_report(y_test, test_preds))
+
     print(f"Optimal Threshold: {best_threshold}")
     print("Best threshold:", best_threshold)
 
@@ -3565,7 +3567,7 @@ if __name__ == "__main__":
     print("Pred positives (0.5):", pred_default.sum())
     print("Pred positives (best):", pred_best.sum())
 
-
+    print("\n=== LightGBM ROC-AUC ===")
     print("Validation AUC:", roc_auc_score(y_val, val_probs))
     print("Test AUC:", roc_auc_score(y_test, test_probs))
 
@@ -3624,7 +3626,12 @@ if __name__ == "__main__":
         # X_binary = pd.concat([X_train, X_test])
         # y_binary = np.concatenate([y_train, y_test])
 
-        models_binary = train_and_explain_binary_models(X_binary, y_binary)
+        models_binary = train_and_explain_binary_models(
+                X_train,
+                y_train,
+                X_val,
+                y_val
+            )
 
     except Exception as e:
         print(f"Binary multi-model stage failed: {e}")
@@ -3638,70 +3645,33 @@ if __name__ == "__main__":
         train_df = df_new.iloc[train_idx]
         test_df  = df_new.iloc[test_val_idx]
 
+        # Keep malicious samples only
         train_malicious = train_df[train_df['Label'] == 'Malicious']
         test_malicious  = test_df[test_df['Label'] == 'Malicious']
 
-        features = train_malicious.columns.tolist()
-        exclude_cols = ['Label', 'Attack Type', 'src_ip', 'dst_ip', 'src_port', 'dst_port', 'session_id']
-
-        for col in ['Label','Attack Type']:
-            if col in features:
-                features.remove(col)
-
-        X_multi_train = train_malicious[features]
-        X_multi_test  = test_malicious[features]
-
-        le_multi = LabelEncoder()
-
-        y_multi_train = le_multi.fit_transform(train_malicious['Attack Type'])
-        y_multi_test  = le_multi.transform(test_malicious['Attack Type'])
-
-        class_names = le_multi.classes_.tolist()
-
-        model_multi, X_train_m, X_test_m, y_train_m, y_test_m = train_lightgbm_multiclass(
-            X_multi_train,
-            y_multi_train,
-            class_names
-        )
-
-        train_and_explain_multi_models(
-            X_multi_train,
-            y_multi_train,
-            class_names,
-            top_n=10
-        )
-
-        train_df = X_train.copy()
-        train_df['Label'] = y_train
-
-        test_df = X_test.copy()
-        test_df['Label'] = y_test
-
-        # Convert numeric labels back to strings if needed
-        if train_df['Label'].dtype != object:
-            train_df['Label'] = train_df['Label'].map({0: 'Benign', 1: 'Malicious'})
-            test_df['Label']  = test_df['Label'].map({0: 'Benign', 1: 'Malicious'})
-
-        # Keep only malicious samples
-        train_malicious = train_df[train_df['Label'] == 'Malicious']
-        test_malicious  = test_df[test_df['Label'] == 'Malicious']
-
-        # Ensure Attack Type exists
         if 'Attack Type' not in df_new.columns:
             raise ValueError("Attack Type column not available for multiclass classification")
 
-        # Get attack types for those rows
-        y_multi_train_raw = df_new.loc[train_malicious.index, 'Attack Type']
-        y_multi_test_raw  = df_new.loc[test_malicious.index, 'Attack Type']
+        # Extract attack labels
+        y_multi_train_raw = train_malicious['Attack Type']
+        y_multi_test_raw  = test_malicious['Attack Type']
 
         # Feature selection
-        features = train_malicious.columns.tolist()
-        exclude_cols = ['Label', 'Attack Type', 'src_ip', 'dst_ip', 'src_port', 'dst_port', 'session_id']
+        exclude_cols = [
+            'Label','Attack Type',
+            'src_ip','dst_ip',
+            'src_port','dst_port',
+            'session_id'
+        ]
 
-        features = [f for f in features if f not in exclude_cols]
+        features = [f for f in train_malicious.columns if f not in exclude_cols]
 
         X_multi_train = train_malicious[features]
         X_multi_test  = test_malicious[features]
+
+        # Force numeric features
+        X_multi_train = X_multi_train.select_dtypes(include=['number','bool'])
+        X_multi_test  = X_multi_test[X_multi_train.columns]
 
         # Encode attack types
         le_multi = LabelEncoder()
@@ -3711,12 +3681,14 @@ if __name__ == "__main__":
 
         class_names = le_multi.classes_.tolist()
 
+        # Train model
         model_multi, X_train_m, X_test_m, y_train_m, y_test_m = train_lightgbm_multiclass(
             X_multi_train,
             y_multi_train,
             class_names
         )
 
+        # Train other models + SHAP explanations
         train_and_explain_multi_models(
             X_multi_train,
             y_multi_train,
@@ -3730,6 +3702,9 @@ if __name__ == "__main__":
     # ============================================================
     # LLM EXPLANATIONS
     # ============================================================
+
+    sys.stdout.close()
+    print(f"Logs saved to {log_file_path}")
 
     GENERATE_LLM_EXPLANATIONS = os.environ.get(
         'GENERATE_LLM_EXPLANATIONS', '1'

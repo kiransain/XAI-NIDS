@@ -15,3 +15,8 @@ venv/
 archive/
 results/
 results_benchmark/
+thesis_db/
+
+5G-NIDD_results_log.txt
+5GC_PFCP_results_log.txt
+5GAD_results_log.txt

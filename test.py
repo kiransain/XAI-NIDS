@@ -1,94 +1,77 @@
-import pandas as pd
-import numpy as np
-import os
+import chromadb
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, StorageContext, Settings
+from llama_index.vector_stores.chroma import ChromaVectorStore
+from llama_index.llms.ollama import Ollama
+from llama_index.embeddings.ollama import OllamaEmbedding
+from llama_index.retrievers.bm25 import BM25Retriever
+from llama_index.core.node_parser import SentenceSplitter
+from llama_index.core.query_engine import RetrieverQueryEngine
 
-def audit_dataset(file_path, name):
-    print(f"\n{'='*20} Auditing: {name} {'='*20}")
-    
-    if not os.path.exists(file_path):
-        print(f"File {file_path} not found.")
-        return
+# configuration
+Settings.llm = Ollama(model="llama3.2:1b", request_timeout=300.0)
+Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")
+db = chromadb.PersistentClient(path="./thesis_db")
+chroma_collection = db.get_or_create_collection("5g_security")
+vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+storage_context = StorageContext.from_defaults(vector_store=vector_store)
+# folder of PDFs converted to text
+reader = SimpleDirectoryReader(input_dir="./knowledge_base")
+documents = reader.load_data()
 
-    # Load dataset
-    df = pd.read_csv(file_path, low_memory=False)
+# splitter
+node_parser = SentenceSplitter(chunk_size=512, chunk_overlap=20)
+nodes = node_parser.get_nodes_from_documents(documents)
 
-    # Drop accidental index column if present
-    df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+index = VectorStoreIndex(nodes, storage_context=storage_context)
+bm25_retriever = BM25Retriever.from_defaults(
+    nodes=nodes, 
+    similarity_top_k=3
+)
+vector_retriever = index.as_retriever(similarity_top_k=3)
 
-    initial_count = len(df)
-    print(f"Total Rows: {initial_count}")
+print(f"RAG System Ready! Processed {len(nodes)} text chunks from your 5G PDFs.")
 
-    # 1. Check duplicates
-    duplicates = df.duplicated().sum()
-    print(f"Duplicate Rows: {duplicates} ({(duplicates/initial_count)*100:.2f}%)")
 
-    # 2. Identify label column safely
-    possible_labels = [c for c in df.columns if c.lower() == 'label']
-    if not possible_labels:
-        print("ERROR: Label column not found.")
-        return
+test_query = "What features are used for PFCP intrusion detection?"
+print(f"\nTesting Query: {test_query}")
 
-    label_col = possible_labels[0]
+v_nodes = index.as_retriever(similarity_top_k=2).retrieve(test_query)
+print(f"Vector retrieved {len(v_nodes)} nodes.")
 
-    # Normalize labels
-    df[label_col] = df[label_col].astype(str).str.strip().str.lower()
+b_nodes = bm25_retriever.retrieve(test_query)
+print(f"BM25 retrieved {len(b_nodes)} nodes.")
 
-    BENIGN_LABELS = {
-    '5GAD': ['normal'],
-    '5GC_PFCP': ['normal'],
-    '5G-NIDD': ['benign']
-}
-    
-    possible_labels = [c for c in df.columns if c.strip().lower() == 'label']
-    if not possible_labels:
-        print(f"ERROR: No label column found in {name}")
-        return
-    label_col = possible_labels[0]  # preserves original casing
+print("\n--- VECTOR RETRIEVAL CONTENT ---")
+for i, node in enumerate(v_nodes):
+    print(f"\nNode {i+1} (Score: {node.score:.4f}):")
+    print(node.get_content()[:300] + "...") # Print first 300 chars
 
-    # Then safely detect benign vs malicious
-    benign_mask = df[label_col].str.lower().isin([l.lower() for l in BENIGN_LABELS.get(name, ['benign'])])
-    malicious_mask = ~benign_mask
+print("\n--- BM25 RETRIEVAL CONTENT ---")
+for i, node in enumerate(b_nodes):
+    print(f"\nNode {i+1}:")
+    print(node.get_content()[:300] + "...")
 
-    benign_df = df[benign_mask]
-    malicious_df = df[malicious_mask]
+vector_query_engine = RetrieverQueryEngine.from_args(
+    retriever=vector_retriever, 
+    response_mode="compact"
+)
 
-    print(f"Benign Samples: {len(benign_df)}")
-    print(f"Malicious Samples: {len(malicious_df)}")
+bm25_query_engine = RetrieverQueryEngine.from_args(
+    retriever=bm25_retriever,
+    response_mode="compact"
+)
 
-    if malicious_df.empty:
-        print("No malicious samples found.")
-        return
 
-    print("\nChecking for zero-variance and leakage risks:")
+# responses
 
-    numeric_cols = df.select_dtypes(include=[np.number]).columns
+print("\n" + "="*30)
+print("GENERATING LLM ANSWERS")
+print("="*30)
 
-    for col in numeric_cols:
-        if col == label_col:
-            continue
+print("\nThinking... (Vector RAG)")
+v_response = vector_query_engine.query(test_query)
+print(f"\n[VECTOR RAG RESPONSE]:\n{v_response}")
 
-        mal_unique = malicious_df[col].nunique(dropna=False)
-        ben_unique = benign_df[col].nunique(dropna=False)
-
-        mal_nan_ratio = malicious_df[col].isna().mean()
-        ben_nan_ratio = benign_df[col].isna().mean()
-
-        # Case 1: Constant in malicious only
-        if mal_unique == 1 and ben_unique > 1:
-            val = malicious_df[col].iloc[0]
-            print(f"  [!] High Risk: '{col}' constant in Malicious ({val}) but variable in Benign.")
-
-        # Case 2: Missingness leakage
-        if mal_nan_ratio == 1.0 and ben_nan_ratio < 1.0:
-            print(f"  [!] High Risk: '{col}' is ALL NaN in Malicious but not in Benign.")
-
-        # Case 3: Globally constant (useless feature)
-        if df[col].nunique(dropna=False) == 1:
-            print(f"  [-] Useless Feature: '{col}' constant across entire dataset.")
-
-    print("Audit complete.")
-
-audit_dataset('5G-NIDD.csv', '5G-NIDD')
-audit_dataset('5GAD.csv', '5GAD')
-audit_dataset('5GC_PFCP.csv', '5GC_PFCP')
-
+print("\nThinking... (BM25 RAG)")
+b_response = bm25_query_engine.query(test_query)
+print(f"\n[BM25 RAG RESPONSE]:\n{b_response}")
