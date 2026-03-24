@@ -20,3 +20,6 @@ thesis_db/
 5G-NIDD_results_log.txt
 5GC_PFCP_results_log.txt
 5GAD_results_log.txt
+
+# Local Vector Database
+RAG/thesis_db/
