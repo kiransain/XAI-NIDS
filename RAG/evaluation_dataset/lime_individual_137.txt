@@ -1,0 +1,53 @@
+LIME Explanation for Sample 137
+Prediction: 1
+True Label: 0
+
+Feature Values:
+Unnamed: 0                                        353.0
+flow ID                                             0.0
+ source IP                                          0.0
+ destination IP                                     0.0
+ source port                                     8805.0
+ destination port                                8805.0
+ protocol                                          17.0
+ duration                                    55007035.0
+ fwd_packets                                       12.0
+ bwd_packets                                       13.0
+ PFCPHeartbeatRequest_counter                      13.0
+ PFCPHeartbeatResponse_counter                     12.0
+ PFCPPFDManagementRequest_counter                   0.0
+ PFCPPFDManagementResponse_counter                  0.0
+ PFCPAssociationSetupRequest_counter                0.0
+ PFCPAssociationSetupResponse_counter               0.0
+ PFCPAssociationUpdateRequest_counter               0.0
+ PFCPAssociationUpdateResponse_counter              0.0
+ PFCPAssociationReleaseRequest_counter              0.0
+ PFCPAssociationReleaseResponse_counter             0.0
+ PFCPVersionNotSupportedResponse_counter            0.0
+ PFCPNodeReportRequest_counter                      0.0
+ PFCPNodeReportResponse_counter                     0.0
+ PFCPSessionSetDeletionRequest_counter              0.0
+ PFCPSessionSetDeletionResponse_counter             0.0
+ PFCPSessionEstablishmentRequest_counter            0.0
+ PFCPSessionEstablishmentResponse_counter           0.0
+ PFCPSessionModificationRequest_counter             0.0
+ PFCPSessionModificationResponse_counter            0.0
+ PFCPSessionDeletionRequest_counter                 0.0
+ PFCPSessionDeletionResponse_counter                0.0
+ PFCPSessionReportRequest_counter                   0.0
+PFCPSessionReportResponse_counter                   0.0
+ Downlink_counter                                   0.0
+ Uplink_counter                                     0.0
+ Bidirectional_traffic_counter                      0.0
+
+LIME Feature Importance (Top 10):
+ 1.  PFCPSessionModificationRequest_counter <= 0.00: 0.6433
+ 2.  PFCPSessionDeletionResponse_counter <= 0.00: 0.4798
+ 3. 11.00 <  PFCPHeartbeatRequest_counter <= 13.00: 0.3764
+ 4. Unnamed: 0 <= 424.25: -0.2068
+ 5. 44006398.00 <  duration <= 55007224.50: -0.0448
+ 6.  PFCPSessionEstablishmentResponse_counter <= 0.00: -0.0132
+ 7.  PFCPSessionEstablishmentRequest_counter <= 0.00: -0.0107
+ 8. 11.00 <  bwd_packets <= 13.00: 0.0070
+ 9.  PFCPSessionModificationResponse_counter <= 0.00: 0.0025
+10. 10.00 <  fwd_packets <= 12.00: -0.0007
