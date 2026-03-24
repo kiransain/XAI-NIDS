@@ -11,7 +11,7 @@ import os
 from llama_index.core import Response
 
 # configuration
-Settings.llm = Ollama(model="deepseek-r1:14b", request_timeout=1000.0) 
+Settings.llm = Ollama(model="deepseek-r1:8b", request_timeout=1000.0) 
 Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")
 db = chromadb.PersistentClient(path="./thesis_db")
 chroma_collection = db.get_or_create_collection("5G_XAI_DOCS_VDB")
