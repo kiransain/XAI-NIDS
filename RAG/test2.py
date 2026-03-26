@@ -23,7 +23,7 @@ judge_model = OllamaModel(model=MODEL_NAME, timeout=600)
 
 # 2. Initialize Metrics
 # Note: async_mode=False is CRITICAL for local hardware stability
-common_params = {"model": judge_model, "async_mode": False, "verbose_mode": True}
+common_params = {"model": judge_model, "async_mode": False, "verbose_mode": True, "include_reason": True}
 
 faithfulness = FaithfulnessMetric(**common_params)
 relevancy = AnswerRelevancyMetric(**common_params)
@@ -55,7 +55,7 @@ for i, entry in enumerate(results_data):
         # Split by double newline as intended
         chunks = [c.strip() for c in raw_context.split("\n\n") if c.strip()]
         # Truncate each chunk if it's too massive, and limit total chunks
-        context_list = [c[:MAX_CONTEXT_CHARS] for c in chunks[:5]] 
+        context_list = [c[:2000] for c in chunks[:3]]
 
     # Create Test Case
     test_case = LLMTestCase(
