@@ -19,7 +19,11 @@ MAX_CONTEXT_CHARS = 4000  # Cap context to ~1000 tokens to prevent timeouts
 # 1. Setup the Judge
 print(f"--- Initializing {MODEL_NAME} Judge ---")
 # Lowering timeout slightly; if it takes > 10 mins for one metric, something is wrong
-judge_model = OllamaModel(model=MODEL_NAME, timeout=600) 
+judge_model = OllamaModel(
+    model="llama3.1:8b", 
+    timeout=3600,
+    num_predict=512 
+)
 
 # 2. Initialize Metrics
 # Note: async_mode=False is CRITICAL for local hardware stability
