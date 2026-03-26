@@ -23,7 +23,7 @@ evaluator_llm = LangchainLLMWrapper(
         base_url="http://localhost:11434/v1",    # local Ollama endpoint
         timeout=600,
         max_retries=2,
-        model_kwargs={"stop": ["</think>"]}
+        stop=["</think>"],
     )
 )
 
