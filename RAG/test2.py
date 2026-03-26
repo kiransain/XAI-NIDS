@@ -52,8 +52,14 @@ def ask_judge(prompt: str, retries: int = 3) -> str:
 
 def parse_score(raw: str) -> float:
     """Extract a 0.0-1.0 float from judge response."""
-    # Strip DeepSeek <think>...</think> tags if present
+    # Strip DeepSeek <think>...</think> blocks
     raw = re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL).strip()
+    # Also strip any remaining tags
+    raw = re.sub(r"<[^>]+>", "", raw).strip()
+    # Take only the last line — DeepSeek often explains then gives score
+    lines = [l.strip() for l in raw.split("\n") if l.strip()]
+    if lines:
+        raw = lines[-1]
     matches = re.findall(r"\b(1\.0+|0\.\d+|[01])\b", raw)
     if matches:
         try:
