@@ -1,17 +1,23 @@
 """
-RAGAS Evaluation Script for XAI-RAG Thesis
-============================================
+RAGAS Evaluation Script — XAI-RAG Thesis
+==========================================
 Evaluates three retrieval configurations:
-  - none  : LLM only (no RAG)
+  - none  : LLM only, no retrieval
   - bm25  : BM25 lexical retrieval
   - vector: Dense vector retrieval
 
-Metrics: Faithfulness, Answer Relevancy, Context Precision, Context Recall
-Judge LLM: Local Ollama (deepseek-r1:8b)
-Embeddings: nomic-embed-text via Ollama
+Metrics:
+  - Faithfulness       (all engines)
+  - Answer Relevancy   (all engines)
+  - Context Precision  (bm25, vector only)
+  - Context Recall     (bm25, vector only)
 
-Input:  thesis_evaluation_results.json  (produced by main RAG pipeline)
-Output: ragas_scores.json + ragas_scores_summary.csv
+Input:  thesis_evaluation_results.json
+Output: ragas_scores_detailed.csv  (per-query scores)
+        ragas_scores_summary.csv   (mean per engine)
+
+Requirements:
+    pip install ragas langchain-community langchain-ollama ollama datasets pandas
 """
 
 import json
@@ -19,140 +25,137 @@ import pandas as pd
 from datasets import Dataset
 from ragas import evaluate
 from ragas.metrics import (
-    Faithfulness,
-    AnswerRelevancy,
-    ContextPrecision,
-    ContextRecall,
+    faithfulness,
+    answer_relevancy,
+    context_precision,
+    context_recall,
 )
-from ragas.llms import LangchainLLMWrapper
-from ragas.embeddings import LangchainEmbeddingsWrapper
 from langchain_ollama import ChatOllama
 from langchain_ollama import OllamaEmbeddings
 
-# ── Configuration ─────────────────────────────────────────────────────────────
+# ── Configuration ──────────────────────────────────────────────────────────────
 
-RESULTS_FILE   = "thesis_evaluation_results.json"   # output from main pipeline
-OUTPUT_JSON    = "ragas_scores.json"
-OUTPUT_CSV     = "ragas_scores_summary.csv"
+RESULTS_FILE     = "thesis_evaluation_results.json"
+OUTPUT_DETAILED  = "ragas_scores_detailed.csv"
+OUTPUT_SUMMARY   = "ragas_scores_summary.csv"
+OLLAMA_MODEL     = "llama3.2:1b" #deepseek-r1:8b
+EMBED_MODEL      = "nomic-embed-text"
 
-OLLAMA_MODEL   = "deepseek-r1:8b"   # judge LLM (same model, kept constant) #deepseek-r1:8b
-EMBED_MODEL    = "nomic-embed-text"  # embedding model for Answer Relevancy
+# ── Judge LLM + Embeddings ─────────────────────────────────────────────────────
 
-# ── Load Ollama judge LLM + embeddings ────────────────────────────────────────
+print("Initialising Ollama judge...")
+evaluator_llm        = ChatOllama(model=OLLAMA_MODEL)
+evaluator_embeddings = OllamaEmbeddings(model=EMBED_MODEL)
 
-print("Loading Ollama judge LLM and embeddings...")
+# ── Load results ───────────────────────────────────────────────────────────────
 
-judge_llm = LangchainLLMWrapper(
-    ChatOllama(model=OLLAMA_MODEL, timeout=600)
-)
-
-judge_embeddings = LangchainEmbeddingsWrapper(
-    OllamaEmbeddings(model=EMBED_MODEL)
-)
-
-# ── Instantiate RAGAS metrics ──────────────────────────────────────────────────
-
-metrics = [
-    Faithfulness(llm=judge_llm),
-    AnswerRelevancy(llm=judge_llm, embeddings=judge_embeddings),
-    ContextPrecision(llm=judge_llm),
-    ContextRecall(llm=judge_llm),
-]
-
-# ── Load pipeline results ──────────────────────────────────────────────────────
-
-print(f"Loading results from '{RESULTS_FILE}'...")
-
+print(f"Loading '{RESULTS_FILE}'...")
 with open(RESULTS_FILE, "r") as f:
-    raw_results = json.load(f)
+    results_data = json.load(f)
 
-# ── Helper: build RAGAS dataset for one engine mode ───────────────────────────
+# ── Build evaluation dataframe ─────────────────────────────────────────────────
 
-def build_ragas_dataset(results: list, engine: str) -> Dataset:
-    """
-    Filter results by engine type and convert to RAGAS Dataset format.
+rows = []
+for entry in results_data:
+    raw_context = entry.get("retrieved_context", "") or ""
 
-    RAGAS expects these columns:
-      - user_input      : the query sent to the LLM
-      - response        : the LLM-generated answer
-      - retrieved_contexts: list of retrieved chunks (list of strings)
-      - reference       : ground truth answer
-    """
-    subset = [r for r in results if r["engine"] == engine]
+    # Split joined chunks back into a list for RAGAS
+    # (chunks were joined with \n\n in the pipeline)
+    contexts = [c.strip() for c in raw_context.split("\n\n") if c.strip()]
+    if not contexts:
+        contexts = [""]  # RAGAS requires at least one context string
 
-    if not subset:
-        raise ValueError(f"No results found for engine='{engine}'")
+    rows.append({
+        "question":     entry["query"],
+        "answer":       entry["answer"],
+        "contexts":     contexts,
+        "ground_truth": entry["ground_truth"],
+        "engine":       entry["engine"],
+        "query_id":     entry.get("query_id", ""),
+    })
 
-    data = {
-        "user_input":          [r["query"]           for r in subset],
-        "response":            [r["answer"]           for r in subset],
-        "retrieved_contexts":  [
-            # retrieved_context is a single string in the pipeline output;
-            # RAGAS expects a list of strings (one per retrieved chunk).
-            # Split on double-newline which is how chunks are joined.
-            r["retrieved_context"].split("\n\n") if r["retrieved_context"] else [""]
-            for r in subset
-        ],
-        "reference":           [r["ground_truth"]     for r in subset],
-    }
+df = pd.DataFrame(rows)
 
-    return Dataset.from_dict(data)
+# ── Evaluate per engine ────────────────────────────────────────────────────────
 
+ENGINES = ["none", "bm25", "vector"]
+all_results = {}
 
-# ── Run evaluation per engine ──────────────────────────────────────────────────
-
-ENGINE_MODES = ["none", "bm25", "vector"]
-all_scores   = {}
-
-for engine in ENGINE_MODES:
+for engine in ENGINES:
     print(f"\n{'='*60}")
-    print(f"Evaluating engine: '{engine}'")
+    print(f"Engine: {engine.upper()}")
     print(f"{'='*60}")
 
+    engine_df = df[df["engine"] == engine].copy()
+
+    if engine_df.empty:
+        print(f"  No data found for engine '{engine}', skipping.")
+        continue
+
+    print(f"  Queries: {len(engine_df)}")
+
+    # Context metrics require actual retrieved chunks
+    # Skip them for the no-RAG baseline
+    if engine == "none":
+        active_metrics = [faithfulness, answer_relevancy]
+        print("  Metrics: faithfulness, answer_relevancy")
+        print("  (context metrics skipped — no retrieval in baseline)")
+    else:
+        active_metrics = [
+            faithfulness,
+            answer_relevancy,
+            context_precision,
+            context_recall,
+        ]
+        print("  Metrics: faithfulness, answer_relevancy, context_precision, context_recall")
+
+    # RAGAS needs these exact columns, drop extras before converting
+    ragas_df = engine_df[["question", "answer", "contexts", "ground_truth"]]
+    dataset  = Dataset.from_pandas(ragas_df)
+
     try:
-        dataset = build_ragas_dataset(raw_results, engine)
-        print(f"  Queries loaded: {len(dataset)}")
-
-        # Note: ContextPrecision + ContextRecall are skipped for 'none' mode
-        # because there are no retrieved contexts to evaluate.
-        if engine == "none":
-            active_metrics = [
-                Faithfulness(llm=judge_llm),
-                AnswerRelevancy(llm=judge_llm, embeddings=judge_embeddings),
-            ]
-            print("  (Skipping context metrics for no-RAG baseline)")
-        else:
-            active_metrics = metrics
-
-        result = evaluate(
-            dataset=dataset,
+        result    = evaluate(
+            dataset,
             metrics=active_metrics,
+            llm=evaluator_llm,
+            embeddings=evaluator_embeddings,
         )
-
         scores_df = result.to_pandas()
-        all_scores[engine] = scores_df.to_dict(orient="records")
 
-        print(f"\n  Results for '{engine}':")
-        print(f"  {'Metric':<30} {'Mean Score':>10}")
-        print(f"  {'-'*42}")
-        for col in scores_df.columns:
-            if col not in ("user_input", "response", "retrieved_contexts", "reference"):
-                print(f"  {col:<30} {scores_df[col].mean():>10.4f}")
+        # Re-attach metadata columns
+        scores_df["engine"]   = engine
+        scores_df["query_id"] = engine_df["query_id"].values
+
+        all_results[engine] = scores_df
+
+        # Print mean scores
+        metric_cols = [
+            c for c in scores_df.columns
+            if c not in ("question", "answer", "contexts", "ground_truth",
+                         "engine", "query_id")
+        ]
+        print(f"\n  {'Metric':<25} {'Mean':>8}")
+        print(f"  {'-'*35}")
+        for col in metric_cols:
+            try:
+                mean_val = pd.to_numeric(scores_df[col], errors='coerce').mean()
+                print(f"  {col:<25} {mean_val:>8.4f}")
+            except Exception:
+                print(f"  {col:<25} {'ERROR':>8}")
 
     except Exception as e:
-        print(f"  ERROR evaluating '{engine}': {e}")
-        all_scores[engine] = {"error": str(e)}
+        print(f"  ERROR: {e}")
 
+# ── Save detailed per-query CSV ────────────────────────────────────────────────
 
-# ── Save per-query scores to JSON ─────────────────────────────────────────────
+if all_results:
+    detailed_df = pd.concat(all_results.values(), ignore_index=True)
+    detailed_df.to_csv(OUTPUT_DETAILED, index=False)
+    print(f"\nPer-query scores saved to '{OUTPUT_DETAILED}'")
+else:
+    print("\nNo results to save.")
 
-with open(OUTPUT_JSON, "w") as f:
-    json.dump(all_scores, f, indent=4)
-
-print(f"\nPer-query scores saved to '{OUTPUT_JSON}'")
-
-
-# ── Build summary comparison table ────────────────────────────────────────────
+# ── Summary table ──────────────────────────────────────────────────────────────
 
 METRIC_COLS = [
     "faithfulness",
@@ -162,48 +165,37 @@ METRIC_COLS = [
 ]
 
 summary_rows = []
-
-for engine in ENGINE_MODES:
-    if "error" in all_scores.get(engine, {}):
-        continue
-
-    records = all_scores[engine]
-    if not records:
-        continue
-
-    df = pd.DataFrame(records)
+for engine, scores_df in all_results.items():
     row = {"engine": engine}
-
     for col in METRIC_COLS:
-        if col in df.columns:
-            row[col] = round(df[col].mean(), 4)
+        if col in scores_df.columns:
+            row[col] = round(pd.to_numeric(scores_df[col], errors='coerce').mean(), 4)
         else:
-            row[col] = None   # not applicable (e.g. context metrics for 'none')
-
+            row[col] = None
     summary_rows.append(row)
 
 summary_df = pd.DataFrame(summary_rows).set_index("engine")
 
 print("\n" + "="*60)
-print("SUMMARY: Mean RAGAS Scores per Retrieval Strategy")
+print("SUMMARY — Mean RAGAS Scores per Retrieval Strategy")
 print("="*60)
 print(summary_df.to_string())
+print()
 
-summary_df.to_csv(OUTPUT_CSV)
-print(f"\nSummary table saved to '{OUTPUT_CSV}'")
+summary_df.to_csv(OUTPUT_SUMMARY)
+print(f"Summary saved to '{OUTPUT_SUMMARY}'")
 
+# ── Expected pattern reminder ──────────────────────────────────────────────────
 
-# ── Quick sanity check ────────────────────────────────────────────────────────
+print("""
+── Expected pattern if RAG improves explanations ────────────
+  faithfulness:      vector >= bm25 > none
+  answer_relevancy:  vector >= bm25 > none
+  context_precision: vector vs bm25  ← key thesis finding
+  context_recall:    vector vs bm25  ← key thesis finding
 
-print("\n── Sanity Check ──────────────────────────────────────────")
-print("Expected pattern if RAG helps:")
-print("  faithfulness:       vector >= bm25 > none")
-print("  answer_relevancy:   vector >= bm25 > none")
-print("  context_precision:  vector vs bm25 (key comparison)")
-print("  context_recall:     vector vs bm25 (key comparison)")
-print("")
-print("If scores are unexpectedly uniform or all ~0, check:")
-print("  1. Ollama is running:  `ollama serve`")
-print("  2. Model is pulled:    `ollama pull deepseek-r1:8b`")
-print("  3. Embed model pulled: `ollama pull nomic-embed-text`")
-print("  4. retrieved_context in JSON is not empty for bm25/vector rows")
+If scores are all 0 or NaN:
+  1. Run: ollama serve
+  2. Run: ollama list  (check both models are pulled)
+  3. Check retrieved_context is non-empty in your JSON
+""")
