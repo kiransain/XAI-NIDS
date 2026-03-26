@@ -11,7 +11,7 @@ from deepeval.test_case import LLMTestCase
 
 # 1. Setup the Judge (Using 8B as discussed for accuracy)
 print("--- Initializing DeepSeek-R1:8B Judge ---")
-judge_model = OllamaModel(model="deepseek-r1:8b", timeout=600)
+judge_model = OllamaModel(model="llama3.1:8b", timeout=3600)
 
 # 2. Initialize Metrics
 # async_mode=False is safer for local Ollama to prevent "hanging"
