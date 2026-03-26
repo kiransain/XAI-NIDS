@@ -7,6 +7,8 @@ from deepeval.test_case import LLMTestCase
 print("--- Initializing Ollama (Weak Judge) ---")
 weak_judge = OllamaModel(
     model="llama3.2:1b",
+    model="deepseek-r1:8b",
+    # Increase timeout for weak hardware
     timeout=300 
 )
 
