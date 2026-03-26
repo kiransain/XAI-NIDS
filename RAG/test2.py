@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+import time
 from deepeval.models import OllamaModel
 from deepeval.metrics import (
     FaithfulnessMetric, 
@@ -9,42 +10,54 @@ from deepeval.metrics import (
 )
 from deepeval.test_case import LLMTestCase
 
-# 1. Setup the Judge (Using 8B as discussed for accuracy)
-print("--- Initializing DeepSeek-R1:8B Judge ---")
-judge_model = OllamaModel(model="llama3.1:8b", timeout=3600)
+# --- CONFIGURATION ---
+MODEL_NAME = "llama3.1:8b" 
+INPUT_FILE = "thesis_evaluation_results.json"
+OUTPUT_CSV = "thesis_final_deepeval_scores.csv"
+MAX_CONTEXT_CHARS = 4000  # Cap context to ~1000 tokens to prevent timeouts
+
+# 1. Setup the Judge
+print(f"--- Initializing {MODEL_NAME} Judge ---")
+# Lowering timeout slightly; if it takes > 10 mins for one metric, something is wrong
+judge_model = OllamaModel(model=MODEL_NAME, timeout=600) 
 
 # 2. Initialize Metrics
-# async_mode=False is safer for local Ollama to prevent "hanging"
-faithfulness = FaithfulnessMetric(model=judge_model, async_mode=False)
-relevancy = AnswerRelevancyMetric(model=judge_model, async_mode=False)
-precision = ContextualPrecisionMetric(model=judge_model, async_mode=False)
-recall = ContextualRecallMetric(model=judge_model, async_mode=False)
+# Note: async_mode=False is CRITICAL for local hardware stability
+common_params = {"model": judge_model, "async_mode": False, "verbose_mode": True}
 
-# 3. Load your PRE-GENERATED results
-INPUT_FILE = "thesis_evaluation_results.json"
+faithfulness = FaithfulnessMetric(**common_params)
+relevancy = AnswerRelevancyMetric(**common_params)
+precision = ContextualPrecisionMetric(**common_params)
+recall = ContextualRecallMetric(**common_params)
+
+# 3. Load Results
 print(f"--- Loading pre-generated results from {INPUT_FILE} ---")
-
 with open(INPUT_FILE, "r") as f:
     results_data = json.load(f)
 
 evaluation_output = []
 
-# 4. Loop through the JSON entries and Score them
+# 4. Loop through and Score
 for i, entry in enumerate(results_data):
     query_id = entry.get("query_id", f"Q{i}")
     engine = entry.get("engine", "unknown")
     
-    print(f"[{i+1}/{len(results_data)}] Scoring {query_id} | Engine: {engine}")
+    print(f"\n{'='*50}")
+    print(f"[{i+1}/{len(results_data)}] Processing {query_id} | Engine: {engine}")
+    print(f"{'='*50}")
 
-    # DeepEval needs a list for context. 
-    # If it's a string, we split it. If it's "No documentation...", we pass a placeholder.
+    # --- DEFENSIVE CONTEXT HANDLING ---
     raw_context = entry.get("retrieved_context", "")
-    if engine == "none" or "No additional technical documentation" in raw_context:
-        context_list = ["No technical documentation provided for this baseline."]
+    
+    if engine == "none" or not raw_context or "No additional technical documentation" in raw_context:
+        context_list = ["No technical documentation available for baseline."]
     else:
-        context_list = [c.strip() for c in raw_context.split("\n\n") if c.strip()]
+        # Split by double newline as intended
+        chunks = [c.strip() for c in raw_context.split("\n\n") if c.strip()]
+        # Truncate each chunk if it's too massive, and limit total chunks
+        context_list = [c[:MAX_CONTEXT_CHARS] for c in chunks[:5]] 
 
-    # Create the Test Case
+    # Create Test Case
     test_case = LLMTestCase(
         input=entry["query"],
         actual_output=entry["answer"],
@@ -52,44 +65,32 @@ for i, entry in enumerate(results_data):
         expected_output=entry["ground_truth"]
     )
 
-    # Prepare score storage for this row
-    row_results = {
-        "query_id": query_id,
-        "engine": engine
-    }
+    row_results = {"query_id": query_id, "engine": engine}
 
-    # Execute Metrics
-    # Note: We skip retrieval metrics for the 'none' engine
-    metrics_to_run = [faithfulness, relevancy]
-    if engine != "none":
-        metrics_to_run.extend([precision, recall])
+    # Decide which metrics to run
+    if engine == "none":
+        metrics_to_run = [faithfulness, relevancy]
+    else:
+        metrics_to_run = [faithfulness, relevancy, precision, recall]
 
     for metric in metrics_to_run:
         metric_name = metric.__class__.__name__
+        print(f"   > Measuring {metric_name}...")
+        
+        start_time = time.time()
         try:
             metric.measure(test_case)
             row_results[metric_name] = metric.score
             row_results[f"{metric_name}_reason"] = metric.reason
+            print(f"     Success! ({round(time.time() - start_time, 2)}s)")
         except Exception as e:
-            print(f"   Error scoring {metric_name}: {e}")
+            print(f"     FAILED scoring {metric_name}: {e}")
             row_results[metric_name] = None
+            row_results[f"{metric_name}_reason"] = f"Error: {str(e)}"
 
     evaluation_output.append(row_results)
+    
+    # Save progress after every row (so you don't lose data if it crashes at 90%)
+    pd.DataFrame(evaluation_output).to_csv(OUTPUT_CSV, index=False)
 
-# 5. Save everything to a structured CSV
-df = pd.DataFrame(evaluation_output)
-df.to_csv("thesis_final_deepeval_scores.csv", index=False)
-
-print("\n--- DONE! ---")
-print(f"Scores saved to 'thesis_final_deepeval_scores.csv'")
-
-# Quick Summary for your terminal
-summary = df.groupby('engine')[[
-    'FaithfulnessMetric', 
-    'AnswerRelevancyMetric', 
-    'ContextualPrecisionMetric', 
-    'ContextualRecallMetric'
-]].mean()
-
-print("\n--- MEAN SCORES PER ENGINE ---")
-print(summary)
+print(f"\n--- DONE! Final scores saved to {OUTPUT_CSV} ---")
