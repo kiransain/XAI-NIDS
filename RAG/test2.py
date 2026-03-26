@@ -22,7 +22,12 @@ print(f"--- Initializing {MODEL_NAME} Judge ---")
 judge_model = OllamaModel(
     model="llama3.1:8b", 
     timeout=3600,
-    num_predict=512 
+    generation_kwargs={
+        "num_predict": 512,  # Hard limit on output length to stop "yapping"
+        "num_ctx": 8192,     # Expanded context window for 5G docs
+        "top_k": 20,         # Reduces sampling complexity
+        "top_p": 0.9
+    }
 )
 
 # 2. Initialize Metrics
