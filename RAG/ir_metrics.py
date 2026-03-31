@@ -42,7 +42,7 @@ K = 3
 
 QRELS = {
     # "Q1": ["chunk-id-of-pfcp-heartbeat-section", "chunk-id-of-3gpp-spec"],
-    # "Q2": ["chunk-id-of-nidd-dos-section"],
+    "Q2": ["663349dc-b41d-4587-9843-59ceadfdb091"],
     # add one entry per query after identifying relevant chunks
 }
 
