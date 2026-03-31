@@ -20,6 +20,7 @@ results/
 results_benchmark/
 thesis_db/
 RAG/thesis_db/
+RAG/ragas_venv/
 
 5G-NIDD_results_log.txt
 5GC_PFCP_results_log.txt
