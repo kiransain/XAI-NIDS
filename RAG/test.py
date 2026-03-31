@@ -112,12 +112,11 @@ def run_thesis_benchmark(case, engine_type="vector"):
     if engine_type == "vector":
         nodes = vector_retriever.retrieve(case['query'])
         retrieved_context = "\n".join([n.get_content() for n in nodes])
-        retrieved_ids = [n.node.node_id for n in nodes]
-
+        retrieved_ids = [n.id_ for n in nodes]
     elif engine_type == "bm25":
         nodes = bm25_retriever.retrieve(case['query'])
         retrieved_context = "\n".join([n.get_content() for n in nodes])
-        retrieved_ids = [n.node.node_id for n in nodes]
+        retrieved_ids = [n.id_ for n in nodes]
     else:
         retrieved_context = "No additional technical documentation available."
 

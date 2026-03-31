@@ -1,4 +1,3 @@
-query_id,engine,precision@3,recall@3,hit@3,mrr,ndcg@3
-Q2,none,,,,,
-Q2,bm25,0.3333333333333333,1.0,1.0,0.5,0.6309297535714575
-Q2,vector,0.3333333333333333,1.0,1.0,0.3333333333333333,0.5
+version https://git-lfs.github.com/spec/v1
+oid sha256:263621be2cddb24879b5acbe26cd0f112f8e678a810fe4d034a0c22b7083d845
+size 185
