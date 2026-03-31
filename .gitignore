@@ -5,6 +5,8 @@ __pycache__/
 # Large Data files
 *.csv
 !thesis_final_deepeval_scores.csv
+!ir_metrics_summary.csv
+!ir_metrics_detailed.csv
 *.mp4
 *.png
 

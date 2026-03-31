@@ -16,6 +16,8 @@ reader = SimpleDirectoryReader(input_dir="./knowledge_base")
 documents = reader.load_data()
 node_parser = SentenceSplitter(chunk_size=512, chunk_overlap=20)
 nodes = node_parser.get_nodes_from_documents(documents)
+for node in nodes:
+    node.id_ = node.get_content_hash()
 
 print(f"Total chunks: {len(nodes)}\n")
 for node in nodes:
