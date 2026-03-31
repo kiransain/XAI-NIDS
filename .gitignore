@@ -19,6 +19,7 @@ archive/
 results/
 results_benchmark/
 thesis_db/
+RAG/thesis_db/
 
 5G-NIDD_results_log.txt
 5GC_PFCP_results_log.txt
