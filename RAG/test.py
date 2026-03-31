@@ -67,25 +67,30 @@ bm25_query_engine = RetrieverQueryEngine.from_args(
 
 
 EXPERIMENT_SET = [
-    {   # this is from 5GC_PFCP\binary\DecisionTree
-        "id": "Q1",
-        "sample_id": "1",
-        "xai_file": "evaluation_dataset\lime_individual_137.txt",
-        "query": "Analyze Sample 137. The model predicted '1' (Attack) due to the Heartbeat count and the lack of Session Modification requests. Based on our 5G PFCP documentation, is it normal for a connection to have 13 heartbeats over 55 seconds without any session changes, or is this a sign of a DoS attack?",
-        "ground_truth": "Observation: The model predicted an Attack (1), primarily influenced by PFCPHeartbeatRequest_counter (Value: 13.0) and a lack of session activity. Documentation Grounding: According to the 3GPP PFCP Technical Specification, Heartbeat messages are used for path management to ensure the UP (User Plane) and CP (Control Plane) are still communicating. Contextual Evaluation: The flow duration is 55 seconds. A count of 13 heartbeats in ~1 minute is consistent with standard audit intervals (typically every few seconds). The absence of PFCPSessionModificationRequest simply indicates a 'stable' session where no user parameters changed during this window. Conclusion: The model has produced a False Positive. It is misinterpreting standard 'Keep-Alive' signaling as a Heartbeat Flood."
-    },
-    # {
-    #     "id": "Q2",
-    #     "sample_id": "17363",
-    #     "xai_file": "results/5G-NIDD/binary/DecisionTree/lime_individual_17363.txt",
-    #     "query": "Compare the LIME importance of src_bytes with the security baseline for 5G UPF interfaces.",
-    #     "ground_truth": "The UPF (User Plane Function) should see a burst in src_bytes during an exfiltration event..."
-    # }
-    # and more
+    # {   # this is from 5GC_PFCP\binary\DecisionTree
+    #     "id": "Q1",
+    #     "sample_id": "1",
+    #     "xai_file": "evaluation_dataset\lime_individual_137.txt",
+    #     "query": "Analyze Sample 137. The model predicted '1' (Attack) due to the Heartbeat count and the lack of Session Modification requests. Based on our 5G PFCP documentation, is it normal for a connection to have 13 heartbeats over 55 seconds without any session changes, or is this a sign of a DoS attack?",
+    #     "ground_truth": "Observation: The model predicted an Attack (1), primarily influenced by PFCPHeartbeatRequest_counter (Value: 13.0) and a lack of session activity. Documentation Grounding: According to the 3GPP PFCP Technical Specification, Heartbeat messages are used for path management to ensure the UP (User Plane) and CP (Control Plane) are still communicating. Contextual Evaluation: The flow duration is 55 seconds. A count of 13 heartbeats in ~1 minute is consistent with standard audit intervals (typically every few seconds). The absence of PFCPSessionModificationRequest simply indicates a 'stable' session where no user parameters changed during this window. Conclusion: The model has produced a False Positive. It is misinterpreting standard 'Keep-Alive' signaling as a Heartbeat Flood."
+    # },
+    {
+        "id": "Q2",
+        "sample_id": "2",
+        "xai_file": "none",
+        "query": "Are DoS attacks even a threat for 5G-applications?",
+        # "retrieved_context": " The network or a node will eventually undergo resource exhaustion and deny the nonmalicious users’ access as a result of a DoS attack. Due to the heterogeneous nature of the 5G networks, DoS attacks impose a vital threat in 5G which may target the network nodes, devices, and applications [54]. This work focuses on the DoS/DDoS attacks targeted at user devices, but the attack may congest the network too.",
+        # "answer": "Yes, DoS (Denial of Service) attacks are indeed a significant threat to 5G applications. The increased connectivity and reliance on 5G networks for critical applications (such as IoT, autonomous vehicles, and smart cities) make them attractive targets for attackers. DoS attacks can disrupt the availability of services, degrade performance, and potentially lead to financial losses or safety risks. Therefore, it is crucial to implement robust security measures to protect 5G applications from such threats.",
+        "ground_truth": "DoS attacks impose a vital threat in 5G which may target the network nodes, devices, and applications"
+        }
 ]
 
 def load_xai_data(filepath):
-    """Helper to read either JSON or TXT XAI outputs"""
+    """Helper to read either JSON or TXT XAI outputs safely"""
+    # Safe check for "none"
+    if filepath.lower() == "none" or not filepath:
+        return "No XAI data provided for this query."
+        
     try:
         with open(filepath, 'r') as f:
             if filepath.endswith('.json'):
