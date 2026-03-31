@@ -1,6 +1,5 @@
 """
-IR Metrics Evaluation — XAI-RAG Thesis
-========================================
+IR Metrics Evaluation — XAI-RAG Thesis========================================
 Computes classical information retrieval metrics for retrieval evaluation.
 
 Metrics computed per query per engine:
@@ -42,7 +41,7 @@ K = 3
 
 QRELS = {
     # "Q1": ["chunk-id-of-pfcp-heartbeat-section", "chunk-id-of-3gpp-spec"],
-    "Q2": ["e8c5872b-d028-4933-8070-0f1ff2796f00"],
+    "Q2": ["ded47291676490160ecd444d26f4e483cc062718453347326f3dfeea8e4099bd"],
     # add one entry per query after identifying relevant chunks
 }
 

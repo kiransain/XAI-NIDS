@@ -4,26 +4,24 @@ from llama_index.core import VectorStoreIndex, StorageContext, Settings
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from llama_index.embeddings.ollama import OllamaEmbedding
 
-# 1. Setup the same embedding model
-Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")
+# inspect_chunks.py — Bulletproof version (Skips DB entirely)
+from llama_index.core import SimpleDirectoryReader
+from llama_index.core.node_parser import SentenceSplitter
 
-# 2. Connect to your EXISTING database
-db = chromadb.PersistentClient(path="./thesis_db")
-chroma_collection = db.get_or_create_collection("5G_XAI_DOCS_VDB")
-vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-storage_context = StorageContext.from_defaults(vector_store=vector_store)
+# 1. Read PDFs straight from the folder
+reader = SimpleDirectoryReader(input_dir="./knowledge_base")
+documents = reader.load_data()
 
-# 3. Load the index directly from the DB (We skip reading PDFs entirely!)
-index = VectorStoreIndex.from_vector_store(vector_store, storage_context=storage_context)
+# 2. Split them exactly how your main pipeline does
+node_parser = SentenceSplitter(chunk_size=512, chunk_overlap=20)
+nodes = node_parser.get_nodes_from_documents(documents)
 
-# 4. Extract the exact nodes currently sitting in your DB
-# (We ask LlamaIndex to fetch the documents stored in the index)
-nodes = list(index.docstore.docs.values())
+print(f"Total chunks processed: {len(nodes)}\n")
 
-print(f"Total chunks in DB: {len(nodes)}\n")
-
-# 5. Print the exact IDs and content that your main script is seeing!
+# 3. Apply the content hash and print
 for node in nodes:
+    # Use the static hash property
+    node.id_ = node.hash  
     print(f"ID: {node.node_id}")
     print(f"Source: {node.metadata.get('file_name', 'unknown')}")
     print(f"Content: {node.get_content()[:300]}")

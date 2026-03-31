@@ -25,6 +25,10 @@ documents = reader.load_data()
 node_parser = SentenceSplitter(chunk_size=512, chunk_overlap=20)
 nodes = node_parser.get_nodes_from_documents(documents)
 
+for node in nodes:
+    node.id_ = node.hash
+# --------------------------------
+
 index = VectorStoreIndex(nodes, storage_context=storage_context)
 bm25_retriever = BM25Retriever.from_defaults(
     nodes=nodes, 
