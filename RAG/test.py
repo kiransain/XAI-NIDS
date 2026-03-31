@@ -104,12 +104,16 @@ def load_xai_data(filepath):
 def run_thesis_benchmark(case, engine_type="vector"):
     xai_context = load_xai_data(case['xai_file'])
     retrieved_context = ""
+    retrieved_ids = []
     if engine_type == "vector":
         nodes = vector_retriever.retrieve(case['query'])
         retrieved_context = "\n".join([n.get_content() for n in nodes])
+        retrieved_ids = [n.node.node_id for n in nodes]
+
     elif engine_type == "bm25":
         nodes = bm25_retriever.retrieve(case['query'])
         retrieved_context = "\n".join([n.get_content() for n in nodes])
+        retrieved_ids = [n.node.node_id for n in nodes]
     else:
         retrieved_context = "No additional technical documentation available."
 
@@ -139,6 +143,7 @@ def run_thesis_benchmark(case, engine_type="vector"):
         "engine": engine_type,
         "query": case['query'],
         "retrieved_context": retrieved_context,
+        "retrieved_chunk_ids": retrieved_ids, 
         "answer": str(response),
         "ground_truth": case['ground_truth']
     }
