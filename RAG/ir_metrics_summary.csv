@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8ab36f96f467f03ccf3c703f6e95561fee65cc12ffe4503243fc7834c35d2857
-size 119
+engine,precision@3,recall@3,hit@3,mrr,ndcg@3
+bm25,0.3333,1.0,1.0,0.5,0.6309
+none,,,,,
+vector,0.3333,1.0,1.0,1.0,1.0
