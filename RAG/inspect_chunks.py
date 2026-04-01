@@ -31,6 +31,7 @@ search_terms = ["DoS", "vital threat"]  # change per query
 
 print(f"\nSearching for: {search_terms}")
 for node in nodes:
+    node.id_ = node.hash
     content = node.get_content().lower()
     if all(term.lower() in content for term in search_terms):
         print(f"\n✓ RELEVANT CHUNK FOUND")
