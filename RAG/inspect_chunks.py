@@ -19,10 +19,21 @@ nodes = node_parser.get_nodes_from_documents(documents)
 print(f"Total chunks processed: {len(nodes)}\n")
 
 # 3. Apply the content hash and print
+# for node in nodes:
+#     # Use the static hash property
+#     node.id_ = node.hash  
+#     print(f"ID: {node.node_id}")
+#     print(f"Source: {node.metadata.get('file_name', 'unknown')}")
+#     print(f"Content: {node.get_content()[:300]}")
+#     print("---")
+
+search_terms = ["DoS", "vital threat"]  # change per query
+
+print(f"\nSearching for: {search_terms}")
 for node in nodes:
-    # Use the static hash property
-    node.id_ = node.hash  
-    print(f"ID: {node.node_id}")
-    print(f"Source: {node.metadata.get('file_name', 'unknown')}")
-    print(f"Content: {node.get_content()[:300]}")
-    print("---")
+    content = node.get_content().lower()
+    if all(term.lower() in content for term in search_terms):
+        print(f"\n✓ RELEVANT CHUNK FOUND")
+        print(f"  ID: {node.node_id}")
+        print(f"  Preview: {node.get_content()[:300]}")
+        print("---")

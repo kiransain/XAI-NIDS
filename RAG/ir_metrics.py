@@ -29,16 +29,6 @@ RESULTS_FILE = "thesis_evaluation_results.json"
 K = 3
 
 # ── Relevance labels (QRELS) ───────────────────────────────────────────────────
-# Fill this in manually after running the pipeline once.
-# To find chunk IDs: run rag_pipeline.py with the debug print below enabled,
-# then read the printed chunk content and mark which IDs are relevant.
-#
-# Debug snippet to add temporarily in rag_pipeline.py:
-#   for node in nodes:
-#       print(f"ID: {node.node.node_id}")
-#       print(node.get_content()[:300])
-#       print("---")
-
 QRELS = {
     # "Q1": ["chunk-id-of-pfcp-heartbeat-section", "chunk-id-of-3gpp-spec"],
     "Q2": ["ded47291676490160ecd444d26f4e483cc062718453347326f3dfeea8e4099bd"],
