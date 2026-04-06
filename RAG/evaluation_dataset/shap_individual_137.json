@@ -1,0 +1,302 @@
+{
+  "sample_index": 137,
+  "base_value": 0.5,
+  "feature_values": {
+    "Unnamed: 0": 353.0,
+    "flow ID": 0.0,
+    " source IP": 0.0,
+    " destination IP": 0.0,
+    " source port": 8805.0,
+    " destination port": 8805.0,
+    " protocol": 17.0,
+    " duration": 55007035.0,
+    " fwd_packets": 12.0,
+    " bwd_packets": 13.0,
+    " PFCPHeartbeatRequest_counter": 13.0,
+    " PFCPHeartbeatResponse_counter": 12.0,
+    " PFCPPFDManagementRequest_counter": 0.0,
+    " PFCPPFDManagementResponse_counter": 0.0,
+    " PFCPAssociationSetupRequest_counter": 0.0,
+    " PFCPAssociationSetupResponse_counter": 0.0,
+    " PFCPAssociationUpdateRequest_counter": 0.0,
+    " PFCPAssociationUpdateResponse_counter": 0.0,
+    " PFCPAssociationReleaseRequest_counter": 0.0,
+    " PFCPAssociationReleaseResponse_counter": 0.0,
+    " PFCPVersionNotSupportedResponse_counter": 0.0,
+    " PFCPNodeReportRequest_counter": 0.0,
+    " PFCPNodeReportResponse_counter": 0.0,
+    " PFCPSessionSetDeletionRequest_counter": 0.0,
+    " PFCPSessionSetDeletionResponse_counter": 0.0,
+    " PFCPSessionEstablishmentRequest_counter": 0.0,
+    " PFCPSessionEstablishmentResponse_counter": 0.0,
+    " PFCPSessionModificationRequest_counter": 0.0,
+    " PFCPSessionModificationResponse_counter": 0.0,
+    " PFCPSessionDeletionRequest_counter": 0.0,
+    " PFCPSessionDeletionResponse_counter": 0.0,
+    " PFCPSessionReportRequest_counter": 0.0,
+    "PFCPSessionReportResponse_counter": 0.0,
+    " Downlink_counter": 0.0,
+    " Uplink_counter": 0.0,
+    " Bidirectional_traffic_counter": 0.0
+  },
+  "shap_values": [
+    0.21897398358081444,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.03492159969221519,
+    0.0,
+    0.0,
+    0.05605664429872748,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.14883292757830735,
+    0.0,
+    0.0,
+    0.04121484484993609,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "feature_names": [
+    "Unnamed: 0",
+    "flow ID",
+    " source IP",
+    " destination IP",
+    " source port",
+    " destination port",
+    " protocol",
+    " duration",
+    " fwd_packets",
+    " bwd_packets",
+    " PFCPHeartbeatRequest_counter",
+    " PFCPHeartbeatResponse_counter",
+    " PFCPPFDManagementRequest_counter",
+    " PFCPPFDManagementResponse_counter",
+    " PFCPAssociationSetupRequest_counter",
+    " PFCPAssociationSetupResponse_counter",
+    " PFCPAssociationUpdateRequest_counter",
+    " PFCPAssociationUpdateResponse_counter",
+    " PFCPAssociationReleaseRequest_counter",
+    " PFCPAssociationReleaseResponse_counter",
+    " PFCPVersionNotSupportedResponse_counter",
+    " PFCPNodeReportRequest_counter",
+    " PFCPNodeReportResponse_counter",
+    " PFCPSessionSetDeletionRequest_counter",
+    " PFCPSessionSetDeletionResponse_counter",
+    " PFCPSessionEstablishmentRequest_counter",
+    " PFCPSessionEstablishmentResponse_counter",
+    " PFCPSessionModificationRequest_counter",
+    " PFCPSessionModificationResponse_counter",
+    " PFCPSessionDeletionRequest_counter",
+    " PFCPSessionDeletionResponse_counter",
+    " PFCPSessionReportRequest_counter",
+    "PFCPSessionReportResponse_counter",
+    " Downlink_counter",
+    " Uplink_counter",
+    " Bidirectional_traffic_counter"
+  ],
+  "prediction": 1.0,
+  "true_label": 0.0,
+  "feature_importance": [
+    {
+      "feature": "Unnamed: 0",
+      "shap_value": 0.21897398358081444,
+      "feature_value": 353.0
+    },
+    {
+      "feature": " PFCPSessionModificationRequest_counter",
+      "shap_value": 0.14883292757830735,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPHeartbeatRequest_counter",
+      "shap_value": 0.05605664429872748,
+      "feature_value": 13.0
+    },
+    {
+      "feature": " PFCPSessionDeletionResponse_counter",
+      "shap_value": 0.04121484484993609,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " duration",
+      "shap_value": 0.03492159969221519,
+      "feature_value": 55007035.0
+    },
+    {
+      "feature": "flow ID",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " source IP",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " destination IP",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " source port",
+      "shap_value": 0.0,
+      "feature_value": 8805.0
+    },
+    {
+      "feature": " destination port",
+      "shap_value": 0.0,
+      "feature_value": 8805.0
+    },
+    {
+      "feature": " protocol",
+      "shap_value": 0.0,
+      "feature_value": 17.0
+    },
+    {
+      "feature": " fwd_packets",
+      "shap_value": 0.0,
+      "feature_value": 12.0
+    },
+    {
+      "feature": " bwd_packets",
+      "shap_value": 0.0,
+      "feature_value": 13.0
+    },
+    {
+      "feature": " PFCPHeartbeatResponse_counter",
+      "shap_value": 0.0,
+      "feature_value": 12.0
+    },
+    {
+      "feature": " PFCPPFDManagementRequest_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPPFDManagementResponse_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPAssociationSetupRequest_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPAssociationSetupResponse_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPAssociationUpdateRequest_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPAssociationUpdateResponse_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPAssociationReleaseRequest_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPAssociationReleaseResponse_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPVersionNotSupportedResponse_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPNodeReportRequest_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPNodeReportResponse_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPSessionSetDeletionRequest_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPSessionSetDeletionResponse_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPSessionEstablishmentRequest_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPSessionEstablishmentResponse_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPSessionModificationResponse_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPSessionDeletionRequest_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " PFCPSessionReportRequest_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "PFCPSessionReportResponse_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " Downlink_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " Uplink_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": " Bidirectional_traffic_counter",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    }
+  ]
+}

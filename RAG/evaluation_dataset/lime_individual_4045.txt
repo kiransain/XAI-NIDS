@@ -1,0 +1,70 @@
+LIME Explanation for Sample 4045
+Prediction: 1
+True Label: 1
+
+Feature Values:
+Fwd IAT Min         -0.231208
+Bwd Pkt Len Std      1.185469
+Flow IAT Min        -0.052767
+Fwd IAT Max         -1.628586
+Pkt Size Avg         0.681608
+Bwd IAT Min         -0.128398
+Src Port            -0.613062
+Bwd Pkt Len Max      0.602463
+Pkt Len Mean         0.712248
+Fwd IAT Std         -1.498343
+Bwd IAT Std         -1.620581
+Flow Duration        1.927531
+Fwd Pkt Len Mean    -0.563649
+Active Mean         -0.019742
+Active Min          -0.018278
+Active Max          -0.025524
+Fwd Seg Size Avg    -0.563649
+Idle Std            -0.018558
+Idle Mean           -1.068935
+Idle Min            -1.068833
+Bwd Pkt Len Mean     0.863158
+Flow IAT Std        -1.564959
+Fwd Pkt Len Std     -0.536675
+flow timeout         1.709908
+Flow Pkts/s         -0.019815
+Bwd Seg Size Avg     0.863158
+Bwd Pkts/s          -0.021463
+Flow Byts/s         -0.018328
+Fwd IAT Mean        -1.416726
+Flow IAT Mean       -0.239382
+Fwd Pkts/s          -0.018618
+ACK Flag Cnt        -0.671316
+Bwd IAT Mean        -1.514972
+Bwd IAT Max         -1.667456
+Bwd IAT Tot          1.994617
+Pkt Len Var          0.011696
+Pkt Len Std          0.975284
+Idle Max            -1.067971
+Pkt Len Max          0.583816
+Fwd IAT Tot          1.945215
+TotLen Fwd Pkts      3.649527
+Subflow Fwd Pkts     4.995657
+Subflow Fwd Byts     3.649527
+Init Bwd Win Byts   -0.666428
+Flow IAT Max        -1.069995
+Fwd Act Data Pkts    4.996248
+Active Std          -0.019343
+Down/Up Ratio       -0.061842
+Fwd Header Len       4.959909
+Tot Fwd Pkts         4.995657
+Subflow Bwd Byts     4.364623
+Protocol             0.703469
+Subflow Bwd Pkts     5.180495
+
+LIME Feature Importance (Top 10):
+ 1. Src Port > 0.94: -0.5179
+ 2. Down/Up Ratio > -0.06: -0.2398
+ 3. Pkt Len Std > 0.07: 0.1392
+ 4. Idle Std > -0.02: 0.1196
+ 5. Fwd IAT Min > -0.23: -0.1176
+ 6. Flow IAT Mean > 0.02: -0.1125
+ 7. Tot Fwd Pkts > -0.18: -0.1074
+ 8. Bwd Seg Size Avg > -0.13: 0.1041
+ 9. Fwd Pkt Len Std > 1.15: 0.0981
+10. Protocol > 0.70: 0.0333

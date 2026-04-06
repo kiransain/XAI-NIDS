@@ -1,5 +1,5 @@
 """
-IR Metrics Evaluation — XAI-RAG Thesis========================================
+IR Metrics Evaluation ========================================
 Computes classical information retrieval metrics for retrieval evaluation.
 
 Metrics computed per query per engine:
@@ -119,7 +119,7 @@ for entry in results:
         })
         continue
 
-    # Warn if QRELS not yet filled for this query
+    # if no chunks exist for query, all metrics = 0
     if not relevant:
         print(f"  WARNING: No QRELS defined for query '{qid}' — scores will be 0.")
 
@@ -132,18 +132,15 @@ for entry in results:
         "ndcg@3":      ndcg_at_k(retrieved, relevant, K),
     })
 
-# ── Build dataframe ────────────────────────────────────────────────────────────
 
 df = pd.DataFrame(rows)
-
-# ── Per-query detailed output ──────────────────────────────────────────────────
-
+# output (detailed)
 print("Per-query scores:")
 print(df.to_string(index=False))
 df.to_csv("ir_metrics_detailed.csv", index=False)
 print("\nDetailed scores saved to 'ir_metrics_detailed.csv'")
 
-# ── Summary per engine ─────────────────────────────────────────────────────────
+# Engine Summary ─────────────────────────────────────────────────
 
 METRIC_COLS = ["precision@3", "recall@3", "hit@3", "mrr", "ndcg@3"]
 summary = df.groupby("engine")[METRIC_COLS].mean().round(4)

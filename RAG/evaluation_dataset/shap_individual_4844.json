@@ -1,0 +1,438 @@
+{
+  "sample_index": 4844,
+  "base_value": 0.5,
+  "feature_values": {
+    "Fwd IAT Min": 25409.0,
+    "Bwd Pkt Len Std": 2.886751345948129,
+    "Flow IAT Min": 167.0,
+    "Fwd IAT Max": 140275.0,
+    "Pkt Size Avg": 21.0072463768116,
+    "Bwd IAT Min": 5284541.0,
+    "Src Port": 8805.0,
+    "Bwd Pkt Len Max": 21.0,
+    "Pkt Len Mean": 20.856115107913663,
+    "Fwd IAT Std": 14399.58638544446,
+    "Bwd IAT Std": 122730.40269020548,
+    "Flow Duration": 14939620.0,
+    "Fwd Pkt Len Mean": 20.925925925925924,
+    "Active Mean": 0.0,
+    "Active Min": 0.0,
+    "Active Max": 0.0,
+    "Fwd Seg Size Avg": 20.925925925925927,
+    "Idle Std": 0.0,
+    "Idle Mean": 0.0,
+    "Idle Min": 0.0,
+    "Bwd Pkt Len Mean": 17.666666666666668,
+    "Flow IAT Std": 19496.24115164643,
+    "Fwd Pkt Len Std": 0.6063055437504525,
+    "flow timeout": 15.0,
+    "Flow Pkts/s": 9.237182739587752,
+    "Bwd Seg Size Avg": 17.666666666666668,
+    "Bwd Pkts/s": 0.2008083204258207,
+    "Flow Byts/s": 192.6421153951707,
+    "Fwd IAT Mean": 110627.20149253726,
+    "Flow IAT Mean": 109048.32116788322,
+    "Fwd Pkts/s": 9.036374419161934,
+    "ACK Flag Cnt": 0.0,
+    "Bwd IAT Mean": 5371324.5,
+    "Bwd IAT Max": 5458108.0,
+    "Bwd IAT Tot": 10742649.0,
+    "Pkt Len Var": 0.7037847982483575,
+    "Pkt Len Std": 0.8389188269721675,
+    "Idle Max": 0.0,
+    "Pkt Len Max": 21.0,
+    "Fwd IAT Tot": 14824045.0,
+    "TotLen Fwd Pkts": 2825.0,
+    "Subflow Fwd Pkts": 135.0,
+    "Subflow Fwd Byts": 2825.0,
+    "Init Bwd Win Byts": -1.0,
+    "Flow IAT Max": 140275.0,
+    "Fwd Act Data Pkts": 135.0,
+    "Active Std": 0.0,
+    "Down/Up Ratio": 0.0,
+    "Fwd Header Len": 1080.0,
+    "Tot Fwd Pkts": 135.0,
+    "Subflow Bwd Byts": 53.0,
+    "Protocol": 17.0,
+    "Subflow Bwd Pkts": 3.0
+  },
+  "shap_values": [
+    -0.21081520335501686,
+    -0.00045801820252751985,
+    -0.0003019602558026809,
+    -0.028378750978264092,
+    0.00019397889509621352,
+    -0.0010209601738971463,
+    0.0073312162512656626,
+    0.004072097516072645,
+    -4.966687673161647e-05,
+    -5.964731446972201e-05,
+    -0.010785893808710785,
+    -4.477657060519704e-05,
+    0.003168771132045486,
+    -0.042195991598050674,
+    0.0011255735513101216,
+    0.0031230153328226516,
+    0.0,
+    -0.019454345406832798,
+    -0.0037351380276392605,
+    0.0005434721722073657,
+    0.0,
+    -0.16110777914706464,
+    0.01323370442146842,
+    0.0,
+    -0.0007888150109322053,
+    0.0,
+    -0.01086698312456838,
+    0.0016759222178073802,
+    -0.0018908184928694027,
+    -0.019545441510420383,
+    7.998083842192069e-05,
+    0.0,
+    -0.010312711265318531,
+    -0.00017198184332812893,
+    -0.0011312931570719095,
+    -0.014300387401269848,
+    0.0,
+    8.70700905175797e-06,
+    0.0,
+    0.0009089220052155516,
+    -3.009937373106867e-05,
+    0.0,
+    0.0020931267641110525,
+    0.0,
+    1.5425707817114086e-05,
+    0.0,
+    0.00027987277281504364,
+    0.0,
+    0.0,
+    0.0,
+    -0.00040712369240469414,
+    0.0,
+    0.0
+  ],
+  "feature_names": [
+    "Fwd IAT Min",
+    "Bwd Pkt Len Std",
+    "Flow IAT Min",
+    "Fwd IAT Max",
+    "Pkt Size Avg",
+    "Bwd IAT Min",
+    "Src Port",
+    "Bwd Pkt Len Max",
+    "Pkt Len Mean",
+    "Fwd IAT Std",
+    "Bwd IAT Std",
+    "Flow Duration",
+    "Fwd Pkt Len Mean",
+    "Active Mean",
+    "Active Min",
+    "Active Max",
+    "Fwd Seg Size Avg",
+    "Idle Std",
+    "Idle Mean",
+    "Idle Min",
+    "Bwd Pkt Len Mean",
+    "Flow IAT Std",
+    "Fwd Pkt Len Std",
+    "flow timeout",
+    "Flow Pkts/s",
+    "Bwd Seg Size Avg",
+    "Bwd Pkts/s",
+    "Flow Byts/s",
+    "Fwd IAT Mean",
+    "Flow IAT Mean",
+    "Fwd Pkts/s",
+    "ACK Flag Cnt",
+    "Bwd IAT Mean",
+    "Bwd IAT Max",
+    "Bwd IAT Tot",
+    "Pkt Len Var",
+    "Pkt Len Std",
+    "Idle Max",
+    "Pkt Len Max",
+    "Fwd IAT Tot",
+    "TotLen Fwd Pkts",
+    "Subflow Fwd Pkts",
+    "Subflow Fwd Byts",
+    "Init Bwd Win Byts",
+    "Flow IAT Max",
+    "Fwd Act Data Pkts",
+    "Active Std",
+    "Down/Up Ratio",
+    "Fwd Header Len",
+    "Tot Fwd Pkts",
+    "Subflow Bwd Byts",
+    "Protocol",
+    "Subflow Bwd Pkts"
+  ],
+  "prediction": 0.0,
+  "true_label": 0.0,
+  "feature_importance": [
+    {
+      "feature": "Fwd IAT Min",
+      "shap_value": -0.21081520335501686,
+      "feature_value": 25409.0
+    },
+    {
+      "feature": "Flow IAT Std",
+      "shap_value": -0.16110777914706464,
+      "feature_value": 19496.24115164643
+    },
+    {
+      "feature": "Active Mean",
+      "shap_value": -0.042195991598050674,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Fwd IAT Max",
+      "shap_value": -0.028378750978264092,
+      "feature_value": 140275.0
+    },
+    {
+      "feature": "Flow IAT Mean",
+      "shap_value": -0.019545441510420383,
+      "feature_value": 109048.32116788322
+    },
+    {
+      "feature": "Idle Std",
+      "shap_value": -0.019454345406832798,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Pkt Len Var",
+      "shap_value": -0.014300387401269848,
+      "feature_value": 0.7037847982483575
+    },
+    {
+      "feature": "Fwd Pkt Len Std",
+      "shap_value": 0.01323370442146842,
+      "feature_value": 0.6063055437504525
+    },
+    {
+      "feature": "Bwd Pkts/s",
+      "shap_value": -0.01086698312456838,
+      "feature_value": 0.2008083204258207
+    },
+    {
+      "feature": "Bwd IAT Std",
+      "shap_value": -0.010785893808710785,
+      "feature_value": 122730.40269020548
+    },
+    {
+      "feature": "Bwd IAT Mean",
+      "shap_value": -0.010312711265318531,
+      "feature_value": 5371324.5
+    },
+    {
+      "feature": "Src Port",
+      "shap_value": 0.0073312162512656626,
+      "feature_value": 8805.0
+    },
+    {
+      "feature": "Bwd Pkt Len Max",
+      "shap_value": 0.004072097516072645,
+      "feature_value": 21.0
+    },
+    {
+      "feature": "Idle Mean",
+      "shap_value": -0.0037351380276392605,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Fwd Pkt Len Mean",
+      "shap_value": 0.003168771132045486,
+      "feature_value": 20.925925925925924
+    },
+    {
+      "feature": "Active Max",
+      "shap_value": 0.0031230153328226516,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Subflow Fwd Byts",
+      "shap_value": 0.0020931267641110525,
+      "feature_value": 2825.0
+    },
+    {
+      "feature": "Fwd IAT Mean",
+      "shap_value": -0.0018908184928694027,
+      "feature_value": 110627.20149253726
+    },
+    {
+      "feature": "Flow Byts/s",
+      "shap_value": 0.0016759222178073802,
+      "feature_value": 192.6421153951707
+    },
+    {
+      "feature": "Bwd IAT Tot",
+      "shap_value": -0.0011312931570719095,
+      "feature_value": 10742649.0
+    },
+    {
+      "feature": "Active Min",
+      "shap_value": 0.0011255735513101216,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Bwd IAT Min",
+      "shap_value": -0.0010209601738971463,
+      "feature_value": 5284541.0
+    },
+    {
+      "feature": "Fwd IAT Tot",
+      "shap_value": 0.0009089220052155516,
+      "feature_value": 14824045.0
+    },
+    {
+      "feature": "Flow Pkts/s",
+      "shap_value": -0.0007888150109322053,
+      "feature_value": 9.237182739587752
+    },
+    {
+      "feature": "Idle Min",
+      "shap_value": 0.0005434721722073657,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Bwd Pkt Len Std",
+      "shap_value": -0.00045801820252751985,
+      "feature_value": 2.886751345948129
+    },
+    {
+      "feature": "Subflow Bwd Byts",
+      "shap_value": -0.00040712369240469414,
+      "feature_value": 53.0
+    },
+    {
+      "feature": "Flow IAT Min",
+      "shap_value": -0.0003019602558026809,
+      "feature_value": 167.0
+    },
+    {
+      "feature": "Active Std",
+      "shap_value": 0.00027987277281504364,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Pkt Size Avg",
+      "shap_value": 0.00019397889509621352,
+      "feature_value": 21.0072463768116
+    },
+    {
+      "feature": "Bwd IAT Max",
+      "shap_value": -0.00017198184332812893,
+      "feature_value": 5458108.0
+    },
+    {
+      "feature": "Fwd Pkts/s",
+      "shap_value": 7.998083842192069e-05,
+      "feature_value": 9.036374419161934
+    },
+    {
+      "feature": "Fwd IAT Std",
+      "shap_value": -5.964731446972201e-05,
+      "feature_value": 14399.58638544446
+    },
+    {
+      "feature": "Pkt Len Mean",
+      "shap_value": -4.966687673161647e-05,
+      "feature_value": 20.856115107913663
+    },
+    {
+      "feature": "Flow Duration",
+      "shap_value": -4.477657060519704e-05,
+      "feature_value": 14939620.0
+    },
+    {
+      "feature": "TotLen Fwd Pkts",
+      "shap_value": -3.009937373106867e-05,
+      "feature_value": 2825.0
+    },
+    {
+      "feature": "Flow IAT Max",
+      "shap_value": 1.5425707817114086e-05,
+      "feature_value": 140275.0
+    },
+    {
+      "feature": "Idle Max",
+      "shap_value": 8.70700905175797e-06,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Fwd Seg Size Avg",
+      "shap_value": 0.0,
+      "feature_value": 20.925925925925927
+    },
+    {
+      "feature": "Bwd Pkt Len Mean",
+      "shap_value": 0.0,
+      "feature_value": 17.666666666666668
+    },
+    {
+      "feature": "flow timeout",
+      "shap_value": 0.0,
+      "feature_value": 15.0
+    },
+    {
+      "feature": "Bwd Seg Size Avg",
+      "shap_value": 0.0,
+      "feature_value": 17.666666666666668
+    },
+    {
+      "feature": "ACK Flag Cnt",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Pkt Len Std",
+      "shap_value": 0.0,
+      "feature_value": 0.8389188269721675
+    },
+    {
+      "feature": "Pkt Len Max",
+      "shap_value": 0.0,
+      "feature_value": 21.0
+    },
+    {
+      "feature": "Subflow Fwd Pkts",
+      "shap_value": 0.0,
+      "feature_value": 135.0
+    },
+    {
+      "feature": "Init Bwd Win Byts",
+      "shap_value": 0.0,
+      "feature_value": -1.0
+    },
+    {
+      "feature": "Fwd Act Data Pkts",
+      "shap_value": 0.0,
+      "feature_value": 135.0
+    },
+    {
+      "feature": "Down/Up Ratio",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Fwd Header Len",
+      "shap_value": 0.0,
+      "feature_value": 1080.0
+    },
+    {
+      "feature": "Tot Fwd Pkts",
+      "shap_value": 0.0,
+      "feature_value": 135.0
+    },
+    {
+      "feature": "Protocol",
+      "shap_value": 0.0,
+      "feature_value": 17.0
+    },
+    {
+      "feature": "Subflow Bwd Pkts",
+      "shap_value": 0.0,
+      "feature_value": 3.0
+    }
+  ]
+}
