@@ -1,11 +1,17 @@
 EXPERIMENT_SET = [
-    {   # this is from 5GC_PFCP\binary\DNN
-        "id": "Q1",
-        "sample_id": "1",
-        "xai_file": "evaluation_dataset\shap_individual_250.json",
-        "query": "Explain why this PFCP flow is classified as an attack using the given SHAP values. Focus on the top contributing features and relate them to potential network attack behavior.",
-        "ground_truth": "Model answer"
-    },
+    {
+    "id":"Q1",
+    "sample_id": "137",
+    "xai_file": "evaluation_dataset/shap_individual_137.json",
+    "query": "Explain why this PFCP flow is classified as an attack using the given SHAP values. Focus on the top contributing features and relate them to potential network attack behavior."
+},
+    # {   # this is from 5GC_PFCP\binary\DNN
+    #     "id": "Q1",
+    #     "sample_id": "1",
+    #     "xai_file": "evaluation_dataset\shap_individual_250.json",
+    #     "query": "Explain why this PFCP flow is classified as an attack using the given SHAP values. Focus on the top contributing features and relate them to potential network attack behavior.",
+    #     "ground_truth": "Model answer"
+    # },
     # Generic question
     {
         "id": "Q2",
@@ -53,12 +59,6 @@ EXPERIMENT_SET = [
     "xai_file": "evaluation_dataset/shap_individual_137.json",
     "query": "Sample 137, 5GC_PFCP dataset. PFCPHeartbeatRequest_counter=13 and PFCPHeartbeatResponse_counter=12 over a flow duration of 55 seconds. The request-response ratio is 13:12. According to PFCP documentation, what does a near-symmetric heartbeat request-response pattern indicate, and does one unanswered heartbeat constitute evidence of an attack?",
     "ground_truth": "A heartbeat request-response ratio of 13:12 indicates that almost all heartbeat requests received a response, which is characteristic of a healthy PFCP path management exchange. The single unanswered heartbeat (13 requests, 12 responses) is within normal network behavior — packet loss or timing issues can cause occasional missed responses without indicating an attack. According to the PFCP specification, path failure is only declared after multiple consecutive missed heartbeat responses. Therefore this pattern is consistent with normal keep-alive signaling and does not indicate a Heartbeat Flood attack. The model's attack prediction for this sample is a false positive."
-},
-{
-    "id":"Q8",
-    "sample_id": "137",
-    "xai_file": "evaluation_dataset/shap_individual_137.json",
-    "query": "Explain why this PFCP flow is classified as an attack using the given SHAP values. Focus on the top contributing features and relate them to potential network attack behavior."
 },
 {
     "id": "Q8",
