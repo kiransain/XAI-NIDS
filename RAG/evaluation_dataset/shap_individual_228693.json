@@ -1,0 +1,302 @@
+{
+  "sample_index": 228693,
+  "base_value": 0.49999999999924943,
+  "feature_values": {
+    "Seq": 32870,
+    "sTtl": 63.0,
+    "sMeanPktSz": 42.0,
+    "State_other": false,
+    "Offset": 6715912,
+    "Proto_tcp": false,
+    "sHops": 1.0,
+    "TotBytes": 84,
+    "State_INT": false,
+    "Cause_Start": false,
+    "SynAck": 0.0,
+    "Cause_Status": true,
+    "DstPkts": 0,
+    "SrcBytes": 84,
+    "TcpRtt": 0.0,
+    "Proto_icmp": false,
+    "State_CON": false,
+    "Rate": 0.437111,
+    "SrcRate": 0.437111,
+    "sTos": 0.0,
+    "SrcLoad": 146.869461,
+    "pLoss": 0.0,
+    "State_RST": false,
+    "Max": 2.287746,
+    "TotPkts": 2,
+    "SrcPkts": 2,
+    "AckDat": 0.0,
+    "Load": 146.869461,
+    "dMeanPktSz": 0.0,
+    "DstBytes": 0,
+    "Mean": 2.287746,
+    "State_REQ": true,
+    "Sum": 2.287746,
+    "Min": 2.287746,
+    "RunTime": 2.287746,
+    "Loss": 0
+  },
+  "shap_values": [
+    0.25043043617344746,
+    0.19150979053721323,
+    0.0605253106181579,
+    0.01664028112865598,
+    0.01793810106873587,
+    0.00022687739768518774,
+    0.016285441327139764,
+    -0.009146145166549758,
+    -1.3406218001284157e-06,
+    -0.012580661255658508,
+    5.168977494415483e-05,
+    -0.01597161433850997,
+    1.9723320363522318e-06,
+    -9.878265895683065e-07,
+    -7.126955824218869e-07,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    6.508827209047841e-05,
+    7.281145665203461e-06,
+    0.00015242071328334055,
+    -4.5688114233084245e-07,
+    -6.43415492442296e-07,
+    0.0,
+    2.1549191177433937e-05,
+    5.218952999653615e-05,
+    -5.9184428400662534e-05,
+    0.0,
+    -0.015971614338509972,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -0.00017506823272026045
+  ],
+  "feature_names": [
+    "Seq",
+    "sTtl",
+    "sMeanPktSz",
+    "State_other",
+    "Offset",
+    "Proto_tcp",
+    "sHops",
+    "TotBytes",
+    "State_INT",
+    "Cause_Start",
+    "SynAck",
+    "Cause_Status",
+    "DstPkts",
+    "SrcBytes",
+    "TcpRtt",
+    "Proto_icmp",
+    "State_CON",
+    "Rate",
+    "SrcRate",
+    "sTos",
+    "SrcLoad",
+    "pLoss",
+    "State_RST",
+    "Max",
+    "TotPkts",
+    "SrcPkts",
+    "AckDat",
+    "Load",
+    "dMeanPktSz",
+    "DstBytes",
+    "Mean",
+    "State_REQ",
+    "Sum",
+    "Min",
+    "RunTime",
+    "Loss"
+  ],
+  "prediction": 1.0,
+  "true_label": 1.0,
+  "feature_importance": [
+    {
+      "feature": "Seq",
+      "shap_value": 0.25043043617344746,
+      "feature_value": 32870.0
+    },
+    {
+      "feature": "sTtl",
+      "shap_value": 0.19150979053721323,
+      "feature_value": 63.0
+    },
+    {
+      "feature": "sMeanPktSz",
+      "shap_value": 0.0605253106181579,
+      "feature_value": 42.0
+    },
+    {
+      "feature": "Offset",
+      "shap_value": 0.01793810106873587,
+      "feature_value": 6715912.0
+    },
+    {
+      "feature": "State_other",
+      "shap_value": 0.01664028112865598,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "sHops",
+      "shap_value": 0.016285441327139764,
+      "feature_value": 1.0
+    },
+    {
+      "feature": "DstBytes",
+      "shap_value": -0.015971614338509972,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Cause_Status",
+      "shap_value": -0.01597161433850997,
+      "feature_value": 1.0
+    },
+    {
+      "feature": "Cause_Start",
+      "shap_value": -0.012580661255658508,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "TotBytes",
+      "shap_value": -0.009146145166549758,
+      "feature_value": 84.0
+    },
+    {
+      "feature": "Proto_tcp",
+      "shap_value": 0.00022687739768518774,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Loss",
+      "shap_value": -0.00017506823272026045,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "pLoss",
+      "shap_value": 0.00015242071328334055,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "sTos",
+      "shap_value": 6.508827209047841e-05,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Load",
+      "shap_value": -5.9184428400662534e-05,
+      "feature_value": 146.869461
+    },
+    {
+      "feature": "AckDat",
+      "shap_value": 5.218952999653615e-05,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "SynAck",
+      "shap_value": 5.168977494415483e-05,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "SrcPkts",
+      "shap_value": 2.1549191177433937e-05,
+      "feature_value": 2.0
+    },
+    {
+      "feature": "SrcLoad",
+      "shap_value": 7.281145665203461e-06,
+      "feature_value": 146.869461
+    },
+    {
+      "feature": "DstPkts",
+      "shap_value": 1.9723320363522318e-06,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "State_INT",
+      "shap_value": -1.3406218001284157e-06,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "SrcBytes",
+      "shap_value": -9.878265895683065e-07,
+      "feature_value": 84.0
+    },
+    {
+      "feature": "TcpRtt",
+      "shap_value": -7.126955824218869e-07,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Max",
+      "shap_value": -6.43415492442296e-07,
+      "feature_value": 2.287746
+    },
+    {
+      "feature": "State_RST",
+      "shap_value": -4.5688114233084245e-07,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Proto_icmp",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "State_CON",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Rate",
+      "shap_value": 0.0,
+      "feature_value": 0.437111
+    },
+    {
+      "feature": "SrcRate",
+      "shap_value": 0.0,
+      "feature_value": 0.437111
+    },
+    {
+      "feature": "TotPkts",
+      "shap_value": 0.0,
+      "feature_value": 2.0
+    },
+    {
+      "feature": "dMeanPktSz",
+      "shap_value": 0.0,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "Mean",
+      "shap_value": 0.0,
+      "feature_value": 2.287746
+    },
+    {
+      "feature": "State_REQ",
+      "shap_value": 0.0,
+      "feature_value": 1.0
+    },
+    {
+      "feature": "Sum",
+      "shap_value": 0.0,
+      "feature_value": 2.287746
+    },
+    {
+      "feature": "Min",
+      "shap_value": 0.0,
+      "feature_value": 2.287746
+    },
+    {
+      "feature": "RunTime",
+      "shap_value": 0.0,
+      "feature_value": 2.287746
+    }
+  ]
+}

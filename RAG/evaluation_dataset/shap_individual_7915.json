@@ -1,0 +1,126 @@
+{
+  "sample_index": 7915,
+  "base_value": 0.5000411320364239,
+  "feature_values": {
+    "payload_std": 33.360702992618606,
+    "payload_mean": 76.20689655172414,
+    "payload_max": 121.0,
+    "dst_port": 8000.0,
+    "tcp_flags": 2.0,
+    "ip_ttl": 64.0,
+    "most_common_byte_count": 10.0,
+    "payload_min": 10.0,
+    "unique_bytes": 45.0,
+    "udp_len": 0.0,
+    "src_port": 37520.0,
+    "payload_length": 145.0,
+    "payload_entropy": 5.115057091624292,
+    "ip_len": 197.0
+  },
+  "shap_values": [
+    0.14947374131322455,
+    0.07688059326966185,
+    0.07514625413711482,
+    0.02034703380866022,
+    0.06173416169504643,
+    0.006793026125726617,
+    0.0019212797028500762,
+    0.022714946966096113,
+    0.01652309362899506,
+    0.008199807699873557,
+    0.008078105870061738,
+    0.01648579354286533,
+    0.02521051845676905,
+    0.009469515938237767
+  ],
+  "feature_names": [
+    "payload_std",
+    "payload_mean",
+    "payload_max",
+    "dst_port",
+    "tcp_flags",
+    "ip_ttl",
+    "most_common_byte_count",
+    "payload_min",
+    "unique_bytes",
+    "udp_len",
+    "src_port",
+    "payload_length",
+    "payload_entropy",
+    "ip_len"
+  ],
+  "prediction": 1.0,
+  "true_label": 1.0,
+  "feature_importance": [
+    {
+      "feature": "payload_std",
+      "shap_value": 0.14947374131322455,
+      "feature_value": 33.360702992618606
+    },
+    {
+      "feature": "payload_mean",
+      "shap_value": 0.07688059326966185,
+      "feature_value": 76.20689655172414
+    },
+    {
+      "feature": "payload_max",
+      "shap_value": 0.07514625413711482,
+      "feature_value": 121.0
+    },
+    {
+      "feature": "tcp_flags",
+      "shap_value": 0.06173416169504643,
+      "feature_value": 2.0
+    },
+    {
+      "feature": "payload_entropy",
+      "shap_value": 0.02521051845676905,
+      "feature_value": 5.115057091624292
+    },
+    {
+      "feature": "payload_min",
+      "shap_value": 0.022714946966096113,
+      "feature_value": 10.0
+    },
+    {
+      "feature": "dst_port",
+      "shap_value": 0.02034703380866022,
+      "feature_value": 8000.0
+    },
+    {
+      "feature": "unique_bytes",
+      "shap_value": 0.01652309362899506,
+      "feature_value": 45.0
+    },
+    {
+      "feature": "payload_length",
+      "shap_value": 0.01648579354286533,
+      "feature_value": 145.0
+    },
+    {
+      "feature": "ip_len",
+      "shap_value": 0.009469515938237767,
+      "feature_value": 197.0
+    },
+    {
+      "feature": "udp_len",
+      "shap_value": 0.008199807699873557,
+      "feature_value": 0.0
+    },
+    {
+      "feature": "src_port",
+      "shap_value": 0.008078105870061738,
+      "feature_value": 37520.0
+    },
+    {
+      "feature": "ip_ttl",
+      "shap_value": 0.006793026125726617,
+      "feature_value": 64.0
+    },
+    {
+      "feature": "most_common_byte_count",
+      "shap_value": 0.0019212797028500762,
+      "feature_value": 10.0
+    }
+  ]
+}

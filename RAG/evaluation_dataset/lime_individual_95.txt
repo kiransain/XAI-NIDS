@@ -1,0 +1,32 @@
+LIME Explanation for Sample 95
+Prediction: 0
+True Label: 1
+
+Feature Values:
+payload_length           -0.608871
+payload_entropy          -1.585053
+payload_mean             -1.375028
+payload_std              -0.060811
+payload_min              -0.252408
+payload_max               0.364929
+unique_bytes             -1.002772
+most_common_byte         -0.637775
+most_common_byte_count   -0.216652
+ip_proto                 -0.556647
+ip_len                   -0.602586
+ip_ttl                   -0.107527
+tcp_flags                 0.840306
+tcp_window                5.271209
+udp_len                  -0.310752
+
+LIME Feature Importance (Top 10):
+ 1. payload_mean > 1.20: -0.1826
+ 2. payload_std > 0.77: -0.1699
+ 3. unique_bytes > 1.34: -0.1557
+ 4. tcp_window > -0.15: -0.1175
+ 5. tcp_flags > 0.84: 0.0969
+ 6. payload_max > 0.67: 0.0969
+ 7. payload_length > 0.51: -0.0790
+ 8. ip_len > 0.52: 0.0790
+ 9. ip_proto > -0.56: 0.0777
+10. ip_ttl > -0.11: -0.0463

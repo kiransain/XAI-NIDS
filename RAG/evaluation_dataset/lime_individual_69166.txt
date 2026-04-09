@@ -1,0 +1,61 @@
+LIME Explanation for Sample 69166
+Prediction: 1
+True Label: 1
+
+Feature Values:
+Dur                  4.316026
+RunTime              4.316026
+Mean                 4.316026
+Sum                  4.316026
+Min                  4.316026
+Max                  4.316026
+sTos                      0.0
+sTtl                     63.0
+sHops                     1.0
+TotPkts                    20
+SrcPkts                     9
+DstPkts                    11
+TotBytes                12934
+SrcBytes                  971
+DstBytes                11963
+sMeanPktSz         107.888885
+dMeanPktSz         1087.54541
+Load              21760.75781
+SrcLoad           1601.473145
+DstLoad           20159.28516
+Loss                        0
+SrcLoss                     0
+DstLoss                     0
+pLoss                     0.0
+Rate                 4.402197
+SrcRate              1.853557
+DstRate              2.316946
+TcpRtt                0.01685
+SynAck                0.00172
+AckDat                0.01513
+Proto_icmp              False
+Proto_other             False
+Proto_sctp              False
+Proto_tcp                True
+Proto_udp               False
+Cause_Shutdown          False
+Cause_Start              True
+Cause_Status            False
+State_CON                True
+State_FIN               False
+State_INT               False
+State_REQ               False
+State_RST               False
+State_other             False
+
+LIME Feature Importance (Top 10):
+ 1. sTtl <= 63.00: 0.2463
+ 2. sMeanPktSz > 67.00: -0.1454
+ 3. TotBytes > 84.00: -0.0754
+ 4. SrcBytes > 84.00: -0.0700
+ 5. AckDat > 0.00: 0.0623
+ 6. TcpRtt > 0.00: 0.0567
+ 7. SynAck > 0.00: 0.0484
+ 8. Proto_tcp > 0.00: 0.0435
+ 9. sHops <= 1.00: 0.0348
+10. SrcRate > 0.39: 0.0347
