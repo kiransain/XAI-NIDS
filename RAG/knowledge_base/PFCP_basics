@@ -1,0 +1,9 @@
+PFCP Protocol Reference
+
+- PFCP operates over UDP.
+- PFCP uses port 8805.
+- Heartbeat Request/Response messages maintain liveness.
+- Session Modification Requests occur only when session parameters change.
+- Stable sessions may have zero modification requests.
+- Occasional missed heartbeat responses may occur due to delay/loss.
+- Repeated heartbeat failures indicate abnormality/path failure.

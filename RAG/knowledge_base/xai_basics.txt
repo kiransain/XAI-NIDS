@@ -1,0 +1,17 @@
+SHAP (SHapley Additive exPlanations) explains model predictions by assigning each feature an additive contribution value.
+
+- SHAP values represent how much each feature contributes to moving the prediction away from the baseline/base value.
+- Positive SHAP values push the prediction toward the positive/attack class.
+- Negative SHAP values push the prediction toward the negative/benign class.
+- The magnitude of the SHAP value reflects the strength of the contribution.
+- Final prediction is computed as:
+  prediction = base value + sum of SHAP values.
+- A prediction may remain positive even if several features have negative SHAP values, provided positive contributions outweigh them overall.
+
+LIME (Local Interpretable Model-Agnostic Explanations) explains predictions by approximating local model behavior with a weighted linear surrogate model.
+
+- LIME assigns weights to features based on their local influence on the prediction.
+- Positive weights push toward one class, negative weights push toward the opposite class.
+- Final prediction depends on the weighted sum of all feature contributions plus an intercept/base score.
+- Feature rankings indicate importance magnitude, not voting count.
+- A prediction can favor one class even when more top-ranked features support the opposite class if stronger contributions outweigh weaker ones.

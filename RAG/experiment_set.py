@@ -26,8 +26,7 @@ EXPERIMENT_SET = [
         "sample_id": "none",
         "xai_file": "none",
         "query": "Can SHAP values be negative? If a feature has a negative SHAP value in a binary attack/benign classification, does that mean the feature indicates the traffic is benign?",
-        "ground_truth": "Yes, SHAP values can be negative. In binary classification where class 1 = Attack and class 0 = Benign, a negative SHAP value for a feature means that feature value pushes the prediction toward Benign (class 0), away from Attack. A positive SHAP value pushes toward Attack (class 1). The magnitude indicates the strength of the push. A feature can have a negative SHAP value even when its absolute feature value is high — what matters is whether that value is associated with attack or benign behavior in the model's learned representation. This is a control question testing basic XAI understanding that the LLM should answer correctly from training knowledge, without needing retrieval."
-    },
+        "ground_truth":"Yes, SHAP values can be negative. In binary classification (Attack vs Benign), a negative SHAP value indicates that the feature contributes toward the benign class, while a positive value contributes toward the attack class. The magnitude reflects the strength of the contribution. This question tests basic interpretability of additive feature attribution methods in XAI."    },
 
     # Category 2: retrieval/context relevance,  
     # Testing if RAG finds the right docs.
@@ -38,22 +37,14 @@ EXPERIMENT_SET = [
         "sample_id": "2304",
         "xai_file": "evaluation_dataset/lime_individual_2304.txt",
         "query": "Sample 2304 shows Protocol=17 (UDP) and Port 8805. Based on available documentation, is the absence of TCP flags in this flow suspicious?",
-        "ground_truth": "No. PFCP uses UDP. TCP flags (SYN/ACK) are irrelevant. RAG must retrieve PFCP/UDP specifications to verify this."
-    },
-    {
-        "id": "Q_PFCP_retrieval_2", 
-        "category": "retrieval",
-        "sample_id": "none",
-        "xai_file": "none",
-        "query": "Source and destination ports are consistently 8805. What is the significance of this port in 5G, and is this a valid attack indicator?",
-        "ground_truth": "Port 8805 is the standard IANA port for PFCP. It is expected for all samples and is not a suspicious indicator."
+        "ground_truth":"PFCP runs over UDP on port 8805, so TCP flags such as SYN/ACK are not applicable. The absence of TCP flags is expected and not suspicious in PFCP traffic."
     },
     {
         "id": "Q_PFCP_retrieval_3", "category": "retrieval",
         "sample_id": "137",
         "xai_file": "evaluation_dataset/shap_individual_137.json",
         "query": "Sample 137, 5GC_PFCP dataset. PFCPSessionModificationRequest_counter=0 has SHAP value 0.149, pushing toward attack prediction. According to 5G PFCP documentation, is the absence of Session Modification requests during a 55-second flow suspicious, or is it normal for stable sessions to have no modification activity?",
-        "ground_truth": "According to the 3GPP PFCP specification, Session Modification requests are only sent when session parameters need to change — for example when QoS rules are updated or bearer modifications occur. A stable PDU session with no changing requirements will naturally produce zero Session Modification requests. Therefore PFCPSessionModificationRequest_counter=0 over a 55-second window is entirely normal for a stable session and should not be treated as an attack indicator. The model is incorrectly penalizing normal stable session behavior, contributing to the false positive prediction for sample 137."
+        "ground_truth": "According to PFCP/3GPP TS 29.244, Session Modification Requests are only generated when session parameters change (e.g., QoS updates or policy modifications). Therefore, a value of zero over a stable 55-second flow is expected in normal operation. This pattern alone is not sufficient to indicate malicious behavior and must be interpreted in context with other signaling features."
     },
     {
         "id": "Q_PFCP_retrieval_4", "category": "retrieval",
@@ -62,12 +53,12 @@ EXPERIMENT_SET = [
         "query": "In the 5GC_PFCP dataset, source port and destination port are both consistently 8805 across all samples. What is the significance of port 8805 in 5G networks, and should the consistent use of this port be considered a suspicious indicator in PFCP traffic analysis?",
         "ground_truth": "Port 8805 is the IANA-assigned standard port for PFCP (Packet Forwarding Control Protocol), defined in 3GPP TS 29.244. All PFCP signaling between the SMF and UPF on the N4 interface uses UDP port 8805. Therefore the consistent use of port 8805 in the 5GC_PFCP dataset is expected and not suspicious — it simply confirms the traffic is PFCP protocol traffic. Both attack and benign samples in this dataset use port 8805 because the dataset specifically captures PFCP traffic. A model that assigns high importance to port 8805 is not learning a security-relevant pattern. This is a control question where the LLM should answer correctly from training knowledge without needing retrieval from the knowledge base."
     },
-     {
+    {
         "id": "Q_PFCP_retrieval_5", "category": "retrieval",
         "sample_id": "137",
         "xai_file": "evaluation_dataset/shap_individual_137.json",
         "query": "Sample 137, 5GC_PFCP dataset. PFCPHeartbeatRequest_counter=13 and PFCPHeartbeatResponse_counter=12 over a flow duration of 55 seconds. The request-response ratio is 13:12. According to PFCP documentation, what does a near-symmetric heartbeat request-response pattern indicate, and does one unanswered heartbeat constitute evidence of an attack?",
-        "ground_truth": "A heartbeat request-response ratio of 13:12 indicates that almost all heartbeat requests received a response, which is characteristic of a healthy PFCP path management exchange. The single unanswered heartbeat (13 requests, 12 responses) is within normal network behavior — packet loss or timing issues can cause occasional missed responses without indicating an attack. According to the PFCP specification, path failure is only declared after multiple consecutive missed heartbeat responses. Therefore this pattern is consistent with normal keep-alive signaling and does not indicate a Heartbeat Flood attack. The model's attack prediction for this sample is a false positive."
+        "ground_truth":"A near-balanced heartbeat request-response ratio (13:12) is consistent with normal PFCP keep-alive behavior, where occasional missed responses can occur due to network delay or packet loss. According to PFCP specifications, a single missed response is not sufficient to indicate a path failure or attack condition. Only repeated consecutive failures would indicate abnormal behavior. This pattern is therefore consistent with benign PFCP signaling."
     },
   
     # Category 3: Answer faithfulness to the retrieved explanations; 
@@ -75,9 +66,9 @@ EXPERIMENT_SET = [
         "id": "Q_PFCP_faithfulness_1", 
         "category": "faithfulness",
         "sample_id": "137",
-        "xai_file": "shap_individual_137.json",
+        "xai_file": "evaluation_dataset/shap_individual_137.json",
         "query": "In Sample 137, which specific feature has the highest SHAP value, and how does its value (0.219) influence the prediction?",
-        "ground_truth": "The 'Unnamed: 0' (row index) has the highest SHAP value (0.219), pushing the model toward an 'Attack' prediction."
+        "ground_truth": "The feature 'Unnamed: 0' has the highest SHAP value (+1.136), contributing strongly toward the attack prediction. This suggests the model is influenced by a dataset artifact rather than a meaningful network feature, indicating potential data leakage."
     },
     {
         "id": "Q_PFCP_faithfulness_2",
@@ -90,7 +81,7 @@ EXPERIMENT_SET = [
     {
         "id": "Q_PFCP_faithfulness_3", "category": "faithfulness",
         "sample_id": "4045",
-        "xai_file": "lime_individual_4045.txt",
+        "xai_file": "evaluation_dataset/lime_individual_4045.txt",
         "query": "For Sample 4045, the top two LIME features push toward 'Benign'. Explain how the model still arrived at an 'Attack' prediction based on the LIME summary.",
         "ground_truth": "Model predictions are the sum of all weights plus a base value. Even if top features are benign, the collective weight of other features and the high base value (0.755) result in an 'Attack' verdict."
     },
@@ -104,27 +95,31 @@ EXPERIMENT_SET = [
     {
         "id": "Q_GAD_faithfulness_1", "category": "faithfulness",
         "sample_id": "95",
-        "xai_file": "evaluation_dataset/lime_individual_95.json",
-        "query":"tcp_flags contributes positively toward attack, while most payload-related features push toward benign. What does this conflict suggest about the traffic pattern?"
+        "xai_file": "evaluation_dataset/lime_individual_95.txt",
+        "query":"tcp_flags contributes positively toward attack, while most payload-related features push toward benign. What does this conflict suggest about the traffic pattern?",
+        "ground_truth": "High tcp_flags suggest active session manipulation, while payload-related features pushing toward benign suggest the attack does not carry a malicious payload. This is characteristic of a TCP-level flood (like SYN/ACK flood) where the handshake is the attack, not the data."
     },
     {   # SHAP
-        "id":"Q_NIDD_faith_1",
+        "id":"Q_NIDD_faith_1", "category": "faithfulness",
         "sample_id": "228693",
         "xai_file":"evaluation_dataset/shap_individual_228693.json",
-        "query": "For sample 228693, which feature has the highest SHAP value, and what does it indicate about the prediction?"
+        "query": "For sample 228693, which feature has the highest SHAP value, and what does it indicate about the prediction?",
+        "ground_truth":"The feature 'Seq' (Sequence number) has the highest SHAP value. This indicates the model is heavily weighting the packet ordering or sequence gaps as the primary indicator of an attack."
     },
     {   # SHAP
-        "id":"Q_NIDD_faith_2",
+        "id":"Q_NIDD_faith_2", "category": "faithfulness",
         "sample_id": "228693",
         "xai_file":"evaluation_dataset/shap_individual_228693.json",
-        "query": "In sample 228693, both ‘Seq’ and ‘sTtl’ have high positive SHAP values. How do they jointly influence the attack prediction?"
+        "query": "In sample 228693, both ‘Seq’ and ‘sTtl’ have high positive SHAP values. How do they jointly influence the attack prediction?",
+        "ground_truth": "Both 'Seq' (Sequence number) and 'sTtl' (Source TTL) having high positive SHAP values means that the model is interpreting specific sequence patterns and TTL values as strong indicators of attack behavior. The combination suggests that the model has learned to associate certain packet ordering anomalies (captured by 'Seq') and unusual TTL values (captured by 'sTtl') with malicious activity in NIDD traffic. This joint influence indicates that the attack prediction is not based on a single feature but rather on a pattern of features that together signal suspicious behavior."
     },
     {
         # LIME 
-        "id": "Q_NIDD_faith_3",
+        "id": "Q_NIDD_faith_3", "category": "faithfulness",
         "sample_id": "69166",
         "xai_file": "evaluation_dataset/lime_individual_69166.txt",
-        "query":"In sample 69166, some features push toward benign (e.g. sMeanPktSz), yet the prediction is attack. Why?"
+        "query":"In sample 69166, some features push toward benign (e.g. sMeanPktSz), yet the prediction is attack. Why?",
+        "ground_truth":"The attack prediction is driven by 'Seq' and 'sTtl' magnitude, which outweighs the benign signal from 'sMeanPktSz'. LIME shows the model prioritizes network-layer anomalies over application-layer packet sizes."
     },
     
 
@@ -132,7 +127,7 @@ EXPERIMENT_SET = [
     {
         "id": "Q_PFCP_usefulness_1", "category": "usefulness",
         "sample_id": "668",
-        "xai_file": "shap_individual_668.json",
+        "xai_file": "evaluation_dataset/shap_individual_668.json",
         "query": "Sample 668 shows a Flow IAT Min of 4μs but a Max of 11s. Does this timing pattern align with a specific PFCP attack type described in the documentation?",
         "ground_truth": "Yes. This 'burst-then-idle' pattern is characteristic of a PFCP Flood attack, where messages are sent in rapid succession to exhaust resources."
     },
@@ -141,13 +136,14 @@ EXPERIMENT_SET = [
         "sample_id": "8",
         "xai_file": "evaluation_dataset/shap_individual_8.json",
         "query": "Sample 8, 5GC_PFCP dataset. PFCPHeartbeatRequest_counter=13 over a 55-second flow. According to the PFCP dataset documentation, what is the definition of a PFCP Session Establishment Flood attack, and does a heartbeat count of 13 per minute meet the threshold for flood attack classification?",
-        "ground_truth": "According to the 5GC_PFCP dataset documentation, a PFCP Session Establishment Flood Attack aims to exhaust UPF resources by sending excessive Session Establishment Requests and Heartbeat Requests. The attack is characterized by randomized Session IDs and high message volume targeting resource exhaustion. A heartbeat count of 13 over 55 seconds corresponds to approximately one heartbeat every 4.2 seconds, which is within the typical PFCP keepalive interval range. This rate does not meet the threshold for a flood attack, which would involve orders-of-magnitude higher message rates. The true flood attack samples in the dataset would show dramatically higher counter values. Sample 8 should be classified as benign based on heartbeat rate alone."
-    },
+        "ground_truth": "According to the 5GC_PFCP dataset description, PFCP flood attacks are characterized by unusually high rates of Session Establishment and Heartbeat messages aimed at exhausting UPF resources. A heartbeat rate of 13 over 55 seconds corresponds to a low-frequency keepalive pattern typical of normal PFCP operation. This rate is not indicative of flooding behavior when considered in isolation and must be evaluated alongside other signaling and timing features."
+        },
     {
         "id": "Q_PFCP_usefulness_3", "category": "usefulness",
-        "sample_id": "81",
+        "sample_id": "8",
+        "xai_file": "evaluation_dataset/shap_individual_8.json",
         "query": "The feature 'Unnamed: 0' appears as a top importance feature. Based on data science principles, should this be trusted for a real-world 5G deployment?",
-        "ground_truth": "No. This indicates a 'spurious correlation' or data leakage from the dataset's row ordering. The RAG should flag this as a model reliability issue."
+        "ground_truth": "No. 'Unnamed: 0' is the row index from the source CSV file. If a model relies on this, it has learned a spurious correlation (data leakage) based on the order of samples in the dataset rather than actual network behavior. It would fail in a real-world deployment where row indices do not exist."
     },
     {
         "id": "Q_PFCP_usefulness_4", "category": "usefulness",
@@ -159,7 +155,7 @@ EXPERIMENT_SET = [
     {
         "id": "Q_PFCP_usefulness_5", "category": "usefulness",
         "sample_id": "668_and_4844",
-        "xai_file": "none",
+        "xai_file": "evaluation_dataset/shap_individual_668.json", # using 668's SHAP file for retrieval since it contains the relevant features
         "query": "Compare sample 668 (XGBoost, attack, Fwd IAT Min=53μs, Flow Pkts/s=0.73) and sample 4844 (DecisionTree, benign, Fwd IAT Min=25409μs, Flow Pkts/s=9.24). Sample 4844 has 12x higher packet rate but was correctly classified as benign, while sample 668 was correctly classified as attack. According to PFCP documentation, why is inter-arrival time a more reliable attack indicator than packet rate for PFCP flood detection?",
         "ground_truth": "In PFCP traffic, inter-arrival time is a more reliable attack indicator than raw packet rate because PFCP flood attacks are characterized by bursting behavior — sending many messages in rapid succession — rather than sustained high throughput. A minimum IAT of 53 microseconds means packets are arriving near-simultaneously in bursts, which is physically impossible in normal PFCP signaling where messages follow request-response patterns with processing delays. In contrast, a sustained packet rate of 9.24 packets/second with minimum IAT of 25ms is consistent with regular application traffic. The PFCP dataset documentation notes that flood attacks aim to exhaust UPF resources through high message volume — this volume manifests as burst behavior detectable through minimum IAT, not average packet rate. This explains why timing variance features dominate the SHAP explanations for attack samples while packet rate features have lower importance."
     },
@@ -189,32 +185,37 @@ EXPERIMENT_SET = [
         "sample_id": "8",
         "xai_file": "evaluation_dataset/shap_individual_8.json",
         "query": "Sample 8, 5GC_PFCP dataset, DecisionTree, binary. Predicted: Benign (0), True: Malicious (1) — false negative. Top SHAP features: PFCPHeartbeatRequest_counter=13 (SHAP=+1.385, pushes toward attack), Unnamed:0=722 (SHAP=+1.136), duration=55009728 (SHAP=-0.290, pushes toward benign), PFCPSessionModificationRequest_counter=0 (SHAP=+0.329). The model missed this attack despite the heartbeat counter being the strongest feature. Why did the duration feature override the heartbeat signal?",
-        "ground_truth": "The flow duration of ~55 seconds (55009728 microseconds) pushed strongly toward benign (SHAP=-0.290) because the model learned that legitimate PFCP heartbeat sessions typically last around 55 seconds — this is consistent with the standard heartbeat interval. The model therefore interpreted a 55-second duration as evidence of normal keep-alive behavior, which outweighed the suspicious heartbeat count signal. This is a false negative caused by the model conflating normal session duration with benign intent. In reality, an attacker can maintain a 55-second window deliberately to mimic normal timing while still flooding heartbeats. The RAG-grounded explanation should identify that duration alone is insufficient to classify a flow as benign when heartbeat counts are elevated."
+        "ground_truth": "The model misclassifies this sample as benign, resulting in a false negative. The prediction is based on a combination of competing feature contributions rather than a single dominant factor. The strongest positive contributions toward the attack class come from PFCPHeartbeatRequest_counter (SHAP = +1.385) and Unnamed: 0 (SHAP = +1.136), followed by a smaller positive contribution from PFCPSessionModificationRequest_counter (SHAP = +0.329). These are counterbalanced by negative contributions, most notably duration (SHAP = -0.290), along with smaller negative effects from other features such as packet-level counters. The final prediction reflects the aggregated effect of both positive and negative feature contributions, resulting in a decision boundary tilt toward the benign class. The presence of a strong contribution from Unnamed: 0 suggests that the model may also be influenced by non-semantic or dataset-specific artifacts, which could affect interpretability and robustness."
     },
     {
         "id": "Q_5GAD_usefulness_1", "category": "usefulness",
         "sample_id": "7915",
         "xai_file": "evaluation_dataset/shap_individual_7915.json",
-        "query": "Payload_std (33.36) has the highest SHAP value (+0.149). What does high payload variance indicate in network traffic, and why might it be associated with malicious behavior?"
+        "query": "Payload_std (33.36) has the highest SHAP value (+0.149). What does high payload variance indicate in network traffic, and why might it be associated with malicious behavior?",
+        "ground_truth":"High payload variance (std) suggests irregular data sizes in a flow. In 5G, this can indicate a protocol exploitation where variable-length malformed packets are used to test UPF buffer vulnerabilities."
     },
     {
         "id": "Q_5GAD_usefulness_2", "category": "usefulness",
         "sample_id": "7915",
         "xai_file": "evaluation_dataset/shap_individual_7915.json",
-        "query": "The prediction is driven by payload_std, payload_mean, and payload_max. What does the combination of high payload variability and relatively large payload sizes suggest about this traffic pattern?"
+        "query": "The prediction is driven by payload_std, payload_mean, and payload_max. What does the combination of high payload variability and relatively large payload sizes suggest about this traffic pattern?",
+        "ground_truth": "This combination suggests a 'Heavy Hitter' or Data Exfiltration attempt, where large, variable payloads are being moved, deviating from the steady-state small packets of standard PFCP signaling."
     },
     {
         "id": "Q_5GAD_usefulness_3", "category": "usefulness",
         "sample_id": "7915",
         "xai_file": "evaluation_dataset/shap_individual_7915.json",
-        "query": "The sample shows tcp_flags=2 and udp_len=0. What does this indicate about the transport protocol, and is this consistent with the rest of the features?"
+        "query": "The sample shows tcp_flags=2 and udp_len=0. What does this indicate about the transport protocol, and is this consistent with the rest of the features?",
+        "ground_truth": "tcp_flags=2 (SYN) with udp_len=0 is inconsistent if the traffic is labeled as UDP. However, if the 5GAD dataset treats 'payload' generically, it indicates a SYN flood attempt where no UDP data is present because the protocol is actually TCP-based."
     },
     {
         "id": "Q_NIDD_use_1",
         "category": "usefulness",
         "sample_id": "228693",
         "xai_file": "evaluation_dataset/shap_individual_228693.json",
-        "query": "In sample 228693, DstPkts=0 and DstBytes=0. What does this indicate about the communication pattern, and is it suspicious?"
+        "query": "In sample 228693, DstPkts=0 and DstBytes=0. What does this indicate about the communication pattern, and is it suspicious?",
+        "ground_truth": "DstPkts=0 and DstBytes=0 indicate a unidirectional flow where no response was observed from the destination. This can occur in cases such as blocked traffic, dropped packets, or scanning behavior. While it may be consistent with reconnaissance or half-open connection attempts, it is not sufficient alone to definitively classify the behavior as malicious without additional context."
+    
     },
     {
         "id": "Q_NIDD_use_2",
@@ -222,6 +223,6 @@ EXPERIMENT_SET = [
         "sample_id": "69166",
         "xai_file": "evaluation_dataset/shap_individual_69166.json",
         "query": "Sample 69166 shows active TCP features (SynAck, AckDat, TcpRtt). What kind of network behavior does this suggest?",
-
-    }
+        "ground_truth": "The presence of SynAck and TcpRtt suggests a full TCP handshake was completed and the connection reached an established state. This indicates the traffic is not a simple SYN-only flood, but involves active bidirectional communication where round-trip latency can be measured."
+    },
 ]

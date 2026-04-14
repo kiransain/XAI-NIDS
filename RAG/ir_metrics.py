@@ -30,9 +30,12 @@ K = 3
 
 # ── Relevance labels (QRELS) ───────────────────────────────────────────────────
 QRELS = {
-    # "Q1": ["chunk-id-of-pfcp-heartbeat-section", "chunk-id-of-3gpp-spec"],
-    "Q2": ["ded47291676490160ecd444d26f4e483cc062718453347326f3dfeea8e4099bd"],
-    # add one entry per query after identifying relevant chunks
+    # "Q1": ["chunk-of-doc1", "chunk-of-PFCP-doc2", etc.],
+    "Q_PFCP_control_1":[],
+    "Q_PFCP_control_2": [],
+    "Q_PFCP_control_3": [],
+    "Q_PFCP_retrieval_1": [],
+    # 
 }
 
 # ── Metric functions ───────────────────────────────────────────────────────────
