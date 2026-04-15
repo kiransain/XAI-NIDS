@@ -47,13 +47,6 @@ EXPERIMENT_SET = [
         "ground_truth": "According to PFCP/3GPP TS 29.244, Session Modification Requests are only generated when session parameters change (e.g., QoS updates or policy modifications). Therefore, a value of zero over a stable 55-second flow is expected in normal operation. This pattern alone is not sufficient to indicate malicious behavior and must be interpreted in context with other signaling features."
     },
     {
-        "id": "Q_PFCP_retrieval_4", "category": "retrieval",
-        "sample_id": "none",
-        "xai_file": "none",
-        "query": "In the 5GC_PFCP dataset, source port and destination port are both consistently 8805 across all samples. What is the significance of port 8805 in 5G networks, and should the consistent use of this port be considered a suspicious indicator in PFCP traffic analysis?",
-        "ground_truth": "Port 8805 is the IANA-assigned standard port for PFCP (Packet Forwarding Control Protocol), defined in 3GPP TS 29.244. All PFCP signaling between the SMF and UPF on the N4 interface uses UDP port 8805. Therefore the consistent use of port 8805 in the 5GC_PFCP dataset is expected and not suspicious — it simply confirms the traffic is PFCP protocol traffic. Both attack and benign samples in this dataset use port 8805 because the dataset specifically captures PFCP traffic. A model that assigns high importance to port 8805 is not learning a security-relevant pattern. This is a control question where the LLM should answer correctly from training knowledge without needing retrieval from the knowledge base."
-    },
-    {
         "id": "Q_PFCP_retrieval_5", "category": "retrieval",
         "sample_id": "137",
         "xai_file": "evaluation_dataset/shap_individual_137.json",
@@ -68,8 +61,7 @@ EXPERIMENT_SET = [
         "sample_id": "137",
         "xai_file": "evaluation_dataset/shap_individual_137.json",
         "query": "In Sample 137, which specific feature has the highest SHAP value, and how does its value (0.219) influence the prediction?",
-        "ground_truth": "The feature 'Unnamed: 0' has the highest SHAP value (+1.136), contributing strongly toward the attack prediction. This suggests the model is influenced by a dataset artifact rather than a meaningful network feature, indicating potential data leakage."
-    },
+        "ground_truth": "The feature 'Unnamed: 0' has the highest SHAP value (~+0.219), contributing toward the attack prediction. This indicates the model is relying on a dataset artifact (row index) rather than a meaningful network feature, suggesting potential data leakage."    },
     {
         "id": "Q_PFCP_faithfulness_2",
         "category": "faithfulness",
@@ -184,7 +176,7 @@ EXPERIMENT_SET = [
         "id": "Q_PFCP_usefulness_9", "category": "usefulness",
         "sample_id": "8",
         "xai_file": "evaluation_dataset/shap_individual_8.json",
-        "query": "Sample 8, 5GC_PFCP dataset, DecisionTree, binary. Predicted: Benign (0), True: Malicious (1) — false negative. Top SHAP features: PFCPHeartbeatRequest_counter=13 (SHAP=+1.385, pushes toward attack), Unnamed:0=722 (SHAP=+1.136), duration=55009728 (SHAP=-0.290, pushes toward benign), PFCPSessionModificationRequest_counter=0 (SHAP=+0.329). The model missed this attack despite the heartbeat counter being the strongest feature. Why did the duration feature override the heartbeat signal?",
+        "query": "Sample 8, 5GC_PFCP dataset, DecisionTree, binary. Predicted: Benign (0), True: Malicious (1) — false negative. Top SHAP features: PFCPHeartbeatRequest_counter=13 (SHAP=+1.385, pushes toward attack), Unnamed:0=722 (SHAP=+1.136), duration=55009728 (SHAP=-0.290, pushes toward benign), PFCPSessionModificationRequest_counter=0 (SHAP=+0.329). The model missed this attack despite the heartbeat counter being the strongest feature. Why did the model predict benign despite strong positive SHAP contributions toward attack?",
         "ground_truth": "The model misclassifies this sample as benign, resulting in a false negative. The prediction is based on a combination of competing feature contributions rather than a single dominant factor. The strongest positive contributions toward the attack class come from PFCPHeartbeatRequest_counter (SHAP = +1.385) and Unnamed: 0 (SHAP = +1.136), followed by a smaller positive contribution from PFCPSessionModificationRequest_counter (SHAP = +0.329). These are counterbalanced by negative contributions, most notably duration (SHAP = -0.290), along with smaller negative effects from other features such as packet-level counters. The final prediction reflects the aggregated effect of both positive and negative feature contributions, resulting in a decision boundary tilt toward the benign class. The presence of a strong contribution from Unnamed: 0 suggests that the model may also be influenced by non-semantic or dataset-specific artifacts, which could affect interpretability and robustness."
     },
     {
@@ -221,7 +213,7 @@ EXPERIMENT_SET = [
         "id": "Q_NIDD_use_2",
         "category": "usefulness",
         "sample_id": "69166",
-        "xai_file": "evaluation_dataset/shap_individual_69166.json",
+        "xai_file": "evaluation_dataset/lime_individual_69166.txt",
         "query": "Sample 69166 shows active TCP features (SynAck, AckDat, TcpRtt). What kind of network behavior does this suggest?",
         "ground_truth": "The presence of SynAck and TcpRtt suggests a full TCP handshake was completed and the connection reached an established state. This indicates the traffic is not a simple SYN-only flood, but involves active bidirectional communication where round-trip latency can be measured."
     },
