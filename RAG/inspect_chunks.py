@@ -13,7 +13,7 @@ nodes = node_parser.get_nodes_from_documents(documents)
 print(f"Total chunks processed: {len(nodes)}\n")
 
 # content hash and print applied
-search_terms = ["DoS", "vital threat"]  # change per query
+search_terms = []  # change per query e.g. ["DoS", "vital threat"]
 
 print(f"\nSearching for: {search_terms}")
 for node in nodes:
