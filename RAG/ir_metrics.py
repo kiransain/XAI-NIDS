@@ -32,9 +32,9 @@ K = 3
 QRELS = {
     # "Q1": ["chunk-of-doc1", "chunk-of-PFCP-doc2", etc.],
     "Q_PFCP_control_1":[],
-    "Q_PFCP_control_2": [],
+    "Q_PFCP_control_2": [], 
     "Q_PFCP_control_3": [],
-    "Q_PFCP_retrieval_1": [],
+    "Q_PFCP_retrieval_1": [], # chp 4.2 3GPP TS 29.244
     # 
 }
 
