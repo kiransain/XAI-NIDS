@@ -31,10 +31,15 @@ K = 3
 # ── Relevance labels (QRELS) ───────────────────────────────────────────────────
 QRELS = {
     # "Q1": ["chunk-of-doc1", "chunk-of-PFCP-doc2", etc.],
-    "Q_PFCP_control_1":[],
-    "Q_PFCP_control_2": [], 
+    "Q_PFCP_control_1": [],
+    "Q_PFCP_control_2": [],
     "Q_PFCP_control_3": [],
-    "Q_PFCP_retrieval_1": [], # chp 4.2 3GPP TS 29.244
+    "Q_PFCP_retrieval_1": [
+        "c9080f8396ef6463438186a6b67ad8f3a0662e01ccd40c12180b9e6c42364d63",
+        "5d6ec593de49447ac580b73a181ffafe6e76034ca6e63a1183ea276db332ebdf",
+        "5e66761a14e76dca8b0c3e46fd894c2f744548460753a05585450437eb415542",
+        "0a338daf1a4a0313bf7e8e8e5148d1b5f682890dde9d147cbbb6846c23ea787a"
+    ], # chp 4.2 3GPP TS 29.244
     # 
 }
 

@@ -70,7 +70,7 @@ def generate_qrels(n_random=2):
         selected = []
         for i, (nid, node) in enumerate(items):
             print(f"\n--- Chunk {i+1}/{len(items)} ---")
-            print(node.get_content()[:400])
+            print(node.get_content())
             decision = input("\nRelevant? (y / n / s to skip query): ").strip().lower()
             if decision == "s":
                 break
