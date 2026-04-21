@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e0186a1e00fead1ae094e80e101f0613237bd8dc5aaa2f0f090137b746e056b0
-size 170
+query_id,engine,precision@3,recall@3,hit@3,mrr,ndcg@3
+Q_PFCP_control_1,none,,,,,
+Q_PFCP_control_1,bm25,0.0,0.0,0.0,0.0,0.0
+Q_PFCP_control_1,vector,0.0,0.0,0.0,0.0,0.0
+Q_PFCP_control_2,none,,,,,
+Q_PFCP_control_2,bm25,0.0,0.0,0.0,0.0,0.0
+Q_PFCP_control_2,vector,0.0,0.0,0.0,0.0,0.0
+Q_PFCP_control_3,none,,,,,
+Q_PFCP_control_3,bm25,0.0,0.0,0.0,0.0,0.0
+Q_PFCP_control_3,vector,0.0,0.0,0.0,0.0,0.0
+Q_PFCP_retrieval_1,none,,,,,
+Q_PFCP_retrieval_1,bm25,0.6666666666666666,0.5,1.0,1.0,0.7653606369886217
+Q_PFCP_retrieval_1,vector,0.3333333333333333,0.25,1.0,0.3333333333333333,0.23463936301137822
+Q_PFCP_retrieval_3,none,,,,,
+Q_PFCP_retrieval_3,bm25,0.0,0.0,0.0,0.0,0.0
+Q_PFCP_retrieval_3,vector,0.0,0.0,0.0,0.0,0.0
