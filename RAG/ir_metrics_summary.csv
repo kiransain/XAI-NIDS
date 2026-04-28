@@ -1,4 +1,3 @@
-engine,precision@3,recall@3,hit@3,mrr,ndcg@3
-bm25,0.1429,0.1899,0.2857,0.2321,0.2011
-none,,,,,
-vector,0.1548,0.194,0.2857,0.244,0.2227
+version https://git-lfs.github.com/spec/v1
+oid sha256:ee43fb6cb7942001982cbbf1073a69e9b74452131eda4318f0b3d85bdb3add57
+size 139

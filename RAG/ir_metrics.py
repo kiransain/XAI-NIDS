@@ -59,11 +59,31 @@ QRELS = {
     "Q_PFCP_usefulness_2": [],
     "Q_PFCP_usefulness_3": [],
     "Q_PFCP_usefulness_4": [],
-    "Q_PFCP_usefulness_5": [],
-    "Q_PFCP_usefulness_6": [],
-    "Q_PFCP_usefulness_7": [],
-    "Q_PFCP_usefulness_8": [],
-    "Q_PFCP_usefulness_9": [],
+    "Q_PFCP_usefulness_5": [
+        "7a82e14fb747795c4a1e09cba1c7c3cda4269bb7efbc2031d58d0cd5697b875b",
+        "905eb06d31565e18d4729b239b3590f23d118303dde85faecbf044065ba833ba",
+        "9293e1a8d508de144d45a7cd48386df2199ab351053c750e7d91e5a3761767eb",
+        "d68755988e51274c3361c4cb59bfd7a5aa644074a6f80fa69b3e163a4d5b032a",
+        "ded47291676490160ecd444d26f4e483cc062718453347326f3dfeea8e4099bd",
+        "b06bb89b0d11d600522d2b49a74fe449fc3667e7e530960a2a5d243143e9c1df",
+        "097f09c10130e1c98796805875cfcc17ace87d5d6b32274c53d53f6df86abe3e"
+    ],
+    "Q_PFCP_usefulness_6": [
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688"
+    ],
+    "Q_PFCP_usefulness_7": [
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688",
+        "d68755988e51274c3361c4cb59bfd7a5aa644074a6f80fa69b3e163a4d5b032a",
+        "097f09c10130e1c98796805875cfcc17ace87d5d6b32274c53d53f6df86abe3e"
+    ],
+    "Q_PFCP_usefulness_8": [
+        "d68755988e51274c3361c4cb59bfd7a5aa644074a6f80fa69b3e163a4d5b032a",
+        "097f09c10130e1c98796805875cfcc17ace87d5d6b32274c53d53f6df86abe3e",
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688"
+    ],
+    "Q_PFCP_usefulness_9": [
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688"
+    ],
     "Q_5GAD_usefulness_1": [
         "ded47291676490160ecd444d26f4e483cc062718453347326f3dfeea8e4099bd",
         "80a6fb787e4c8215c07f43e7b533ee9ef0eb67e0471066c7a7797e5523396809",

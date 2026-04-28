@@ -116,69 +116,69 @@ EXPERIMENT_SET = [
     
 
     # #  Category 4:Answer relevance/usefulness.
-    # {
-    #     "id": "Q_PFCP_usefulness_1", "category": "usefulness",
-    #     "sample_id": "668",
-    #     "xai_file": "evaluation_dataset/shap_individual_668.json",
-    #     "query": "Sample 668 shows a Flow IAT Min of 4μs but a Max of 11s. Does this timing pattern align with a specific PFCP attack type described in the documentation?",
-    #     "ground_truth": "Yes. This 'burst-then-idle' pattern is characteristic of a PFCP Flood attack, where messages are sent in rapid succession to exhaust resources."
-    # },
-    # {
-    #     "id": "Q_PFCP_usefulness_2", "category": "usefulness",
-    #     "sample_id": "8",
-    #     "xai_file": "evaluation_dataset/shap_individual_8.json",
-    #     "query": "Sample 8, 5GC_PFCP dataset. PFCPHeartbeatRequest_counter=13 over a 55-second flow. According to the PFCP dataset documentation, what is the definition of a PFCP Session Establishment Flood attack, and does a heartbeat count of 13 per minute meet the threshold for flood attack classification?",
-    #     "ground_truth": "According to the 5GC_PFCP dataset description, PFCP flood attacks are characterized by unusually high rates of Session Establishment and Heartbeat messages aimed at exhausting UPF resources. A heartbeat rate of 13 over 55 seconds corresponds to a low-frequency keepalive pattern typical of normal PFCP operation. This rate is not indicative of flooding behavior when considered in isolation and must be evaluated alongside other signaling and timing features."
-    #     },
-    # {
-    #     "id": "Q_PFCP_usefulness_3", "category": "usefulness",
-    #     "sample_id": "8",
-    #     "xai_file": "evaluation_dataset/shap_individual_8.json",
-    #     "query": "The feature 'Unnamed: 0' appears as a top importance feature. Based on data science principles, should this be trusted for a real-world 5G deployment?",
-    #     "ground_truth": "No. 'Unnamed: 0' is the row index from the source CSV file. If a model relies on this, it has learned a spurious correlation (data leakage) based on the order of samples in the dataset rather than actual network behavior. It would fail in a real-world deployment where row indices do not exist."
-    # },
-    # {
-    #     "id": "Q_PFCP_usefulness_4", "category": "usefulness",
-    #     "sample_id": "137_and_8",
-    #     "xai_file": "none",
-    #     "query": "In the 5GC_PFCP dataset, both sample 137 (LightGBM) and sample 8 (DecisionTree) show PFCPHeartbeatRequest_counter=13 and PFCPSessionModificationRequest_counter=0 over ~55 seconds. LightGBM predicted Attack (false positive) while DecisionTree predicted Benign (false negative). What does this disagreement between models indicate about the reliability of these features for PFCP attack detection?",
-    #     "ground_truth": "The same feature values producing opposite predictions across two models reveals that PFCPHeartbeatRequest_counter=13 and PFCPSessionModificationRequest_counter=0 over ~55 seconds are ambiguous features that fall near the decision boundary. Neither pattern is unambiguously malicious or benign according to the PFCP specification — 13 heartbeats per minute is within normal operating range, and zero session modifications is normal for stable sessions. The inter-model disagreement indicates that neither model has learned a robust rule for this pattern, and that the underlying feature space does not cleanly separate this traffic type. A RAG-grounded explanation should communicate this ambiguity to the security analyst rather than presenting a confident attack or benign verdict."
-    # },
     {
-        "id": "Q_PFCP_usefulness_5", "category": "usefulness",
-        "sample_id": "668_and_4844",
-        "xai_file": "evaluation_dataset/shap_individual_668.json", # using 668's SHAP file for retrieval since it contains the relevant features
-        "query": "Compare sample 668 (XGBoost, attack, Fwd IAT Min=53μs, Flow Pkts/s=0.73) and sample 4844 (DecisionTree, benign, Fwd IAT Min=25409μs, Flow Pkts/s=9.24). Sample 4844 has 12x higher packet rate but was correctly classified as benign, while sample 668 was correctly classified as attack. According to PFCP documentation, why is inter-arrival time a more reliable attack indicator than packet rate for PFCP flood detection?",
-        "ground_truth": "In PFCP traffic, inter-arrival time is a more reliable attack indicator than raw packet rate because PFCP flood attacks are characterized by bursting behavior — sending many messages in rapid succession — rather than sustained high throughput. A minimum IAT of 53 microseconds means packets are arriving near-simultaneously in bursts, which is physically impossible in normal PFCP signaling where messages follow request-response patterns with processing delays. In contrast, a sustained packet rate of 9.24 packets/second with minimum IAT of 25ms is consistent with regular application traffic. The PFCP dataset documentation notes that flood attacks aim to exhaust UPF resources through high message volume — this volume manifests as burst behavior detectable through minimum IAT, not average packet rate. This explains why timing variance features dominate the SHAP explanations for attack samples while packet rate features have lower importance."
+        "id": "Q_PFCP_usefulness_1", "category": "usefulness",
+        "sample_id": "668",
+        "xai_file": "evaluation_dataset/shap_individual_668.json",
+        "query": "Sample 668 shows a Flow IAT Min of 4μs but a Max of 11s. Does this timing pattern align with a specific PFCP attack type described in the documentation?",
+        "ground_truth": "Yes. This 'burst-then-idle' pattern is characteristic of a PFCP Flood attack, where messages are sent in rapid succession to exhaust resources."
     },
     {
-        "id": "Q_PFCP_usefulness_6", "category": "usefulness",
-        "sample_id": "81",
-        "xai_file": "evaluation_dataset/lime_individual_81.txt",
-        "query": "Sample 81, 5GC_PFCP dataset, XGBoost, binary. Predicted: Attack (1), True: Attack (1). Top LIME features: duration<=55007224 (-0.273), PFCPSessionModificationRequest_counter<=0 (+0.184), Unnamed:0>905.5 (+0.172). The row index Unnamed:0 appears again as a top-3 feature. Across multiple samples in this dataset, Unnamed:0 appears as a high-importance feature. What does this suggest about the model's reliability for deployment in a real 5G network?",
-        "ground_truth": "The repeated appearance of Unnamed:0 (dataset row index) as a high-importance feature across multiple samples indicates that the model has learned a spurious correlation between row position and class label. This is a data quality artifact — in the original dataset, benign and malicious samples are likely grouped or ordered such that row position correlates with class. A row index carries zero network security semantics and would not exist in a real deployment scenario. This finding indicates the model would likely perform significantly worse on real production traffic than its evaluation metrics suggest. Any security explanation that includes Unnamed:0 as a justification for an attack prediction should be flagged as unreliable. This is a critical finding for the RAG layer to identify and communicate."
-    },
-    {
-        "id": "Q_PFCP_usefulness_7", "category": "usefulness",
-        "sample_id": "2141",
-        "xai_file": "evaluation_dataset/shap_individual_2141.json",
-        "query": "Sample 2141, 5GC_PFCP dataset, RandomForest, binary. Predicted: Attack (1), True: Attack (1). Top SHAP features: Flow IAT Std=4158057 (SHAP=0.048), Bwd IAT Max=11001599μs (SHAP=0.041), Active Max=364μs (SHAP=0.041), Bwd IAT Std=5500759 (SHAP=0.041). No single feature dominates — the prediction is driven by many small contributions from IAT variance features. What does a prediction based on many small timing variance signals rather than one dominant feature indicate about the attack pattern?",
-        "ground_truth": "A prediction driven by many small IAT variance contributions rather than a single dominant feature suggests the model has detected a distributed timing anomaly rather than a single obvious indicator. This is consistent with a PFCP flood attack that uses irregular timing to evade simple threshold-based detection. The high Bwd IAT Max (~11 seconds) and high Bwd IAT Std indicate the backward flow has highly irregular timing, which is not characteristic of normal PFCP response patterns where responses closely follow requests. Active Mean=364μs (the time the connection was actively transmitting) being very short relative to the overall flow duration also indicates brief bursts of activity. This type of multi-signal low-magnitude prediction is actually harder to explain to a security analyst than a single dominant feature, which highlights the value of RAG-grounded explanations that can synthesize multiple weak signals into a coherent security narrative."
-    },
-    {
-        "id": "Q_PFCP_usefulness_8", "category": "usefulness",
-        "sample_id": "4844",
-        "xai_file": "evaluation_dataset/shap_individual_4844.json",
-        "query": "Sample 4844, 5GC_PFCP dataset, DecisionTree, binary. Predicted: Benign (0), True: Benign (0). Top SHAP features: Fwd IAT Min=25409μs (SHAP=-0.211, pushes benign), Flow IAT Std=19496 (SHAP=-0.161), Active Mean=0 (SHAP=-0.042). Flow Pkts/s=9.24 is relatively high. Despite high packet rate, the model correctly classified this as benign. Why does a high packet rate not indicate an attack here, and what features drove the benign classification?",
-        "ground_truth": "A packet rate of 9.24 packets/second is not inherently malicious in PFCP traffic. The benign classification is driven by the regular timing pattern: Fwd IAT Min=25409 microseconds (~25ms) indicates the minimum gap between packets is substantial, meaning no burst behavior exists. The low Flow IAT Std=19496 relative to the mean indicates consistent, regular inter-arrival times — characteristic of legitimate application traffic with steady throughput. Active Mean=0 indicates no active transmission periods were detected, consistent with a session that transmits in regular intervals without burst activity. This sample correctly illustrates that packet rate alone is insufficient to classify PFCP traffic as malicious — the timing regularity is the key discriminating factor. This is a correct model decision that the RAG explanation should reinforce."
-    },
-    {
-        "id": "Q_PFCP_usefulness_9", "category": "usefulness",
+        "id": "Q_PFCP_usefulness_2", "category": "usefulness",
         "sample_id": "8",
         "xai_file": "evaluation_dataset/shap_individual_8.json",
-        "query": "Sample 8, 5GC_PFCP dataset, DecisionTree, binary. Predicted: Benign (0), True: Malicious (1) — false negative. Top SHAP features: PFCPHeartbeatRequest_counter=13 (SHAP=+1.385, pushes toward attack), Unnamed:0=722 (SHAP=+1.136), duration=55009728 (SHAP=-0.290, pushes toward benign), PFCPSessionModificationRequest_counter=0 (SHAP=+0.329). The model missed this attack despite the heartbeat counter being the strongest feature. Why did the model predict benign despite strong positive SHAP contributions toward attack?",
-        "ground_truth": "The model misclassifies this sample as benign, resulting in a false negative. The prediction is based on a combination of competing feature contributions rather than a single dominant factor. The strongest positive contributions toward the attack class come from PFCPHeartbeatRequest_counter (SHAP = +1.385) and Unnamed: 0 (SHAP = +1.136), followed by a smaller positive contribution from PFCPSessionModificationRequest_counter (SHAP = +0.329). These are counterbalanced by negative contributions, most notably duration (SHAP = -0.290), along with smaller negative effects from other features such as packet-level counters. The final prediction reflects the aggregated effect of both positive and negative feature contributions, resulting in a decision boundary tilt toward the benign class. The presence of a strong contribution from Unnamed: 0 suggests that the model may also be influenced by non-semantic or dataset-specific artifacts, which could affect interpretability and robustness."
+        "query": "Sample 8, 5GC_PFCP dataset. PFCPHeartbeatRequest_counter=13 over a 55-second flow. According to the PFCP dataset documentation, what is the definition of a PFCP Session Establishment Flood attack, and does a heartbeat count of 13 per minute meet the threshold for flood attack classification?",
+        "ground_truth": "According to the 5GC_PFCP dataset description, PFCP flood attacks are characterized by unusually high rates of Session Establishment and Heartbeat messages aimed at exhausting UPF resources. A heartbeat rate of 13 over 55 seconds corresponds to a low-frequency keepalive pattern typical of normal PFCP operation. This rate is not indicative of flooding behavior when considered in isolation and must be evaluated alongside other signaling and timing features."
+        },
+    {
+        "id": "Q_PFCP_usefulness_3", "category": "usefulness",
+        "sample_id": "8",
+        "xai_file": "evaluation_dataset/shap_individual_8.json",
+        "query": "The feature 'Unnamed: 0' appears as a top importance feature. Based on data science principles, should this be trusted for a real-world 5G deployment?",
+        "ground_truth": "No. 'Unnamed: 0' is the row index from the source CSV file. If a model relies on this, it has learned a spurious correlation (data leakage) based on the order of samples in the dataset rather than actual network behavior. It would fail in a real-world deployment where row indices do not exist."
     },
+    {
+        "id": "Q_PFCP_usefulness_4", "category": "usefulness",
+        "sample_id": "137_and_8",
+        "xai_file": "none",
+        "query": "In the 5GC_PFCP dataset, both sample 137 (LightGBM) and sample 8 (DecisionTree) show PFCPHeartbeatRequest_counter=13 and PFCPSessionModificationRequest_counter=0 over ~55 seconds. LightGBM predicted Attack (false positive) while DecisionTree predicted Benign (false negative). What does this disagreement between models indicate about the reliability of these features for PFCP attack detection?",
+        "ground_truth": "The same feature values producing opposite predictions across two models reveals that PFCPHeartbeatRequest_counter=13 and PFCPSessionModificationRequest_counter=0 over ~55 seconds are ambiguous features that fall near the decision boundary. Neither pattern is unambiguously malicious or benign according to the PFCP specification — 13 heartbeats per minute is within normal operating range, and zero session modifications is normal for stable sessions. The inter-model disagreement indicates that neither model has learned a robust rule for this pattern, and that the underlying feature space does not cleanly separate this traffic type. A RAG-grounded explanation should communicate this ambiguity to the security analyst rather than presenting a confident attack or benign verdict."
+    },
+    # {
+    #     "id": "Q_PFCP_usefulness_5", "category": "usefulness",
+    #     "sample_id": "668_and_4844",
+    #     "xai_file": "evaluation_dataset/shap_individual_668.json", # using 668's SHAP file for retrieval since it contains the relevant features
+    #     "query": "Compare sample 668 (XGBoost, attack, Fwd IAT Min=53μs, Flow Pkts/s=0.73) and sample 4844 (DecisionTree, benign, Fwd IAT Min=25409μs, Flow Pkts/s=9.24). Sample 4844 has 12x higher packet rate but was correctly classified as benign, while sample 668 was correctly classified as attack. According to PFCP documentation, why is inter-arrival time a more reliable attack indicator than packet rate for PFCP flood detection?",
+    #     "ground_truth": "In PFCP traffic, inter-arrival time is a more reliable attack indicator than raw packet rate because PFCP flood attacks are characterized by bursting behavior — sending many messages in rapid succession — rather than sustained high throughput. A minimum IAT of 53 microseconds means packets are arriving near-simultaneously in bursts, which is physically impossible in normal PFCP signaling where messages follow request-response patterns with processing delays. In contrast, a sustained packet rate of 9.24 packets/second with minimum IAT of 25ms is consistent with regular application traffic. The PFCP dataset documentation notes that flood attacks aim to exhaust UPF resources through high message volume — this volume manifests as burst behavior detectable through minimum IAT, not average packet rate. This explains why timing variance features dominate the SHAP explanations for attack samples while packet rate features have lower importance."
+    # },
+    # {
+    #     "id": "Q_PFCP_usefulness_6", "category": "usefulness",
+    #     "sample_id": "81",
+    #     "xai_file": "evaluation_dataset/lime_individual_81.txt",
+    #     "query": "Sample 81, 5GC_PFCP dataset, XGBoost, binary. Predicted: Attack (1), True: Attack (1). Top LIME features: duration<=55007224 (-0.273), PFCPSessionModificationRequest_counter<=0 (+0.184), Unnamed:0>905.5 (+0.172). The row index Unnamed:0 appears again as a top-3 feature. Across multiple samples in this dataset, Unnamed:0 appears as a high-importance feature. What does this suggest about the model's reliability for deployment in a real 5G network?",
+    #     "ground_truth": "The repeated appearance of Unnamed:0 (dataset row index) as a high-importance feature across multiple samples indicates that the model has learned a spurious correlation between row position and class label. This is a data quality artifact — in the original dataset, benign and malicious samples are likely grouped or ordered such that row position correlates with class. A row index carries zero network security semantics and would not exist in a real deployment scenario. This finding indicates the model would likely perform significantly worse on real production traffic than its evaluation metrics suggest. Any security explanation that includes Unnamed:0 as a justification for an attack prediction should be flagged as unreliable. This is a critical finding for the RAG layer to identify and communicate."
+    # },
+    # {
+    #     "id": "Q_PFCP_usefulness_7", "category": "usefulness",
+    #     "sample_id": "2141",
+    #     "xai_file": "evaluation_dataset/shap_individual_2141.json",
+    #     "query": "Sample 2141, 5GC_PFCP dataset, RandomForest, binary. Predicted: Attack (1), True: Attack (1). Top SHAP features: Flow IAT Std=4158057 (SHAP=0.048), Bwd IAT Max=11001599μs (SHAP=0.041), Active Max=364μs (SHAP=0.041), Bwd IAT Std=5500759 (SHAP=0.041). No single feature dominates — the prediction is driven by many small contributions from IAT variance features. What does a prediction based on many small timing variance signals rather than one dominant feature indicate about the attack pattern?",
+    #     "ground_truth": "A prediction driven by many small IAT variance contributions rather than a single dominant feature suggests the model has detected a distributed timing anomaly rather than a single obvious indicator. This is consistent with a PFCP flood attack that uses irregular timing to evade simple threshold-based detection. The high Bwd IAT Max (~11 seconds) and high Bwd IAT Std indicate the backward flow has highly irregular timing, which is not characteristic of normal PFCP response patterns where responses closely follow requests. Active Mean=364μs (the time the connection was actively transmitting) being very short relative to the overall flow duration also indicates brief bursts of activity. This type of multi-signal low-magnitude prediction is actually harder to explain to a security analyst than a single dominant feature, which highlights the value of RAG-grounded explanations that can synthesize multiple weak signals into a coherent security narrative."
+    # },
+    # {
+    #     "id": "Q_PFCP_usefulness_8", "category": "usefulness",
+    #     "sample_id": "4844",
+    #     "xai_file": "evaluation_dataset/shap_individual_4844.json",
+    #     "query": "Sample 4844, 5GC_PFCP dataset, DecisionTree, binary. Predicted: Benign (0), True: Benign (0). Top SHAP features: Fwd IAT Min=25409μs (SHAP=-0.211, pushes benign), Flow IAT Std=19496 (SHAP=-0.161), Active Mean=0 (SHAP=-0.042). Flow Pkts/s=9.24 is relatively high. Despite high packet rate, the model correctly classified this as benign. Why does a high packet rate not indicate an attack here, and what features drove the benign classification?",
+    #     "ground_truth": "A packet rate of 9.24 packets/second is not inherently malicious in PFCP traffic. The benign classification is driven by the regular timing pattern: Fwd IAT Min=25409 microseconds (~25ms) indicates the minimum gap between packets is substantial, meaning no burst behavior exists. The low Flow IAT Std=19496 relative to the mean indicates consistent, regular inter-arrival times — characteristic of legitimate application traffic with steady throughput. Active Mean=0 indicates no active transmission periods were detected, consistent with a session that transmits in regular intervals without burst activity. This sample correctly illustrates that packet rate alone is insufficient to classify PFCP traffic as malicious — the timing regularity is the key discriminating factor. This is a correct model decision that the RAG explanation should reinforce."
+    # },
+    # {
+    #     "id": "Q_PFCP_usefulness_9", "category": "usefulness",
+    #     "sample_id": "8",
+    #     "xai_file": "evaluation_dataset/shap_individual_8.json",
+    #     "query": "Sample 8, 5GC_PFCP dataset, DecisionTree, binary. Predicted: Benign (0), True: Malicious (1) — false negative. Top SHAP features: PFCPHeartbeatRequest_counter=13 (SHAP=+1.385, pushes toward attack), Unnamed:0=722 (SHAP=+1.136), duration=55009728 (SHAP=-0.290, pushes toward benign), PFCPSessionModificationRequest_counter=0 (SHAP=+0.329). The model missed this attack despite the heartbeat counter being the strongest feature. Why did the model predict benign despite strong positive SHAP contributions toward attack?",
+    #     "ground_truth": "The model misclassifies this sample as benign, resulting in a false negative. The prediction is based on a combination of competing feature contributions rather than a single dominant factor. The strongest positive contributions toward the attack class come from PFCPHeartbeatRequest_counter (SHAP = +1.385) and Unnamed: 0 (SHAP = +1.136), followed by a smaller positive contribution from PFCPSessionModificationRequest_counter (SHAP = +0.329). These are counterbalanced by negative contributions, most notably duration (SHAP = -0.290), along with smaller negative effects from other features such as packet-level counters. The final prediction reflects the aggregated effect of both positive and negative feature contributions, resulting in a decision boundary tilt toward the benign class. The presence of a strong contribution from Unnamed: 0 suggests that the model may also be influenced by non-semantic or dataset-specific artifacts, which could affect interpretability and robustness."
+    # },
     # {
     #     "id": "Q_5GAD_usefulness_1", "category": "usefulness",
     #     "sample_id": "7915",
