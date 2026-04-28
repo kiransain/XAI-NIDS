@@ -40,7 +40,36 @@ QRELS = {
         "5e66761a14e76dca8b0c3e46fd894c2f744548460753a05585450437eb415542",
         "0a338daf1a4a0313bf7e8e8e5148d1b5f682890dde9d147cbbb6846c23ea787a"
     ], # chp 4.2 3GPP TS 29.244
-    # 
+    "Q_PFCP_retrieval_3":[],
+    "Q_PFCP_retrieval_5": [
+        "f0c1cedb2da76996194b878266c9c4161d3b52155c47b6342e514fea66f56654"
+    ],
+    "Q_PFCP_faithfulness_1": [
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688"
+    ],
+    "Q_PFCP_faithfulness_2": [],
+    "Q_PFCP_faithfulness_3": [
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688"
+    ],
+    "Q_PFCP_faithfulness_4":[],
+    "Q_NIDD_faith_1":[],
+    "Q_NIDD_faith_2":[],
+    "Q_NIDD_faith_3":[],
+    "Q_PFCP_usefulness_1": [],
+    "Q_PFCP_usefulness_2": [],
+    "Q_PFCP_usefulness_3": [],
+    "Q_PFCP_usefulness_4": [],
+    "Q_PFCP_usefulness_5": [],
+    "Q_PFCP_usefulness_6": [],
+    "Q_PFCP_usefulness_7": [],
+    "Q_PFCP_usefulness_8": [],
+    "Q_PFCP_usefulness_9": [],
+    "Q_5GAD_usefulness_1": [],
+    "Q_5GAD_usefulness_2": [],
+    "Q_5GAD_usefulness_3": [],
+    "Q_NIDD_use_1": [],
+    "Q_NIDD_use_2": []
+
 }
 
 # ── Metric functions ───────────────────────────────────────────────────────────
