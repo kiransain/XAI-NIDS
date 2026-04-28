@@ -77,73 +77,73 @@ EXPERIMENT_SET = [
     #     "query": "For Sample 4045, the top two LIME features push toward 'Benign'. Explain how the model still arrived at an 'Attack' prediction based on the LIME summary.",
     #     "ground_truth": "Model predictions are the sum of all weights plus a base value. Even if top features are benign, the collective weight of other features and the high base value (0.755) result in an 'Attack' verdict."
     # },
-    # {
-    #     "id": "Q_PFCP_faithfulness_4", "category": "faithfulness",
-    #     "sample_id": "4045",
-    #     "xai_file": "evaluation_dataset/lime_individual_4045.txt",
-    #     "query": "Sample 4045, 5GC_PFCP TCP/IP layer, MLP, binary. Predicted: Attack (1), True: Attack (1). Feature values are normalized (z-scores). Top LIME features: Src Port>0.94 (-0.518, pushes benign), Down/Up Ratio>-0.06 (-0.240, pushes benign), Pkt Len Std>0.07 (+0.139, pushes attack). Two of the top three LIME features push toward benign yet the model predicts attack. Is a prediction valid when the majority of top features push toward the opposite class?",
-    #     "ground_truth": "A prediction can be valid even when the majority of top-ranked features push toward the opposite class, because SHAP and LIME importance rankings are not votes — they are magnitude-weighted contributions. The correct interpretation is to sum all contributions: if the features pushing toward attack collectively outweigh those pushing toward benign, the prediction is attack regardless of how many features point each way. In this case, while Src Port and Down/Up Ratio push toward benign, their combined magnitude (-0.518 + -0.240 = -0.758) must be compared against all features pushing toward attack. Additionally, Pkt Len Std, Idle Std, Bwd Seg Size Avg, and Fwd Pkt Len Std all push toward attack. The base value of the model already starts at 0.755 (strongly toward attack), meaning the default prior without any features is already attack-leaning for this dataset. This is a semantically important interpretation point that a RAG-grounded explanation should communicate clearly."
-    # },
-    # {
-    #     "id": "Q_GAD_faithfulness_1", "category": "faithfulness",
-    #     "sample_id": "95",
-    #     "xai_file": "evaluation_dataset/lime_individual_95.txt",
-    #     "query":"tcp_flags contributes positively toward attack, while most payload-related features push toward benign. What does this conflict suggest about the traffic pattern?",
-    #     "ground_truth": "High tcp_flags suggest active session manipulation, while payload-related features pushing toward benign suggest the attack does not carry a malicious payload. This is characteristic of a TCP-level flood (like SYN/ACK flood) where the handshake is the attack, not the data."
-    # },
-    # {   # SHAP
-    #     "id":"Q_NIDD_faith_1", "category": "faithfulness",
-    #     "sample_id": "228693",
-    #     "xai_file":"evaluation_dataset/shap_individual_228693.json",
-    #     "query": "For sample 228693, which feature has the highest SHAP value, and what does it indicate about the prediction?",
-    #     "ground_truth":"The feature 'Seq' (Sequence number) has the highest SHAP value. This indicates the model is heavily weighting the packet ordering or sequence gaps as the primary indicator of an attack."
-    # },
-    # {   # SHAP
-    #     "id":"Q_NIDD_faith_2", "category": "faithfulness",
-    #     "sample_id": "228693",
-    #     "xai_file":"evaluation_dataset/shap_individual_228693.json",
-    #     "query": "In sample 228693, both ‘Seq’ and ‘sTtl’ have high positive SHAP values. How do they jointly influence the attack prediction?",
-    #     "ground_truth": "Both 'Seq' (Sequence number) and 'sTtl' (Source TTL) having high positive SHAP values means that the model is interpreting specific sequence patterns and TTL values as strong indicators of attack behavior. The combination suggests that the model has learned to associate certain packet ordering anomalies (captured by 'Seq') and unusual TTL values (captured by 'sTtl') with malicious activity in NIDD traffic. This joint influence indicates that the attack prediction is not based on a single feature but rather on a pattern of features that together signal suspicious behavior."
-    # },
-    # {
-    #     # LIME 
-    #     "id": "Q_NIDD_faith_3", "category": "faithfulness",
-    #     "sample_id": "69166",
-    #     "xai_file": "evaluation_dataset/lime_individual_69166.txt",
-    #     "query":"In sample 69166, some features push toward benign (e.g. sMeanPktSz), yet the prediction is attack. Why?",
-    #     "ground_truth":"The attack prediction is driven by 'Seq' and 'sTtl' magnitude, which outweighs the benign signal from 'sMeanPktSz'. LIME shows the model prioritizes network-layer anomalies over application-layer packet sizes."
-    # },
+    {
+        "id": "Q_PFCP_faithfulness_4", "category": "faithfulness",
+        "sample_id": "4045",
+        "xai_file": "evaluation_dataset/lime_individual_4045.txt",
+        "query": "Sample 4045, 5GC_PFCP TCP/IP layer, MLP, binary. Predicted: Attack (1), True: Attack (1). Feature values are normalized (z-scores). Top LIME features: Src Port>0.94 (-0.518, pushes benign), Down/Up Ratio>-0.06 (-0.240, pushes benign), Pkt Len Std>0.07 (+0.139, pushes attack). Two of the top three LIME features push toward benign yet the model predicts attack. Is a prediction valid when the majority of top features push toward the opposite class?",
+        "ground_truth": "A prediction can be valid even when the majority of top-ranked features push toward the opposite class, because SHAP and LIME importance rankings are not votes — they are magnitude-weighted contributions. The correct interpretation is to sum all contributions: if the features pushing toward attack collectively outweigh those pushing toward benign, the prediction is attack regardless of how many features point each way. In this case, while Src Port and Down/Up Ratio push toward benign, their combined magnitude (-0.518 + -0.240 = -0.758) must be compared against all features pushing toward attack. Additionally, Pkt Len Std, Idle Std, Bwd Seg Size Avg, and Fwd Pkt Len Std all push toward attack. The base value of the model already starts at 0.755 (strongly toward attack), meaning the default prior without any features is already attack-leaning for this dataset. This is a semantically important interpretation point that a RAG-grounded explanation should communicate clearly."
+    },
+    {
+        "id": "Q_GAD_faithfulness_1", "category": "faithfulness",
+        "sample_id": "95",
+        "xai_file": "evaluation_dataset/lime_individual_95.txt",
+        "query":"tcp_flags contributes positively toward attack, while most payload-related features push toward benign. What does this conflict suggest about the traffic pattern?",
+        "ground_truth": "High tcp_flags suggest active session manipulation, while payload-related features pushing toward benign suggest the attack does not carry a malicious payload. This is characteristic of a TCP-level flood (like SYN/ACK flood) where the handshake is the attack, not the data."
+    },
+    {   # SHAP
+        "id":"Q_NIDD_faith_1", "category": "faithfulness",
+        "sample_id": "228693",
+        "xai_file":"evaluation_dataset/shap_individual_228693.json",
+        "query": "For sample 228693, which feature has the highest SHAP value, and what does it indicate about the prediction?",
+        "ground_truth":"The feature 'Seq' (Sequence number) has the highest SHAP value. This indicates the model is heavily weighting the packet ordering or sequence gaps as the primary indicator of an attack."
+    },
+    {   # SHAP
+        "id":"Q_NIDD_faith_2", "category": "faithfulness",
+        "sample_id": "228693",
+        "xai_file":"evaluation_dataset/shap_individual_228693.json",
+        "query": "In sample 228693, both ‘Seq’ and ‘sTtl’ have high positive SHAP values. How do they jointly influence the attack prediction?",
+        "ground_truth": "Both 'Seq' (Sequence number) and 'sTtl' (Source TTL) having high positive SHAP values means that the model is interpreting specific sequence patterns and TTL values as strong indicators of attack behavior. The combination suggests that the model has learned to associate certain packet ordering anomalies (captured by 'Seq') and unusual TTL values (captured by 'sTtl') with malicious activity in NIDD traffic. This joint influence indicates that the attack prediction is not based on a single feature but rather on a pattern of features that together signal suspicious behavior."
+    },
+    {
+        # LIME 
+        "id": "Q_NIDD_faith_3", "category": "faithfulness",
+        "sample_id": "69166",
+        "xai_file": "evaluation_dataset/lime_individual_69166.txt",
+        "query":"In sample 69166, some features push toward benign (e.g. sMeanPktSz), yet the prediction is attack. Why?",
+        "ground_truth":"The attack prediction is driven by 'Seq' and 'sTtl' magnitude, which outweighs the benign signal from 'sMeanPktSz'. LIME shows the model prioritizes network-layer anomalies over application-layer packet sizes."
+    },
     
 
     # #  Category 4:Answer relevance/usefulness.
-    {
-        "id": "Q_PFCP_usefulness_1", "category": "usefulness",
-        "sample_id": "668",
-        "xai_file": "evaluation_dataset/shap_individual_668.json",
-        "query": "Sample 668 shows a Flow IAT Min of 4μs but a Max of 11s. Does this timing pattern align with a specific PFCP attack type described in the documentation?",
-        "ground_truth": "Yes. This 'burst-then-idle' pattern is characteristic of a PFCP Flood attack, where messages are sent in rapid succession to exhaust resources."
-    },
-    {
-        "id": "Q_PFCP_usefulness_2", "category": "usefulness",
-        "sample_id": "8",
-        "xai_file": "evaluation_dataset/shap_individual_8.json",
-        "query": "Sample 8, 5GC_PFCP dataset. PFCPHeartbeatRequest_counter=13 over a 55-second flow. According to the PFCP dataset documentation, what is the definition of a PFCP Session Establishment Flood attack, and does a heartbeat count of 13 per minute meet the threshold for flood attack classification?",
-        "ground_truth": "According to the 5GC_PFCP dataset description, PFCP flood attacks are characterized by unusually high rates of Session Establishment and Heartbeat messages aimed at exhausting UPF resources. A heartbeat rate of 13 over 55 seconds corresponds to a low-frequency keepalive pattern typical of normal PFCP operation. This rate is not indicative of flooding behavior when considered in isolation and must be evaluated alongside other signaling and timing features."
-        },
-    {
-        "id": "Q_PFCP_usefulness_3", "category": "usefulness",
-        "sample_id": "8",
-        "xai_file": "evaluation_dataset/shap_individual_8.json",
-        "query": "The feature 'Unnamed: 0' appears as a top importance feature. Based on data science principles, should this be trusted for a real-world 5G deployment?",
-        "ground_truth": "No. 'Unnamed: 0' is the row index from the source CSV file. If a model relies on this, it has learned a spurious correlation (data leakage) based on the order of samples in the dataset rather than actual network behavior. It would fail in a real-world deployment where row indices do not exist."
-    },
-    {
-        "id": "Q_PFCP_usefulness_4", "category": "usefulness",
-        "sample_id": "137_and_8",
-        "xai_file": "none",
-        "query": "In the 5GC_PFCP dataset, both sample 137 (LightGBM) and sample 8 (DecisionTree) show PFCPHeartbeatRequest_counter=13 and PFCPSessionModificationRequest_counter=0 over ~55 seconds. LightGBM predicted Attack (false positive) while DecisionTree predicted Benign (false negative). What does this disagreement between models indicate about the reliability of these features for PFCP attack detection?",
-        "ground_truth": "The same feature values producing opposite predictions across two models reveals that PFCPHeartbeatRequest_counter=13 and PFCPSessionModificationRequest_counter=0 over ~55 seconds are ambiguous features that fall near the decision boundary. Neither pattern is unambiguously malicious or benign according to the PFCP specification — 13 heartbeats per minute is within normal operating range, and zero session modifications is normal for stable sessions. The inter-model disagreement indicates that neither model has learned a robust rule for this pattern, and that the underlying feature space does not cleanly separate this traffic type. A RAG-grounded explanation should communicate this ambiguity to the security analyst rather than presenting a confident attack or benign verdict."
-    },
+    # {
+    #     "id": "Q_PFCP_usefulness_1", "category": "usefulness",
+    #     "sample_id": "668",
+    #     "xai_file": "evaluation_dataset/shap_individual_668.json",
+    #     "query": "Sample 668 shows a Flow IAT Min of 4μs but a Max of 11s. Does this timing pattern align with a specific PFCP attack type described in the documentation?",
+    #     "ground_truth": "Yes. This 'burst-then-idle' pattern is characteristic of a PFCP Flood attack, where messages are sent in rapid succession to exhaust resources."
+    # },
+    # {
+    #     "id": "Q_PFCP_usefulness_2", "category": "usefulness",
+    #     "sample_id": "8",
+    #     "xai_file": "evaluation_dataset/shap_individual_8.json",
+    #     "query": "Sample 8, 5GC_PFCP dataset. PFCPHeartbeatRequest_counter=13 over a 55-second flow. According to the PFCP dataset documentation, what is the definition of a PFCP Session Establishment Flood attack, and does a heartbeat count of 13 per minute meet the threshold for flood attack classification?",
+    #     "ground_truth": "According to the 5GC_PFCP dataset description, PFCP flood attacks are characterized by unusually high rates of Session Establishment and Heartbeat messages aimed at exhausting UPF resources. A heartbeat rate of 13 over 55 seconds corresponds to a low-frequency keepalive pattern typical of normal PFCP operation. This rate is not indicative of flooding behavior when considered in isolation and must be evaluated alongside other signaling and timing features."
+    #     },
+    # {
+    #     "id": "Q_PFCP_usefulness_3", "category": "usefulness",
+    #     "sample_id": "8",
+    #     "xai_file": "evaluation_dataset/shap_individual_8.json",
+    #     "query": "The feature 'Unnamed: 0' appears as a top importance feature. Based on data science principles, should this be trusted for a real-world 5G deployment?",
+    #     "ground_truth": "No. 'Unnamed: 0' is the row index from the source CSV file. If a model relies on this, it has learned a spurious correlation (data leakage) based on the order of samples in the dataset rather than actual network behavior. It would fail in a real-world deployment where row indices do not exist."
+    # },
+    # {
+    #     "id": "Q_PFCP_usefulness_4", "category": "usefulness",
+    #     "sample_id": "137_and_8",
+    #     "xai_file": "none",
+    #     "query": "In the 5GC_PFCP dataset, both sample 137 (LightGBM) and sample 8 (DecisionTree) show PFCPHeartbeatRequest_counter=13 and PFCPSessionModificationRequest_counter=0 over ~55 seconds. LightGBM predicted Attack (false positive) while DecisionTree predicted Benign (false negative). What does this disagreement between models indicate about the reliability of these features for PFCP attack detection?",
+    #     "ground_truth": "The same feature values producing opposite predictions across two models reveals that PFCPHeartbeatRequest_counter=13 and PFCPSessionModificationRequest_counter=0 over ~55 seconds are ambiguous features that fall near the decision boundary. Neither pattern is unambiguously malicious or benign according to the PFCP specification — 13 heartbeats per minute is within normal operating range, and zero session modifications is normal for stable sessions. The inter-model disagreement indicates that neither model has learned a robust rule for this pattern, and that the underlying feature space does not cleanly separate this traffic type. A RAG-grounded explanation should communicate this ambiguity to the security analyst rather than presenting a confident attack or benign verdict."
+    # },
     # {
     #     "id": "Q_PFCP_usefulness_5", "category": "usefulness",
     #     "sample_id": "668_and_4844",

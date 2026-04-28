@@ -55,10 +55,20 @@ QRELS = {
     "Q_NIDD_faith_1":[],
     "Q_NIDD_faith_2":[],
     "Q_NIDD_faith_3":[],
-    "Q_PFCP_usefulness_1": [],
-    "Q_PFCP_usefulness_2": [],
-    "Q_PFCP_usefulness_3": [],
-    "Q_PFCP_usefulness_4": [],
+    "Q_PFCP_usefulness_1": [
+        "9293e1a8d508de144d45a7cd48386df2199ab351053c750e7d91e5a3761767eb",
+        "b06bb89b0d11d600522d2b49a74fe449fc3667e7e530960a2a5d243143e9c1df"
+    ],
+    "Q_PFCP_usefulness_2": [
+        "9293e1a8d508de144d45a7cd48386df2199ab351053c750e7d91e5a3761767eb",
+        "998f30ec9a0993f9e8dd5dd351593cff17a2859fcea99804445e64d84c40f47c",
+        "b06bb89b0d11d600522d2b49a74fe449fc3667e7e530960a2a5d243143e9c1df"
+    ],
+    "Q_PFCP_usefulness_3": [], # no chunks relevant.
+    "Q_PFCP_usefulness_4": [
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688",
+        "f0c04fba8d1a43dcf7438bbc07c06b8a1beea299544f556a4a0d282eb5a6adfa"
+    ],
     "Q_PFCP_usefulness_5": [
         "7a82e14fb747795c4a1e09cba1c7c3cda4269bb7efbc2031d58d0cd5697b875b",
         "905eb06d31565e18d4729b239b3590f23d118303dde85faecbf044065ba833ba",
