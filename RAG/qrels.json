@@ -1,31 +1,27 @@
 {
-    "Q_PFCP_retrieval_5": [
-        "f0c1cedb2da76996194b878266c9c4161d3b52155c47b6342e514fea66f56654"
-    ],
-    "Q_PFCP_faithfulness_1": [
+    "Q_5GAD_usefulness_1": [
+        "ded47291676490160ecd444d26f4e483cc062718453347326f3dfeea8e4099bd",
+        "80a6fb787e4c8215c07f43e7b533ee9ef0eb67e0471066c7a7797e5523396809",
+        "9293e1a8d508de144d45a7cd48386df2199ab351053c750e7d91e5a3761767eb",
+        "c9080f8396ef6463438186a6b67ad8f3a0662e01ccd40c12180b9e6c42364d63",
         "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688"
     ],
-    "Q_PFCP_faithfulness_2": [],
-    "Q_PFCP_faithfulness_3": [
+    "Q_5GAD_usefulness_2": [
+        "c9080f8396ef6463438186a6b67ad8f3a0662e01ccd40c12180b9e6c42364d63",
+        "3ef121622617ee80674df772a61153dfe048d2a9246e239820d1740f1fae1266",
+        "80a6fb787e4c8215c07f43e7b533ee9ef0eb67e0471066c7a7797e5523396809",
         "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688"
     ],
-    "Q_PFCP_faithfulness_4": [],
-    "Q_GAD_faithfulness_1": [],
-    "Q_NIDD_faith_1": [],
-    "Q_NIDD_faith_2": [],
-    "Q_NIDD_faith_3": [],
-    "Q_PFCP_usefulness_1": [],
-    "Q_PFCP_usefulness_2": [],
-    "Q_PFCP_usefulness_3": [],
-    "Q_PFCP_usefulness_4": [],
-    "Q_PFCP_usefulness_5": [],
-    "Q_PFCP_usefulness_6": [],
-    "Q_PFCP_usefulness_7": [],
-    "Q_PFCP_usefulness_8": [],
-    "Q_PFCP_usefulness_9": [],
-    "Q_5GAD_usefulness_1": [],
-    "Q_5GAD_usefulness_2": [],
     "Q_5GAD_usefulness_3": [],
-    "Q_NIDD_use_1": [],
-    "Q_NIDD_use_2": []
+    "Q_NIDD_use_1": [
+        "3ef121622617ee80674df772a61153dfe048d2a9246e239820d1740f1fae1266",
+        "0a338daf1a4a0313bf7e8e8e5148d1b5f682890dde9d147cbbb6846c23ea787a",
+        "fa3f2f145d05f188d48ea5155fcd400aa825d8d65fcc15f1c6dd64a021f430b9",
+        "73c46dcb54d0707905f5ef5829b35491bfa11102193dd5972018b688973b0613"
+    ],
+    "Q_NIDD_use_2": [
+        "fa3f2f145d05f188d48ea5155fcd400aa825d8d65fcc15f1c6dd64a021f430b9",
+        "7cb68838492a84200bb164206c258c6a81b6dc92f42550af4d222b0f1bd5c7ba",
+        "6867404c74e8effb6d55265d43afef38f4e2a6a143ca3f97f11ffea0115f41f0"
+    ]
 }
