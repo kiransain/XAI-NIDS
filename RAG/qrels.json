@@ -1,16 +1,27 @@
 {
-    "Q_PFCP_usefulness_1": [
-        "9293e1a8d508de144d45a7cd48386df2199ab351053c750e7d91e5a3761767eb",
-        "b06bb89b0d11d600522d2b49a74fe449fc3667e7e530960a2a5d243143e9c1df"
-    ],
-    "Q_PFCP_usefulness_2": [
-        "9293e1a8d508de144d45a7cd48386df2199ab351053c750e7d91e5a3761767eb",
-        "998f30ec9a0993f9e8dd5dd351593cff17a2859fcea99804445e64d84c40f47c",
-        "b06bb89b0d11d600522d2b49a74fe449fc3667e7e530960a2a5d243143e9c1df"
-    ],
-    "Q_PFCP_usefulness_3": [],
-    "Q_PFCP_usefulness_4": [
+    "Q_PFCP_faithfulness_4": [
+        "f0c04fba8d1a43dcf7438bbc07c06b8a1beea299544f556a4a0d282eb5a6adfa",
+        "bb9211c14cb4eb446fd91e8658322563e546da5b0c0814d5e951c85318f5b60d",
+        "b08fd9c9bca9fe45c5184bebbef655588923c6f7f9bcff09b583766ab5d09dfb",
+        "16f36b8c3da8ca27bc7b44c85cbe8070f0339c7f3c027b33eb7ef8a5e24affdc",
         "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688",
-        "f0c04fba8d1a43dcf7438bbc07c06b8a1beea299544f556a4a0d282eb5a6adfa"
+        "d04d7b90beaea4f24c6ff6c844887b53b70ba05175774f0d02c4dab7c25e2d23"
+    ],
+    "Q_GAD_faithfulness_1": [
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688",
+        "fa3f2f145d05f188d48ea5155fcd400aa825d8d65fcc15f1c6dd64a021f430b9",
+        "90b77732a011e11a1b3370a60726523433425db41989233383c10c6ae8aadd52",
+        "9293e1a8d508de144d45a7cd48386df2199ab351053c750e7d91e5a3761767eb"
+    ],
+    "Q_NIDD_faith_1": [
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688"
+    ],
+    "Q_NIDD_faith_2": [
+        "7cb68838492a84200bb164206c258c6a81b6dc92f42550af4d222b0f1bd5c7ba",
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688"
+    ],
+    "Q_NIDD_faith_3": [
+        "7cb68838492a84200bb164206c258c6a81b6dc92f42550af4d222b0f1bd5c7ba",
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688"
     ]
 }
