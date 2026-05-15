@@ -18,7 +18,7 @@ Output: ir_metrics_detailed.csv   (per-query scores)
 Requirements:
     pip install pandas
 """
-
+ 
 import json
 import math
 import pandas as pd

@@ -25,21 +25,21 @@ for i, r in enumerate(results):
     answer = r["answer"]
     ground_truth = r["ground_truth"]
 
-scorer = rouge_scorer.RougeScorer(["rouge1", "rouge2", "rougeL"], use_stemmer=True)
-scores = scorer.score(ground_truth, answer)
+    scorer = rouge_scorer.RougeScorer(["rouge1", "rouge2", "rougeL"], use_stemmer=True)
+    scores = scorer.score(ground_truth, answer)
 
-row = {
-    "query_id": query_id,
-    "engine": engine,
-    "rouge1": scores["rouge1"].fmeasure,
-    "rouge2": scores["rouge2"].fmeasure,
-    "rougeL": scores["rougeL"].fmeasure,
-    "bert_precision": P[i].item(),
-    "bert_recall": R[i].item(),
-    "bert_f1": F1[i].item()
-}
+    row = {
+        "query_id": query_id,
+        "engine": engine,
+        "rouge1": scores["rouge1"].fmeasure,
+        "rouge2": scores["rouge2"].fmeasure,
+        "rougeL": scores["rougeL"].fmeasure,
+        "bert_precision": P[i].item(),
+        "bert_recall": R[i].item(),
+        "bert_f1": F1[i].item()
+    }
 
-rows.append(row)
+    rows.append(row)
 
 with open("evaluation_results.csv", "w", newline="") as csvfile:
     fieldnames = ["query_id", "engine", "rouge1", "rouge2", "rougeL", "bert_precision", "bert_recall", "bert_f1"]
