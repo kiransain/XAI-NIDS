@@ -212,7 +212,144 @@
   "correctness_reason": "The answer is directionally correct that a near-symmetric ratio is generally benign, but it overcomplicates and introduces ML-focused speculation rather than clearly stating that a single missed heartbeat is not evidence of attack.",
   "answer_relevancy_reason": "The response directly addresses the meaning of the heartbeat ratio and whether a single missed response indicates an attack.",
   "notes": ""
+},
+{
+  "query_id":"Q_PFCP_faithfulness_1",
+  "engine":"none",
+  "faithfulness":0,
+  "correctness":1,
+  "answer_relevancy":2,
+  "faithfulness_reason":"The context provides no information, so the answer's claims about SHAP values, feature names, prediction scores, and 5G interpretations are unsupported by the retrieved context.",
+  "correctness_reason":"The answer correctly identifies 'Unnamed: 0' as the feature with the highest SHAP value (~0.219) and that it pushes the prediction upward, but it misses the key ground-truth point that this indicates a dataset artifact and potential data leakage.",
+  "answer_relevancy_reason":"The answer directly addresses which feature has the highest SHAP value and explains how the +0.219 contribution influences the prediction.",
+  "notes":"Answer contains substantial unsupported extrapolation beyond the reference answer."
+},
+{
+  "query_id":"Q_PFCP_faithfulness_1",
+  "engine":"bm25",
+  "faithfulness":0,
+  "correctness":0,
+  "answer_relevancy":2,
+  "faithfulness_reason":"The context only explains general SHAP concepts and contains no evidence that 'duration' is the highest-SHAP feature, that its SHAP value is 0.219, that its raw value is 55,007,035, or that the prediction is 0.719.",
+  "correctness_reason":"The answer incorrectly identifies 'duration' as the highest-SHAP feature and misses the ground-truth conclusion that 'Unnamed: 0' is a dataset artifact indicating potential data leakage.",
+  "answer_relevancy_reason":"The answer directly attempts to identify the highest-SHAP feature and explain how a SHAP value of 0.219 affects the prediction.",
+  "notes":"Answer fabricates sample-specific details not present in the retrieved context and contradicts the ground truth."
+},
+{
+  "query_id": "Q_PFCP_faithfulness_1",
+  "engine": "vector",
+  "faithfulness": 1,
+  "correctness": 1,
+  "answer_relevancy": 2,
+  "faithfulness_reason": "The answer correctly applies the retrieved SHAP concepts and identifies 'Unnamed: 0' with a positive contribution, but it adds unsupported claims about duration, specific prediction values, feature meanings, and attack scenarios not present in the context.",
+  "correctness_reason": "The answer correctly identifies 'Unnamed: 0' as the highest SHAP feature and that it pushes the prediction toward an attack, but it misses the key ground-truth insight that this feature is a dataset artifact indicating potential data leakage.",
+  "answer_relevancy_reason": "The answer directly addresses which feature has the highest SHAP value and explains how the positive SHAP value influences the prediction.",
+  "notes": "Includes unsupported interpretations of feature semantics and invented contribution values beyond the provided context."
+},
+{
+  "query_id":"Q_PFCP_faithfulness_2",
+  "engine":"none",
+  "faithfulness":0,
+  "correctness":1,
+  "answer_relevancy":2,
+  "faithfulness_reason":"The context contains no technical documentation, so all claims about TCP flags, window sizes, attack types, source-port behavior, and 5G security interpretations are unsupported by the retrieved context.",
+  "correctness_reason":"The answer correctly explains that the benign-pushing source port signal is outweighed by attack-indicating TCP behavioral features, but it introduces speculative interpretations and incorrectly describes SHAP sign directions in places, making it only partially aligned with the ground truth.",
+  "answer_relevancy_reason":"The answer directly addresses what the combination of high PSH flags, high ACK flags, and elevated Init Bwd Win Byts indicates at the TCP/IP layer and relates it to the attack prediction.",
+  "notes":"Answer is highly detailed and relevant but contains unsupported speculation and some confusion about whether positive/negative SHAP values push toward attack or benign classes."
+},
+
+{
+  "query_id": "Q_PFCP_faithfulness_2",
+  "engine": "bm25",
+  "faithfulness": 1,
+  "correctness": 1,
+  "answer_relevancy": 2,
+  "faithfulness_reason": "The answer correctly uses the provided feature definitions and SHAP directionality, but introduces unsupported claims about specific attack types, PFCP signaling attacks, 5G components, a base value of 0.755, and threat interpretations not present in the context.",
+  "correctness_reason": "The answer partially aligns with the ground truth by linking high PSH, ACK, and Init Bwd Win Byts values to attack-related behavior and noting that positive contributions outweighed the benign Src Port signal, but it misses the specific session-modification-flood interpretation and adds several unsupported attack explanations.",
+  "answer_relevancy_reason": "The answer directly addresses what the combination of PSH flags, ACK flags, and Init Bwd Win Byts indicates and explains why the model still predicted an attack despite the benign Src Port contribution.",
+  "notes": "Contains substantial speculation about DoS, ACK floods, SYN floods, PFCP attacks, gNB/AMF targeting, and an unsupported base value."
+},
+{
+  "query_id": "Q_PFCP_faithfulness_2",
+  "engine": "vector",
+  "faithfulness": 0,
+  "correctness": 1,
+  "answer_relevancy": 2,
+  "faithfulness_reason": "The answer introduces unsupported details such as a base value of 0.755, interpretations of specific feature values, evasion techniques, PFCP attack behavior, window-scaling implications, and attack mechanics that are not contained in the retrieved context.",
+  "correctness_reason": "The answer partially reflects the ground truth by recognizing that PSH, ACK, and Init Bwd Win Byts collectively outweigh the benign Src Port signal and support the attack prediction, but it misses the specific session-modification-flood interpretation and replaces it with speculative explanations.",
+  "answer_relevancy_reason": "The answer directly addresses the significance of high PSH flags, ACK flags, and elevated Init Bwd Win Byts and explains why the model still predicts an attack.",
+  "notes": "Contains extensive hallucinated reasoning about evasion attacks, PFCP behavior, window negotiation, port scanning, and model confidence that is not supported by the retrieved context."
+},
+{
+  "query_id": "Q_PFCP_faithfulness_3",
+  "engine": "none",
+  "faithfulness": 0,
+  "correctness": 1,
+  "answer_relevancy": 2,
+  "faithfulness_reason": "The answer introduces extensive unsupported details about SHAP directions, TCP/IP feature interpretations, and lists of features not present in the context.",
+  "correctness_reason": "The answer partially captures the idea that multiple feature contributions together override the top benign features, but it misses the ground-truth mechanism of base value plus summed weights and instead relies on speculative LIME interpretation.",
+  "answer_relevancy_reason": "The response directly addresses why the model still predicted 'Attack' despite top LIME features pushing toward 'Benign'.",
+  "notes": "Overly speculative expansion of feature behavior and incorrect reliance on SHAP-style reasoning instead of LIME summary logic."
+},
+{
+  "query_id": "Q_PFCP_faithfulness_3",
+  "engine": "bm25",
+  "faithfulness": 0,
+  "correctness": 1,
+  "answer_relevancy": 2,
+  "faithfulness_reason": "The answer introduces unsupported specific feature names, weights, and LIME interpretation details not present in the retrieved context, and misrepresents the given explanation framework.",
+  "correctness_reason": "The answer partially captures the idea that non-top features collectively outweigh benign top features, but it does not correctly reflect the ground truth mechanism of base value plus summed weights as the decisive factor.",
+  "answer_relevancy_reason": "The answer directly addresses why an attack prediction occurs despite top LIME features pushing toward benign.",
+  "notes": "Over-interprets LIME mechanics and invents feature-specific explanations instead of sticking to the base-value + weight-sum reasoning required by the ground truth."
+},
+{
+  "human_comment":"LLM-as-judge 1 returned first 0-2-2, then 1-1-2. Gemini 3.5 flash returned 1-1-1, and second run 2-2-2, and then again 1-1-1. reasons are varied. reasons: The answer incorrectly invents specific feature contributions and detailed LIME feature behavior that are not supported by the provided context, which only explains general LIME additive weighting. (for score 1 faithfulness), for correctness = 1, reason is that The answer partially aligns with the ground truth idea of summed feature contributions but adds unnecessary and partially incorrect elaboration beyond the simple base-value explanation. in the case of faitfhulness = 0: The answer introduces multiple specific feature values and explanations not present in the provided context., and correctness being = 2, reasons are:It correctly states that the final prediction results from the sum of all weights plus a base value outweighing benign features, matching the ground truth. "
+  ,"query_id":"Q_PFCP_faithfulness_3",
+  "engine":"vector",
+  "faithfulness":0,
+  "correctness":1,
+  "answer_relevancy":2,
+  "faithfulness_reason":"The answer invents specific feature names, values, and LIME contributions that are not present in the retrieved context, which only provides general LIME principles.",
+  "correctness_reason":"It correctly states that the final prediction results from the combined weighted contributions of multiple features, but it omits the key ground-truth detail that the high base value (0.755) also helped produce the Attack prediction.",
+  "answer_relevancy_reason":"The answer directly addresses why an Attack prediction can occur even when the top two LIME features push toward Benign.",
+  "notes":""
+},
+{
+  "query_id":"Q_PFCP_faithfulness_4",
+  "engine":"none",
+  "faithfulness":0,
+  "correctness":1,
+  "answer_relevancy":2,
+  "faithfulness_reason":"With no retrieved context available, the answer's numerous technical claims, feature interpretations, and explanations are unsupported by the provided context.",
+  "correctness_reason":"The answer correctly states that a prediction can remain valid even when a majority of top features push toward the opposite class because other features and model interactions can outweigh them, but it omits the key ground-truth points about summing all contributions and the attack-leaning base value of 0.755.",
+  "answer_relevancy_reason":"The answer directly addresses whether a prediction is valid when most top-ranked features push toward the opposite class and explains why the model could still predict attack.",
+  "notes":""
+},
+{
+  "query_id": "Q_PFCP_faithfulness_4",
+  "engine": "bm25",
+  "faithfulness": 1,
+  "correctness": 1,
+  "answer_relevancy": 2,
+  "faithfulness_reason": "The answer correctly states that LIME predictions depend on a weighted sum and that top-ranked features are not votes, but it adds unsupported claims about other feature contributions, PFCP attack behavior, and MLP accuracy that are not grounded in the provided context.",
+  "correctness_reason": "The answer captures the key idea that a prediction can remain Attack even when most top features push toward Benign because the decision depends on weighted contributions, but it omits the important role of the high base value (0.755) emphasized in the ground truth.",
+  "answer_relevancy_reason": "The answer directly addresses whether a prediction is valid when most top features push toward the opposite class and explains the model decision process.",
+  "notes": "Misses the ground-truth emphasis on the attack-leaning base value and introduces unsupported discussion about specific attack patterns and model performance."
+},
+{
+  "human_comment": "LLM-as-judge 1 gave faithfulness = 2, claiming that All claims are consistent with the provided context, which explains LIME weights, weighted sums, and that feature importance is not voting.",
+  "query_id": "Q_PFCP_faithfulness_4",
+  "engine": "vector",
+  "faithfulness": 1,
+  "correctness": 1,
+  "answer_relevancy": 2,
+  "faithfulness_reason": "The answer correctly reflects the context's explanation that LIME uses weighted contributions rather than voting, but it adds unsupported claims about feature interactions, confidence assessment, PFCP attack behavior, and other features not present in the context.",
+  "correctness_reason": "The answer captures the core ground-truth idea that predictions depend on the weighted sum of contributions rather than the majority of top-ranked features, but it does not clearly communicate the critical role of the attack-leaning base value (0.755) and introduces speculative reasoning.",
+  "answer_relevancy_reason": "The answer directly addresses whether a prediction can be valid when most top features push toward the opposite class and explains the decision mechanism.",
+  "notes": "Key conclusion is correct, but the answer omits the important base-value explanation and includes unsupported discussion beyond the provided evidence."
 }
+
+
 
 
 ]
