@@ -1,0 +1,134 @@
+[
+  {
+    "query_id": "Q_PFCP_control_1",
+    "engine": "none",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 1,
+    "security_specificity": 1,
+    "context_utilization_score": 1,
+    "hallucinated_security_reasoning": 1,
+    "notes": "All scores are compressed to 1 to avoid extreme ratings. The response provides a solid conceptual overview of supervised vs. unsupervised learning in IDS, though it lacks the thesis-specific details mentioned in the ground truth due to the absence of retrieved context."
+  },
+  {
+    "query_id": "Q_PFCP_control_1",
+    "engine": "bm25",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 1,
+    "security_specificity": 1,
+    "context_utilization_score": 1,
+    "hallucinated_security_reasoning": 1,
+    "notes": "Scores are compressed toward the center of the 0-2 scale. The answer correctly explains supervised and unsupervised learning using the 5G context, though it misses the specific models (XGBoost) from the ground truth."
+  },
+  {
+    "query_id": "Q_PFCP_control_2",
+    "engine": "none",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 1,
+    "security_specificity": 1,
+    "context_utilization_score": 1,
+    "hallucinated_security_reasoning": 1,
+    "notes": "The context was empty, so the model relied on internal knowledge. It correctly identified UPF and its N4 role but added unnecessary ML security speculation."
+  },
+  {
+    "query_id": "Q_PFCP_control_2",
+    "engine": "bm25",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 1,
+    "security_specificity": 1,
+    "context_utilization_score": 1,
+    "hallucinated_security_reasoning": 1,
+    "notes": "Scores are compressed toward the center. The answer correctly identifies the UPF and its N4 interface role, utilizing retrieved context about PFCP attacks, while incorporating some general external security concepts."
+  },
+  {
+    "query_id": "Q_PFCP_control_2",
+    "engine": "vector",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 1,
+    "security_specificity": 1,
+    "context_utilization_score": 1,
+    "hallucinated_security_reasoning": 1,
+    "notes": "Scores are compressed toward the center (1) per instructions. The response correctly identifies UPF and its N4 role, incorporating both context and general 5G knowledge, though it includes irrelevant XAI commentary."
+  },
+  {
+    "query_id": "Q_PFCP_control_3",
+    "engine": "none",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 1,
+    "security_specificity": 1,
+    "context_utilization_score": 1,
+    "hallucinated_security_reasoning": 1,
+    "notes": "Context was absent, so context-based metrics are neutral. The response aligns well with the ground truth, with all ratings compressed to the center of the scale."
+  },
+  {
+    "query_id": "Q_PFCP_control_3",
+    "engine": "vector",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 1,
+    "security_specificity": 1,
+    "context_utilization_score": 1,
+    "hallucinated_security_reasoning": 1,
+    "notes": "Scores are compressed to the center of the 0-2 scale (1) to avoid extreme values. The generated answer matches the ground truth and accurately utilizes the context."
+  },
+  {
+    "query_id": "Q_PFCP_retrieval_1",
+    "engine": "vector",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 1,
+    "security_specificity": 1,
+    "context_utilization_score": 1,
+    "hallucinated_security_reasoning": 1,
+    "notes": "Scores are compressed toward the center (1) per instructions. The answer correctly identifies that TCP flags are not expected in UDP traffic, aligning with the ground truth, but introduces external ML/XAI details not present in the retrieved context."
+  },
+  {
+    "query_id": "Q_PFCP_retrieval_3",
+    "engine": "none",
+    "faithfulness": 0,
+    "correctness": 1,
+    "answer_relevancy": 1,
+    "security_specificity": 2,
+    "context_utilization_score": 0,
+    "hallucinated_security_reasoning": 0,
+    "notes": "The model made a major mathematical error, converting microseconds to milliseconds and concluding the flow lasted 15.3 hours instead of the 55 seconds specified in the query. This led to extensive hallucinated security reasoning about the lack of heartbeat and modification requests over a 15-hour period. It also cited TS 29.503 (UDM) instead of TS 29.244 (PFCP). However, it did correctly note in passing that stable sessions do not require frequent modifications."
+  },
+  {
+    "query_id": "Q_PFCP_retrieval_3",
+    "engine": "vector",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 1,
+    "security_specificity": 1,
+    "context_utilization_score": 1,
+    "hallucinated_security_reasoning": 1,
+    "notes": "Scores are compressed toward the center of the 0-2 scale. The response successfully merges general PFCP specifications with retrieved context details."
+  },
+  {
+    "query_id": "Q_PFCP_retrieval_5",
+    "engine": "bm25",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 1,
+    "security_specificity": 1,
+    "context_utilization_score": 1,
+    "hallucinated_security_reasoning": 1,
+    "notes": "The response aligns perfectly with both the retrieved context and the ground truth. All scores are compressed to 1 to avoid extreme values."
+  },
+  {
+    "query_id": "Q_PFCP_retrieval_5",
+    "engine": "vector",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 1,
+    "security_specificity": 1,
+    "context_utilization_score": 1,
+    "hallucinated_security_reasoning": 1,
+    "notes": "Scores are compressed toward the center of the 0-2 scale. The generated answer is highly accurate, matching the ground truth and context closely."
+  }
+]
