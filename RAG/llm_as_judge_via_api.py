@@ -1,3 +1,6 @@
+'''
+this file is for using an LLM as a judge to evaluate the generated answers from the benchmark.
+'''
 import json
 import time
 import re

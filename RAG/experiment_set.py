@@ -1,3 +1,6 @@
+'''
+this file contains the experiment set for the benchmark evaluation.
+'''
 EXPERIMENT_SET = [
     # first queries are from 5G_PFCP.
     # Category 1: Control questions:

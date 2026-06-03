@@ -1,4 +1,8 @@
 # generate_qrels.py
+'''
+this script is for generating qrels (query relevance judgments) for the benchmark evaluation.
+it pools candidate chunks together and asks the annotator to label them as relevant or not for each query in the experiment set.
+'''
 import json
 import random
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, StorageContext, Settings

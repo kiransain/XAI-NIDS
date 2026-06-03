@@ -1,3 +1,7 @@
+'''
+main file to run the thesis benchmark evaluation.
+'''
+
 import os
 import json
 import chromadb

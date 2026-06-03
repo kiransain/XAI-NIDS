@@ -1,4 +1,8 @@
 # inspect_chunks.py 
+'''
+a simple script to inspect the chunks created from the PDF documents in the knowledge base. 
+this is useful for debugging and understanding how the documents are being processed and split into chunks, 
+'''
 from llama_index.core import SimpleDirectoryReader
 from llama_index.core.node_parser import SentenceSplitter
 
