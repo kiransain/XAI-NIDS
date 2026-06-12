@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+#creates a boxplots of each metric + std etc.
+
 # 1. Load the manual evaluation results file
 with open("generation_eval_results_v2.json", "r", encoding="utf-8") as f:
     data = json.load(f)
@@ -29,7 +31,7 @@ metric_labels = [
     'Answer Relevancy\n(Query Alignment)',
     'Security Specificity\n(Technical Depth)',
     'Context Utilization\n(CUS Score)',
-    'No Hallucinations\n(Higher = Fewer Invented Claims)'
+    'Hallucinated Security Reasoning\n(Inversely Scored)'
 ]
 
 df_plot = means_ordered.T

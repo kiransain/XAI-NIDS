@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 import numpy as np
-
+#this script creates a barplot summary
 # ---------------------------
 # 1. Load data
 # ---------------------------

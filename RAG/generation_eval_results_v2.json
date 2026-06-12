@@ -85,11 +85,26 @@
     "context_utilization_score": 1,
     "hallucinated_security_reasoning": 2
   },
-  {"query_id":"Q_PFCP_retrieval_1","engine":"none","faithfulness":0,"correctness":1,"answer_relevancy":1,"security_specificity":1,"context_utilization_score":0,"hallucinated_security_reasoning":0,"notes":"The answer correctly states that UDP flows do not have TCP flags and that their absence is not suspicious. However, it introduces extensive unsupported analysis about packet sizes, IATs, reconnaissance, slow attacks, and malicious activity that is neither supported by the empty context nor reflected in the ground truth. Because the final conclusion matches the ground truth but the reasoning shifts attention to unrelated suspicious indicators, correctness is only partial."}
+  {"query_id":"Q_PFCP_retrieval_1",
+  "engine":"none","faithfulness":0,
+  "correctness":1,"answer_relevancy":1,
+  "security_specificity":1,"context_utilization_score":0,
+  "hallucinated_security_reasoning":0,
+  "notes":"The answer correctly states that UDP flows do not have TCP flags and that their absence is not suspicious. However, it introduces extensive unsupported analysis about packet sizes, IATs, reconnaissance, slow attacks, and malicious activity that is neither supported by the empty context nor reflected in the ground truth. Because the final conclusion matches the ground truth but the reasoning shifts attention to unrelated suspicious indicators, correctness is only partial."}
 ,
-{"query_id":"Q_PFCP_retrieval_1","engine":"bm25","faithfulness":1,"correctness":2,"answer_relevancy":2,"security_specificity":2,"context_utilization_score":2,"hallucinated_security_reasoning":1,"notes":"The answer correctly uses the retrieved documentation stating that PFCP uses UDP and port 8805 and concludes that TCP flags are not applicable. However, it also adds unsupported interpretations about packet sizes, PFCP session behavior, and the meaning of the ML prediction that are not established by the retrieved context. These speculative additions do not alter the main conclusion."}
+{"query_id":"Q_PFCP_retrieval_1",
+"engine":"bm25","faithfulness":1,"correctness":2,
+"answer_relevancy":2,"security_specificity":2,
+"context_utilization_score":2,"hallucinated_security_reasoning":1,
+"notes":"The answer correctly uses the retrieved documentation stating that PFCP uses UDP and port 8805 and concludes that TCP flags are not applicable. However, it also adds unsupported interpretations about packet sizes, PFCP session behavior, and the meaning of the ML prediction that are not established by the retrieved context. These speculative additions do not alter the main conclusion."}
 ,
-{"query_id":"Q_PFCP_retrieval_1","engine":"vector","faithfulness":0,"correctness":0,"answer_relevancy":1,"security_specificity":1,"context_utilization_score":0,"hallucinated_security_reasoning":0,"notes":"The retrieved context contains PFCP information-element definitions and measurement flags but does not support claims about UDP port 8805, TCP flags, packet-length anomalies, SHAP importance, covert channels, botnets, scanning, or malicious classification. Relative to the ground truth, the answer incorrectly treats traffic characteristics as suspicious and implies malicious significance, whereas the correct conclusion is simply that PFCP uses UDP and TCP flags are not applicable. The answer addresses the question but is dominated by unsupported analysis."}
+{"query_id":"Q_PFCP_retrieval_1",
+"engine":"vector","faithfulness":0,
+"correctness":0,"answer_relevancy":1,
+"security_specificity":1,"context_utilization_score":0,
+"hallucinated_security_reasoning":0,
+"notes":"The retrieved context contains PFCP information-element definitions and measurement flags but does not support claims about UDP port 8805, TCP flags, packet-length anomalies, SHAP importance, covert channels, botnets, scanning, or malicious classification. Relative to the ground truth, the answer incorrectly treats traffic characteristics as suspicious and implies malicious significance, whereas the correct conclusion is simply that PFCP uses UDP and TCP flags are not applicable. The answer addresses the question but is dominated by unsupported analysis."
+}
 ,
 {
 "query_id": "Q_PFCP_retrieval_3",
