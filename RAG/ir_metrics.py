@@ -25,7 +25,7 @@ import pandas as pd
 
 # ── Configuration ──────────────────────────────────────────────────────────────
 
-RESULTS_FILE = "thesis_evaluation_results.json"
+RESULTS_FILE = "main_thesis_evaluation_results.json"
 K = 3
 
 # ── Relevance labels (QRELS) ───────────────────────────────────────────────────

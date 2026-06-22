@@ -22,6 +22,17 @@
     "notes": "Uses the retrieved context well, including labeled datasets and supervised learning. However, it omits the thesis-specific statement that XGBoost and DNN are the supervised models used."
   },
   {
+    "query_id": "Q_PFCP_control_1",
+    "engine": "vector",
+    "faithfulness": 1,
+    "correctness": 2,
+    "answer_relevancy": 1,
+    "security_specificity": 1,
+    "context_utilization_score": 2,
+    "hallucinated_security_reasoning": 1,
+    "notes": "The answer correctly explains supervised vs. unsupervised learning and aligns with the ground truth's core distinction (labeled vs. unlabeled data). It also references supervised algorithms explicitly mentioned in the context. However, it introduces substantial unsupported content not present in the retrieved context, including anomaly detection details, K-Means, Autoencoders, One-Class SVM, zero-day detection claims, false-positive discussions, XAI/SHAP/LIME commentary, and comparative tables. These additions reduce faithfulness and introduce mild hallucinated reasoning, although they do not overturn the main conclusion."
+  },
+  {
     "query_id": "Q_PFCP_control_2",
     "engine": "none",
     "faithfulness": 2,

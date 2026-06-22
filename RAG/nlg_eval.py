@@ -45,7 +45,7 @@ for i, r in enumerate(results):
 
     rows.append(row)
 
-with open("evaluation_results.csv", "w", newline="") as csvfile:
+with open("nlg_results.csv", "w", newline="") as csvfile:
     fieldnames = ["query_id", "engine", "rouge1", "rouge2", "rougeL", "bert_precision", "bert_recall", "bert_f1"]
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
@@ -53,4 +53,4 @@ with open("evaluation_results.csv", "w", newline="") as csvfile:
     for row in rows:
         writer.writerow(row)
 
-print("Evaluation completed and results saved to evaluation_results.csv")
+print("Evaluation completed and results saved to nlg_results.csv")
