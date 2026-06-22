@@ -1,47 +1,52 @@
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
+# boxplot code
 
-df = pd.read_csv('ir_metrics_summary.csv')
+df = pd.read_csv("evaluation_results.csv")
+df.columns = df.columns.str.strip()
 
-# Remove bad row
-df = df[df['engine'] != 'none']
+metrics = [
+    "faithfulness",
+    "correctness",
+    "answer_relevancy",
+    "security_specificity",
+    "context_utilization_score",
+    "hallucinated_security_reasoning"
+]
 
-# Convert each column manually
-df['precision@3'] = df['precision@3'].astype(float)
-df['recall@3'] = df['recall@3'].astype(float)
-df['hit@3'] = df['hit@3'].astype(float)
-df['mrr'] = df['mrr'].astype(float)
-df['ndcg@3'] = df['ndcg@3'].astype(float)
+titles = [
+    "Faithfulness",
+    "Correctness",
+    "Answer Relevancy",
+    "Security Specificity",
+    "Context Utilization",
+    "Hallucination (inv.)"
+]
 
-# Set engine as index
-df = df.set_index('engine')
+fig, axes = plt.subplots(2, 3, figsize=(9, 5), sharey=True)
+axes = axes.flatten()
 
-# Plot
-df.plot(kind='bar')
+for ax, metric, title in zip(axes, metrics, titles):
 
-plt.ylabel('Score')
-plt.title('Evaluation Metrics by Engine')
+    sns.boxplot(
+        data=df,
+        x="engine",
+        y=metric,
+        ax=ax,
+        order=["none", "bm25", "vector"],
+        color="lightgray",
+        linecolor="black",
+        medianprops={"color": "black"}
+        
+    )
+
+    ax.set_title(title, fontsize=10)
+    ax.set_xlabel("")
+    ax.set_ylim(-0.2, 2.2)
+    ax.set_xticklabels(["None", "BM25", "Vector"])
+    axes[0].set_ylabel("Score")
+    axes[3].set_ylabel("Score")
+
+plt.tight_layout()
 plt.show()
-
-
-# df = pd.read_csv('ir_metrics_summary.csv')
-# df = df[df['engine'] != 'none'] # only engines with scores plotted; none not considered
-# df.iloc[:, 1:] #[row, col] = df.iloc[:, 1:].astype(float) # all rows starting from col 1
-
-# # Set engine as index
-# df.set_index('engine', inplace=True)
-
-# # df.T.plot(kind='bar')
-# # plt.ylabel('Score')
-# # plt.title('Metrics Comparison')
-# # plt.xticks(rotation=45)
-# # plt.tight_layout()
-# # plt.show()
-
-# df.plot(kind='bar')
-# plt.ylabel('Score')
-# plt.title('Evaluation Metrics by Engine')
-# plt.xticks(rotation=0)
-# plt.legend(title='Metrics')
-# plt.tight_layout()
-# plt.show()

@@ -26,7 +26,8 @@ from experiment_set import EXPERIMENT_SET
 # CONFIG
 # ----------------------------
 
-OUTPUT_FILE = "thesis_evaluation_results.json"
+OUTPUT_FILE = "missing.json"
+# main_thesis_evaluation_results.json
 
 Settings.llm = Ollama(model="deepseek-r1:8b", request_timeout=1000.0)
 Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")

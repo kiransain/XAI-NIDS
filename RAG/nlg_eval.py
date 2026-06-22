@@ -8,7 +8,7 @@ import json
 import csv
 
 
-with open("thesis_evaluation_results.json", "r") as t:      
+with open("main_thesis_evaluation_results.json", "r") as t:      
     results = json.load(t)
 
 rows = []
