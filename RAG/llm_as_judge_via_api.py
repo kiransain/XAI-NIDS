@@ -29,9 +29,9 @@ from experiment_set import EXPERIMENT_SET
 # CONFIG
 # =====================================================
 
-OUTPUT_FILE = "main_thesis_evaluation_results.json"
+OUTPUT_FILE = "gemini_results.json"
 
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = "gemini-3.5-flash"
 
 API_KEYS = [
     os.getenv("AQ.Ab8RN6LyPohWu2Ot8jdMt7uzbYiELdTbAz0IfeE8jHnVB8azsg"),
@@ -297,83 +297,92 @@ Provide a detailed interpretation of the XAI data in the context of 5G security.
 # EXECUTION LOOP
 # =====================================================
 
+ablation_test_set= [
+"Q_PFCP_retrieval_3",	"Q_PFCP_faithfulness_3", "Q_PFCP_usefulness_1",
+"Q_NIDD_use_1",	
+"Q_5GAD_usefulness_3"	,
+"Q_NIDD_use_2",
+"Q_PFCP_retrieval_1", "Q_PFCP_faithfulness_1", "Q_PFCP_faithfulness_2"	, "Q_PFCP_faithfulness_4"]
+
+
+
 for case in EXPERIMENT_SET:
+    if case["id"] in ablation_test_set:
+        print(
+            f"\nProcessing {case['id']}..."
+        )
 
-    print(
-        f"\nProcessing {case['id']}..."
-    )
+        for mode in [
+            "none",
+            "bm25",
+            "vector"
+        ]:
 
-    for mode in [
-        "none",
-        "bm25",
-        "vector"
-    ]:
+            run_id = f"{case['id']}_{mode}"
 
-        run_id = f"{case['id']}_{mode}"
+            if run_id in done_ids:
 
-        if run_id in done_ids:
+                print(
+                    f"Skipping {run_id}"
+                )
+                continue
 
-            print(
-                f"Skipping {run_id}"
-            )
-            continue
+            try:
 
-        try:
-
-            result = run_thesis_benchmark(
-                case,
-                engine_type=mode
-            )
-
-            results.append(result)
-
-            done_ids.add(run_id)
-
-            with open(
-                OUTPUT_FILE,
-                "w",
-                encoding="utf-8"
-            ) as f:
-
-                json.dump(
-                    results,
-                    f,
-                    indent=4,
-                    ensure_ascii=False
+                result = run_thesis_benchmark(
+                    case,
+                    engine_type=mode
                 )
 
-            print(
-                f"Completed {run_id}"
-            )
+                results.append(result)
 
-        except Exception as e:
+                done_ids.add(run_id)
 
-            print(
-                f"FAILED {run_id}: {e}"
-            )
+                with open(
+                    OUTPUT_FILE,
+                    "w",
+                    encoding="utf-8"
+                ) as f:
 
-            error_result = {
-                "query_id": case["id"],
-                "engine": mode,
-                "error": str(e),
-            }
+                    json.dump(
+                        results,
+                        f,
+                        indent=4,
+                        ensure_ascii=False
+                    )
 
-            results.append(
-                error_result
-            )
-
-            with open(
-                OUTPUT_FILE,
-                "w",
-                encoding="utf-8"
-            ) as f:
-
-                json.dump(
-                    results,
-                    f,
-                    indent=4,
-                    ensure_ascii=False
+                print(
+                    f"Completed {run_id}"
                 )
+
+            except Exception as e:
+
+                print(
+                    f"FAILED {run_id}: {e}"
+                )
+
+                error_result = {
+                    "query_id": case["id"],
+                    "engine": mode,
+                    "error": str(e),
+                }
+
+                results.append(
+                    error_result
+                )
+
+                with open(
+                    OUTPUT_FILE,
+                    "w",
+                    encoding="utf-8"
+                ) as f:
+
+                    json.dump(
+                        results,
+                        f,
+                        indent=4,
+                        ensure_ascii=False
+                    )
 
 print(
     "\nBenchmark complete. "
