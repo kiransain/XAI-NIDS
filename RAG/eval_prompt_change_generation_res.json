@@ -1,0 +1,213 @@
+[
+{
+"query_id": "Q_PFCP_retrieval_1",
+"engine": "none",
+"faithfulness": 1,
+"correctness": 1,
+"answer_relevancy": 2,
+"security_specificity": 1,
+"context_utilization_score": 0,
+"hallucinated_security_reasoning": 1,
+"notes": "Answer is correct in general, but the retrieved context contains no documentation. References to UDP behavior and XAI/TCP-flag features are unsupported by the provided context."
+},
+{
+"query_id": "Q_PFCP_retrieval_1",
+"engine": "bm25",
+"faithfulness": 1,
+"correctness": 2,
+"answer_relevancy": 2,
+"security_specificity": 2,
+"context_utilization_score": 2,
+"hallucinated_security_reasoning": 1,
+"notes": "PFCP over UDP port 8805 is directly supported by context. However, claims about specific ML/XAI feature values, packet lengths, and prediction label are not supported by the retrieved context."
+},
+{
+"query_id": "Q_PFCP_retrieval_1",
+"engine": "vector",
+"faithfulness": 1,
+"correctness": 1,
+"answer_relevancy": 2,
+"security_specificity": 1,
+"context_utilization_score": 0,
+"hallucinated_security_reasoning": 1,
+"notes": "The retrieved context does not contain information about UDP port 8805 or PFCP transport behavior. The answer's conclusion is plausible but unsupported by the provided context. It also omits the PFCP-specific reasoning present in the ground truth."
+},
+{
+    "query_id": "Q_PFCP_retrieval_3",
+    "engine": "none",
+    "faithfulness": 1,
+    "correctness": 2,
+    "answer_relevancy": 2,
+    "security_specificity": 2,
+    "context_utilization_score": 0,
+    "hallucinated_security_reasoning": 1,
+    "notes": "The retrieved context contains no PFCP documentation, so claims about PFCP behavior and stable sessions are unsupported by the provided context. However, the answer aligns well with the ground truth by stating that zero modification requests can be normal and should not be treated as suspicious in isolation."
+  },
+  {
+    "query_id": "Q_PFCP_retrieval_3",
+    "engine": "bm25",
+    "faithfulness": 1,
+    "correctness": 0,
+    "answer_relevancy": 2,
+    "security_specificity": 1,
+    "context_utilization_score": 1,
+    "hallucinated_security_reasoning": 0,
+    "notes": "The answer incorrectly concludes that the absence of Session Modification Requests may be suspicious because the model uses it for attack prediction. This contradicts the ground truth, which states that zero modification requests during a stable session are expected and not indicative of malicious behavior by themselves. It also invents a protocol-level implication ('session modification activity is a key aspect of normal PFCP operations') not supported by the retrieved context."
+  },
+  {
+    "query_id": "Q_PFCP_retrieval_3",
+    "engine": "vector",
+    "faithfulness": 1,
+    "correctness": 2,
+    "answer_relevancy": 2,
+    "security_specificity": 2,
+    "context_utilization_score": 1,
+    "hallucinated_security_reasoning": 1,
+    "notes": "The answer reaches the correct conclusion that absence of modification requests is normal for stable sessions and notes that attacks in the context involve modification requests. However, it speculates about what the model has learned from the feature (frequent modifications being attack-indicative), which is not directly supported by the context."
+  },
+  {
+    "query_id": "Q_PFCP_faithfulness_2",
+    "engine": "none",
+    "faithfulness": 0,
+    "correctness": 1,
+    "answer_relevancy": 2,
+    "security_specificity": 2,
+    "context_utilization_score": 0,
+    "hallucinated_security_reasoning": 0,
+    "notes": "No technical documentation was retrieved. The answer invents detailed interpretations of PSH flags, ACK flags, window sizes, amplification attacks, DoS behavior, and data exfiltration scenarios that are unsupported by the provided context. It partially overlaps with the ground truth by identifying attack-oriented behavior but misses the PFCP/session-manipulation interpretation and introduces unsupported attack mechanisms."
+  },
+  {
+    "query_id": "Q_PFCP_faithfulness_2",
+    "engine": "bm25",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 2,
+    "security_specificity": 1,
+    "context_utilization_score": 2,
+    "hallucinated_security_reasoning": 1,
+    "notes": "The answer correctly uses the retrieved SHAP explanation and TCP feature descriptions. However, the interpretation of high PSH/ACK counts and large window sizes as indicating high-throughput traffic, DoS activity, or TCP-window manipulation is not supported by the retrieved context. It partially matches the ground truth but misses the key PFCP-specific reasoning (session modification flood, bidirectional session manipulation, attack signals outweighing benign source port)."
+  },
+  {
+    "query_id": "Q_PFCP_faithfulness_2",
+    "engine": "vector",
+    "faithfulness": 0,
+    "correctness": 0,
+    "answer_relevancy": 2,
+    "security_specificity": 1,
+    "context_utilization_score": 0,
+    "hallucinated_security_reasoning": 0,
+    "notes": "The retrieved context contains only general dataset and attack-background information and provides no support for interpreting PSH flags, ACK flags, window sizes, or benign traffic characteristics. The answer directly contradicts the ground truth by claiming these features align with benign activity and suggesting the attack prediction may be a misclassification, whereas the ground truth states these features collectively indicate attack behavior and correctly drove the DNN toward an attack prediction."
+  },
+    {
+    "query_id": "Q_PFCP_faithfulness_3",
+    "engine": "none",
+    "faithfulness": 0,
+    "correctness": 1,
+    "answer_relevancy": 2,
+    "security_specificity": 0,
+    "context_utilization_score": 0,
+    "hallucinated_security_reasoning": 0,
+    "notes": "No retrieved context is available. The answer invents details about SHAP values and feature interactions that are not provided. It partially matches the ground truth by stating that other features outweighed benign features, but it omits the critical role of the high base value (0.755)."
+  },
+  {
+    "query_id": "Q_PFCP_faithfulness_3",
+    "engine": "bm25",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 2,
+    "security_specificity": 0,
+    "context_utilization_score": 2,
+    "hallucinated_security_reasoning": 1,
+    "notes": "The answer correctly uses the retrieved explanation that predictions depend on the weighted sum of all feature contributions, not just the top-ranked features. However, it invents specific feature names (Fwd IAT Min, Bwd Pkt Len Std) not present in the query or context and fails to mention the important base/intercept value (0.755) highlighted in the ground truth."
+  },
+  {
+    "query_id": "Q_PFCP_faithfulness_3",
+    "engine": "vector",
+    "faithfulness": 1,
+    "correctness": 1,
+    "answer_relevancy": 2,
+    "security_specificity": 0,
+    "context_utilization_score": 2,
+    "hallucinated_security_reasoning": 1,
+    "notes": "The answer reflects the retrieved LIME principle that positive contributions from other features can outweigh benign-pushing features. However, it invents specific feature names (Flow Duration, Fwd Pkt Len Mean, Fwd IAT Max, Bwd IAT Std) that are not supported by the context and omits the key base value (0.755) from the ground truth."
+  },
+  {
+    "query_id": "Q_PFCP_faithfulness_4",
+    "engine": "none",
+    "faithfulness": 0,
+    "correctness": 1,
+    "answer_relevancy": 2,
+    "security_specificity": 0,
+    "context_utilization_score": 0,
+    "hallucinated_security_reasoning": 1,
+    "notes": "No retrieved context was provided, yet the answer introduces unsupported claims about feature interactions, thresholds, and Pkt Len Std being the primary driver. It captures the general idea that predictions depend on more than the top features, but misses the key ground-truth points about additive contributions, the attack-leaning base value (0.755), and the need to compare all contributions."
+  },
+  {
+    "query_id": "Q_PFCP_faithfulness_4",
+    "engine": "bm25",
+    "faithfulness": 2,
+    "correctness": 1,
+    "answer_relevancy": 2,
+    "security_specificity": 0,
+    "context_utilization_score": 2,
+    "hallucinated_security_reasoning": 2,
+    "notes": "The answer closely follows the retrieved explanation that LIME rankings are not votes and that aggregate contributions determine the prediction. However, it omits the important ground-truth details about the attack-leaning base value and the additional attack-supporting features."
+  },
+  {
+    "query_id": "Q_PFCP_faithfulness_4",
+    "engine": "vector",
+    "faithfulness": 2,
+    "correctness": 1,
+    "answer_relevancy": 2,
+    "security_specificity": 0,
+    "context_utilization_score": 2,
+    "hallucinated_security_reasoning": 2,
+    "notes": "The answer is well supported by the retrieved context's explanation of additive contributions and non-voting feature rankings. It partially matches the ground truth but fails to mention the attack-leaning base value (0.755) and the specific additional attack-driving features cited in the reference answer."
+  },
+  {
+  "query_id": "Q_PFCP_usefulness_1",
+  "engine": "none",
+  "faithfulness": 0,
+  "correctness": 1,
+  "answer_relevancy": 1,
+  "security_specificity": 1,
+  "context_utilization_score": 0,
+  "hallucinated_security_reasoning": 1,
+  "notes": "No documentation was retrieved, yet the answer infers abnormal traffic behavior and potential attack relevance from IAT values. It does not identify the PFCP Flood attack stated in the ground truth, but correctly notes that attack attribution would require documentation."
+},
+{
+  "query_id": "Q_PFCP_usefulness_1",
+  "engine": "bm25",
+  "faithfulness": 0,
+  "correctness": 2,
+  "answer_relevancy": 2,
+  "security_specificity": 2,
+  "context_utilization_score": 1,
+  "hallucinated_security_reasoning": 0,
+  "notes": "The retrieved context lists PFCP flood attack classes but does not state that extreme Flow IAT Min/Max patterns indicate flood attacks. The answer invents a specific timing interpretation, adds unsupported indicators (e.g., Src Port 8805, Fwd IAT Std), and therefore is not faithful despite matching the ground-truth conclusion."
+},
+{
+  "query_id": "Q_PFCP_usefulness_1",
+  "engine": "vector",
+  "faithfulness": 1,
+  "correctness": 0,
+  "answer_relevancy": 2,
+  "security_specificity": 2,
+  "context_utilization_score": 2,
+  "hallucinated_security_reasoning": 1,
+  "notes": "The answer actively uses retrieved documentation about PFCP attacks and slow-rate attacks, but draws an unsupported conclusion that the timing pattern is more indicative of Slowloris/Torshammer or normal traffic. This contradicts the ground truth. Some reasoning is grounded in the context, but the attack attribution is speculative."
+},
+{"query_id":"Q_5GAD_usefulness_3","engine":"none","faithfulness":0,"correctness":1,"answer_relevancy":2,"security_specificity":1,"context_utilization_score":0,"hallucinated_security_reasoning":1,"notes":"No context was retrieved, so protocol interpretations are unsupported relative to the context. The answer correctly identifies tcp_flags=2 as SYN and notes TCP semantics, but misses the ground-truth nuance that the combination may be inconsistent if the sample is labeled as UDP and may indicate a SYN-flood scenario."},
+{"query_id":"Q_5GAD_usefulness_3","engine":"bm25","faithfulness":0,"correctness":1,"answer_relevancy":2,"security_specificity":1,"context_utilization_score":0,"hallucinated_security_reasoning":1,"notes":"The retrieved context contains attack descriptions and dataset background but does not support the specific claim that tcp_flags=2 and udp_len=0 indicate a TCP packet. The answer partially matches the ground truth by identifying SYN/TCP behavior, but omits the key inconsistency-with-UDP-label and SYN-flood interpretation."},
+{"query_id":"Q_5GAD_usefulness_3","engine":"vector","faithfulness":0,"correctness":1,"answer_relevancy":2,"security_specificity":1,"context_utilization_score":0,"hallucinated_security_reasoning":1,"notes":"The retrieved context does not provide evidence about tcp_flags=2, udp_len=0, or transport-protocol interpretation, making the answer unsupported by context. It correctly identifies SYN/TCP semantics but misses the ground-truth discussion of UDP-label inconsistency and potential SYN-flood indication."},
+{"query_id":"Q_NIDD_use_1","engine":"none","faithfulness":0,"correctness":1,"answer_relevancy":2,"security_specificity":2,"context_utilization_score":0,"hallucinated_security_reasoning":1,"notes":"No context is available, so all security interpretations are unsupported relative to the retrieved context. The answer correctly identifies a unidirectional flow and mentions reconnaissance/half-open connections, but overstates suspiciousness and omits the ground-truth caution that the pattern alone is insufficient to classify the flow as malicious."},
+{"query_id":"Q_NIDD_use_1","engine":"bm25","faithfulness":0,"correctness":1,"answer_relevancy":2,"security_specificity":2,"context_utilization_score":1,"hallucinated_security_reasoning":0,"notes":"The answer uses the retrieved context's discussion of attacks and reconnaissance to support suspicion, but the context does not establish that DstPkts=0 and DstBytes=0 imply no packets were received or that the flow is highly suspicious. It captures the unidirectional-flow idea but incorrectly escalates to likely malicious behavior instead of acknowledging benign explanations such as blocking or packet loss."},
+{"query_id":"Q_NIDD_use_1","engine":"vector","faithfulness":0,"correctness":1,"answer_relevancy":2,"security_specificity":2,"context_utilization_score":0,"hallucinated_security_reasoning":0,"notes":"The retrieved context contains dataset descriptions and attack categories but does not provide evidence about DstPkts/DstBytes semantics, SHAP values, or the cited feature values. The answer correctly identifies a unidirectional pattern but overstates that it is 'highly suspicious' and misses the ground-truth qualification that additional context is required before concluding maliciousness."},
+{"query_id":"Q_NIDD_use_2","engine":"none","faithfulness":0,"correctness":2,"answer_relevancy":2,"security_specificity":2,"context_utilization_score":0,"hallucinated_security_reasoning":2},
+{"query_id":"Q_NIDD_use_2","engine":"bm25","faithfulness":1,"correctness":2,"answer_relevancy":2,"security_specificity":2,"context_utilization_score":1,"hallucinated_security_reasoning":2,"notes":"The context supports that AckDat and TcpRtt are meaningful TCP-related features, but it does not explicitly define SynAck, AckDat semantics, or state that a completed handshake occurred. The answer's TCP interpretation is reasonable but only partially grounded in the retrieved context."},
+
+{"query_id":"Q_NIDD_use_2","engine":"vector","faithfulness":0,"correctness":1,"answer_relevancy":2,"security_specificity":2,"context_utilization_score":0,"hallucinated_security_reasoning":1,"notes":"The retrieved context contains only high-level dataset descriptions and no information about SynAck, AckDat, TcpRtt, TCP handshakes, or intrusion predictions. The answer correctly infers established TCP communication, but the added claim about the model predicting an intrusion and detecting anomalies is unsupported by both the context and the ground truth."}
+
+
+
+]
