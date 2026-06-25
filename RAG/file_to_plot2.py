@@ -54,11 +54,6 @@ axes[3].set_ylabel("Score")
 plt.tight_layout()
 
 plt.savefig(
-    "llm_judge_metrics.pdf",
-    bbox_inches="tight"
-)
-
-plt.savefig(
     "llm_judge_metrics.png",
     dpi=300,
     bbox_inches="tight"

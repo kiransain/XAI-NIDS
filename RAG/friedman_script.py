@@ -7,7 +7,6 @@ import matplotlib.patches as mpatches
 from scipy.stats import friedmanchisquare, wilcoxon
 from itertools import combinations
 
-# Load your actual data frame
 df = pd.read_csv("evaluation_results.csv")
 
 metrics = [
