@@ -23,7 +23,12 @@ from llama_index.retrievers.bm25 import BM25Retriever
 from llama_index.core.node_parser import SentenceSplitter
 
 from experiment_set import EXPERIMENT_SET
+from llama_index.embeddings.ollama import OllamaEmbedding
+from llama_index.core import Settings
 
+Settings.embed_model = OllamaEmbedding(
+    model_name="nomic-embed-text"
+)
 
 # =====================================================
 # CONFIG
@@ -31,12 +36,12 @@ from experiment_set import EXPERIMENT_SET
 
 OUTPUT_FILE = "gemini_results.json"
 
-GEMINI_MODEL = "gemini-3.5-flash"
+GEMINI_MODEL = "gemini-2.5-flash"
 
 API_KEYS = [
-    os.getenv("AQ.Ab8RN6LyPohWu2Ot8jdMt7uzbYiELdTbAz0IfeE8jHnVB8azsg"),
-    os.getenv("AQ.Ab8RN6JqbsVVo7mXafjxhg1ZrVm7_cFUsLXrT2rSroqt6Ja7dQ"),
-    os.getenv("AQ.Ab8RN6KIFGYFZA-KvqJey1bM0W4OITm69fN8OC7khOO69nLmrQ"),
+    "AQ.Ab8RN6LyPohWu2Ot8jdMt7uzbYiELdTbAz0IfeE8jHnVB8azsg",
+    "AQ.Ab8RN6JqbsVVo7mXafjxhg1ZrVm7_cFUsLXrT2rSroqt6Ja7dQ",
+"AQ.Ab8RN6KIFGYFZA-KvqJey1bM0W4OITm69fN8OC7khOO69nLmrQ",
 ]
 
 API_KEYS = [k for k in API_KEYS if k]
