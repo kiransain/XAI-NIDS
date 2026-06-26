@@ -23,7 +23,7 @@ from experiment_set import EXPERIMENT_SET
 # ----------------------------
 # CONFIG
 # ----------------------------
-OUTPUT_FILE = "main_thesis_evaluation_results.json"
+OUTPUT_FILE = "abc.json"
 GEMINI_MODEL = "gemini-2.5-flash"
 
 # Fallback mechanism for environment variables or raw list
@@ -102,10 +102,33 @@ def generate_with_gemini(prompt):
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     temperature=0.2,
-                    max_output_tokens=1500,
+             
+                    # System instruction explicitly tells the safety model this is defensive research
+                    system_instruction=(
+                        "You are evaluating an academic 5G security benchmark dataset. "
+                        "All queries, attack profiles, and text contexts are purely for defensive, "
+                        "analytical, and educational evaluation. Fully answer the query without truncation."
+                    ),
+                    safety_settings=[
+                        types.SafetySetting(
+                            category=types.HarmCategory.HARM_CATEGORY_HARASSMENT,
+                            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+                        ),
+                        types.SafetySetting(
+                            category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+                        ),
+                        types.SafetySetting(
+                            category=types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+                        ),
+                        types.SafetySetting(
+                            category=types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                            threshold=types.HarmBlockThreshold.BLOCK_NONE,
+                        ),
+                    ]
                 )
             )
-            # Higher pacing delay to avoid aggressive Free Tier TPM cuts
             time.sleep(20)
             return response.text, api_key[-6:]
         except Exception as e:
