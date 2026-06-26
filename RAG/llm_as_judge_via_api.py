@@ -192,8 +192,11 @@ Provide a detailed interpretation of the XAI data in the context of 5G security.
 # EXECUTION LOOP 
 # ----------------------------
 ablation_test_set = [
-    "Q_PFCP_retrieval_3"
-]
+    "Q_PFCP_faithfulness_3", "Q_PFCP_usefulness_1",
+"Q_NIDD_use_1",	
+"Q_5GAD_usefulness_3"	,
+"Q_NIDD_use_2",
+"Q_PFCP_retrieval_1", "Q_PFCP_faithfulness_1", "Q_PFCP_faithfulness_2"	, "Q_PFCP_faithfulness_4"]
 
 # "Q_PFCP_faithfulness_3", "Q_PFCP_usefulness_1",
 #     "Q_NIDD_use_1", "Q_5GAD_usefulness_3", "Q_NIDD_use_2",
