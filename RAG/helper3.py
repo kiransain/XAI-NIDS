@@ -2,8 +2,8 @@ import json
 import csv
 from pathlib import Path
 
-INPUT_FILE = "eval_prompt_change_generation_res.json"
-OUTPUT_FILE = "prompt_change_eval_results.csv"
+INPUT_FILE = "llm_change_generation_res.json"
+OUTPUT_FILE = "llm_change_eval_results.csv"
 
 def load_json_objects(filepath):
     text = Path(filepath).read_text(encoding="utf-8").strip()
