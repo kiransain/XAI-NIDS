@@ -26,7 +26,7 @@ from experiment_set import EXPERIMENT_SET
 # CONFIG
 # ----------------------------
 
-OUTPUT_FILE = "main_thesis_evaluation_results.json"
+OUTPUT_FILE = "main_pipeline_raw_results.json"
 
 Settings.llm = Ollama(model="deepseek-r1:8b", request_timeout=1000.0)
 Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")

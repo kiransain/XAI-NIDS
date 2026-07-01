@@ -1,5 +1,5 @@
 '''
-main file to run the thesis benchmark evaluation.
+file to run the ablation study for shortening the prompt.
 '''
 
 import os

@@ -1,6 +1,5 @@
-'''
-this script computes ROUGE and BERTScore (NGL metrics)
-'''
+
+# this script computes ROUGE and BERTScore (NGL metrics)
 
 from rouge_score import rouge_scorer
 import bert_score

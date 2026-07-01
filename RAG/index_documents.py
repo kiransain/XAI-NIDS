@@ -1,6 +1,6 @@
-'''
-this file is for indexing the PDF documents in the knowledge base into ChromaDB.
-'''
+
+# this file is for indexing the PDF documents in the knowledge base into ChromaDB.
+
 import chromadb
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, StorageContext, Settings
 from llama_index.vector_stores.chroma import ChromaVectorStore

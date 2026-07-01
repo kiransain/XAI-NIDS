@@ -1,3 +1,6 @@
+# file to run the ablation study for changing the LLM to a stronger model (Gemini 2.5) 
+# and compare results with the original LLM (Ollama Deepseek 8B).
+
 import os
 import json
 import time
@@ -23,7 +26,7 @@ from experiment_set import EXPERIMENT_SET
 # ----------------------------
 # CONFIG
 # ----------------------------
-OUTPUT_FILE = "abc.json"
+OUTPUT_FILE = "ablation_llm_change_res.json"
 GEMINI_MODEL = "gemini-2.5-flash"
 
 # Fallback mechanism for environment variables or raw list

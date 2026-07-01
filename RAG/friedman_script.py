@@ -142,8 +142,8 @@ for metric in metrics:
         })
 
 stat_df = pd.DataFrame(stat_rows)
-stat_df.to_csv("statistical_results2.csv", index=False)
-print("\nSaved: statistical_results2.csv\n")
+stat_df.to_csv("friedman_res.csv", index=False)
+print("\nSaved: friedman_res.csv\n")
 
 
 # ── 4. Box Plots (Reflects Raw Structural Ranges) ───────────────────────────
