@@ -113,6 +113,6 @@ The code modifications and scripts contained entirely within this ```/RAG``` sub
   school = {University of Zurich (UZH)},
   year = {2026},
   type = {Bachelor's Thesis},
-  url = 
+  url = {https://github.com/kiransain/XAI-NIDS/blob/main/RAG/README.md}
 }
 ``` 
