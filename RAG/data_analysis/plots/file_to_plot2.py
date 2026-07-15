@@ -1,9 +1,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 #plots bar charts for the summary statistics of the evaluation results
+script_dir = os.path.dirname(os.path.abspath(__file__))
+rag_root = os.path.abspath(os.path.join(script_dir, "..", ".."))
+os.chdir(rag_root)
 
-# Load summary statistics
-summary_df = pd.read_csv("stat_results_summary.csv")
+summary_df = pd.read_csv("eval_res_summary.csv")
 
 metrics = [
     "faithfulness",
@@ -20,7 +23,7 @@ titles = [
     "Answer Relevancy",
     "Security Specificity",
     "Context Utilization",
-    "Hallucination (inv.)"
+    "Hallucination Resistance"
 ]
 
 labels = ["None", "BM25", "Vector"]
@@ -33,6 +36,9 @@ fig, axes = plt.subplots(
 
 axes = axes.flatten()
 
+grays = ["0.85", "0.55", "0.25"]  
+hatches = ["", "///", "..."]
+
 for ax, metric, title in zip(axes, metrics, titles):
 
     ax.bar(
@@ -40,8 +46,9 @@ for ax, metric, title in zip(axes, metrics, titles):
         summary_df[f"{metric}_mean"],
         yerr=summary_df[f"{metric}_std"],
         capsize=3,
-        color="lightgray",
-        edgecolor="black"
+        color=grays,
+        edgecolor="black",
+        hatch=hatches
     )
 
     ax.set_title(title, fontsize=10)

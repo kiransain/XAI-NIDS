@@ -1,9 +1,13 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+import os
 # violin plot code
+script_dir = os.path.dirname(os.path.abspath(__file__))
+rag_root = os.path.abspath(os.path.join(script_dir, "..", ".."))
+os.chdir(rag_root)
 
-# Minimal academic style
+
 plt.style.use("seaborn-v0_8-white")
 df = pd.read_csv("evaluation_results.csv")
 df.columns = df.columns.str.strip()
@@ -24,7 +28,7 @@ titles = [
     "Answer Relevancy",
     "Security Specificity",
     "Context Utilization",
-    "Hallucination (inv.)"
+    "Hallucination Resistance"
 ]
 
 
