@@ -481,6 +481,18 @@ If you use this framework in your research, please cite:
 - [LIME](https://github.com/marcotcr/lime) - Local Interpretable Model-agnostic Explanations
 - [XAI Benchmark](https://github.com/salesforce/OmniXAI) - Comprehensive XAI library
 
+## Systematic Performance Validation of Retrieval Strategies in XAI-RAG for 5G Threat Detection - Thesis RAG Extension
+
+The Retrieval-Augmented Generation (RAG) experimental pipeline developed for the thesis is located in the `RAG/` directory.
+
+It evaluates retrieval strategies for cybersecurity knowledge augmentation using:
+- No RAG
+- BM25 retrieval
+- Vector-based retrieval
+
+See the dedicated documentation:
+[RAG Experimental Setup](./RAG/README.md)
+
 ---
 
 **⭐ If you find this project useful, please give it a star!**
