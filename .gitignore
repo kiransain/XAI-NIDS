@@ -18,6 +18,8 @@ __pycache__/
 !main_descriptive_stats.csv
 !nlg_results.csv
 !prompt_change_eval_results.csv
+!llm_ablation_change_res_stats.csv
+!prompt_ablation_change_res_stats.csv
 
 *.mp4
 *.png

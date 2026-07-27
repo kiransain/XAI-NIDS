@@ -3,14 +3,11 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Load JSON
 with open("generation_eval_results_v2.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
-# Convert to dataframe
 df = pd.DataFrame(data)
 
-# Metrics to visualize
 metrics = [
     "faithfulness",
     "correctness",
