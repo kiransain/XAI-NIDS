@@ -31,10 +31,9 @@ GEMINI_MODEL = "gemini-2.5-flash"
 
 # Fallback mechanism for environment variables or raw list
 API_KEYS = [
-    "AQ.Ab8RN6LyPohWu2Ot8jdMt7uzbYiELdTbAz0IfeE8jHnVB8azsg",
-    "AQ.Ab8RN6JqbsVVo7mXafjxhg1ZrVm7_cFUsLXrT2rSroqt6Ja7dQ",
-    "AQ.Ab8RN6KIFGYFZA-KvqJey1bM0W4OITm69fN8OC7khOO69nLmrQ",
+#TODO: Add your Gemini API keys here or set them as environment variables. Example:
 ]
+# Please replace with your own Gemini API keys or set them as environment variables. The script will cycle through the keys to avoid rate limits.
 API_KEYS = [k for k in API_KEYS if k]
 
 if not API_KEYS:
