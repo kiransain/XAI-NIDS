@@ -28,7 +28,7 @@ from experiment_set import EXPERIMENT_SET
 
 OUTPUT_FILE = "main_pipeline_raw_results.json"
 
-Settings.llm = Ollama(model="deepseek-r1:8b", request_timeout=1000.0)
+Settings.llm = Ollama(model="deepseek-r1:8b", temperature=0.0, request_timeout=1000.0) # new: temp = 0 (change 30.09.2026)
 Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")
 
 
@@ -126,10 +126,13 @@ Use the provided TECHNICAL DOCUMENTATION to interpret the MACHINE LEARNING XAI D
 [USER QUERY]
 {case['query']}
 
-INSTRUCTION:
+INSTRUCTION: (to be changed)
 Explain the ML prediction using technical terms from the documentation.
 Provide a detailed interpretation of the XAI data in the context of 5G security.
 """
+# new:
+#     Provide a brief explanation (under 6 sentences if possible) and give
+# actionable guidance when it is requested in the query.
 
     response = Settings.llm.complete(full_prompt)
 
