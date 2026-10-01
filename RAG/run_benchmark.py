@@ -126,13 +126,14 @@ Use the provided TECHNICAL DOCUMENTATION to interpret the MACHINE LEARNING XAI D
 [USER QUERY]
 {case['query']}
 
-INSTRUCTION: (to be changed)
-Explain the ML prediction using technical terms from the documentation.
-Provide a detailed interpretation of the XAI data in the context of 5G security.
+INSTRUCTION: 
+Provide a brief explanation (under 6 sentences if possible) and give 
+actionable guidance when it is requested in the query.
+
 """
-# new:
-#     Provide a brief explanation (under 6 sentences if possible) and give
-# actionable guidance when it is requested in the query.
+# old:
+# Explain the ML prediction using technical terms from the documentation.
+# Provide a detailed interpretation of the XAI data in the context of 5G security.
 
     response = Settings.llm.complete(full_prompt)
 
