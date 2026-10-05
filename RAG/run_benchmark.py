@@ -26,9 +26,12 @@ from experiment_set import EXPERIMENT_SET
 # CONFIG
 # ----------------------------
 
-OUTPUT_FILE = "main_pipeline_raw_results.json"
+OUTPUT_FILE = "paper_raw_results.json"
 
-Settings.llm = Ollama(model="deepseek-r1:8b", temperature=0.0, request_timeout=1000.0) # new: temp = 0 (change 30.09.2026)
+Settings.llm = Ollama(model="deepseek-r1:8b", temperature=0.0, 
+                      request_timeout=1000.0,
+                      additional_kwargs={"seed": 42},)
+ # new: temp = 0 (change 30.09.2026)
 Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")
 
 
@@ -70,6 +73,7 @@ if os.path.exists(OUTPUT_FILE):
 else:
     results = []
 
+results = [r for r in results if "error" not in r]
 done_ids = {r["query_id"] + "_" + r["engine"] for r in results}
 
 
@@ -136,6 +140,8 @@ actionable guidance when it is requested in the query.
 # Provide a detailed interpretation of the XAI data in the context of 5G security.
 
     response = Settings.llm.complete(full_prompt)
+    raw = str(response)
+    answer = raw.split("</think>")[-1].strip() if "</think>" in raw else raw
 
     return {
         "query_id": case["id"],
@@ -143,7 +149,9 @@ actionable guidance when it is requested in the query.
         "query": case["query"],
         "retrieved_context": retrieved_context,
         "retrieved_chunk_ids": retrieved_ids,
-        "answer": str(response),
+        "answer": answer,
+        "raw_answer": raw,
+        "prompt": full_prompt,
         "ground_truth": case["ground_truth"],
     }
 
