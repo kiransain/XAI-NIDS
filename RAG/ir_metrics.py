@@ -139,7 +139,10 @@ QRELS = {
         "fa3f2f145d05f188d48ea5155fcd400aa825d8d65fcc15f1c6dd64a021f430b9",
         "7cb68838492a84200bb164206c258c6a81b6dc92f42550af4d222b0f1bd5c7ba",
         "6867404c74e8effb6d55265d43afef38f4e2a6a143ca3f97f11ffea0115f41f0"
-    ]
+    ],
+    "Q_5GAD_faith_95": [
+        "0a338daf1a4a0313bf7e8e8e5148d1b5f682890dde9d147cbbb6846c23ea787a",
+    ],
     
 }
 
