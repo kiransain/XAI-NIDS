@@ -1,4 +1,86 @@
 {
-    "Q_PFCP_faithfulness_4": [],
-    "Q_GAD_faithfulness_1": []
+    "Q_5GAD_faith_95": [
+        "0a338daf1a4a0313bf7e8e8e5148d1b5f682890dde9d147cbbb6846c23ea787a",
+        "179213ce55b255b9039eb71027e3870fd4ca3a2fd393d3327f79c34cc4162c90",
+        "68eeeb5e31b4eea15e5f9658023053d06f7e67670e68ea66803d9afc65b10e2b",
+        "a8678023763076d05429a0acb22538f939c4a77f052388821e325e088aa8cfab"
+    ],
+    "Q_5GAD_use_95_actionable": [
+        "06006e8f1fd1dfb778feb813fc5c12e46fd8c97c72aee13b7b5ac3981ac66215",
+        "f98f8406c3ea446ae77fde6195f24a0fa56e376755a02cb3f18ec53843bd9958",
+        "8ee4913238e1cef2a50493af819fe07a0a456bc6b4edbfe6cc6bfcc4a529ba42",
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688",
+        "79f1a81c1fc5df39ad1c97ae2e91897f9b36cbe00bc6e6a5741bc14633656b39",
+        "0a338daf1a4a0313bf7e8e8e5148d1b5f682890dde9d147cbbb6846c23ea787a"
+    ],
+    "Q_5GAD_use_7915": [
+        "1498d910958ea8952f3d25f50782eec1356f3590173bba85fb6a2d0c1bb754e1",
+        "c9080f8396ef6463438186a6b67ad8f3a0662e01ccd40c12180b9e6c42364d63",
+        "e6765028a5f25ca8114893d8b7535a86a8a976e9d8644452a89bfa749c1fc39f",
+        "61b76f22d5cb31544067f5896e4fab29a20145be655b7a430b7e6d278bede3ab",
+        "a9ebedcc149a17b948f051009ed4bf38aeb2e9d075d8306d88e18a4f1772e119",
+        "7a82e14fb747795c4a1e09cba1c7c3cda4269bb7efbc2031d58d0cd5697b875b",
+        "1ccca1165f57d0f74eb759eb95848eeb9d65fc40551932090c50725356f03331"
+    ],
+    "Q_5GAD_use_95_window": [
+        "dd225e9405a9c2091101a972df75c00bed9d473b8ad1218aa31b0f7d4b054642",
+        "60dc3a0e3a5d5ecc95047b6b6bc027819b26ef18adde165ba4e1b5e3f55c3c09",
+        "68eeeb5e31b4eea15e5f9658023053d06f7e67670e68ea66803d9afc65b10e2b",
+        "7a82e14fb747795c4a1e09cba1c7c3cda4269bb7efbc2031d58d0cd5697b875b",
+        "06006e8f1fd1dfb778feb813fc5c12e46fd8c97c72aee13b7b5ac3981ac66215"
+    ],
+    "Q_NIDD_faith_69166": [
+        "47d8ab0ed551fe82db3fa6e9a5676290790d18a6c1a43cc7d3718721e10df7cd",
+        "68eeeb5e31b4eea15e5f9658023053d06f7e67670e68ea66803d9afc65b10e2b",
+        "d280b29c69f12253c13319d6bae785c420413a2f330174ee8b31a37705c39b22",
+        "877d0c9ae4a43bb8eed87ac32b96b319ca6e2779f75a62dd3af8afc948a8fcda",
+        "7cb68838492a84200bb164206c258c6a81b6dc92f42550af4d222b0f1bd5c7ba",
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688"
+    ],
+    "Q_NIDD_use_69166": [
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688",
+        "35f59a0eb74d0d2e3baced5d985635015d1cc926cacf0d59950614aa0766ec58",
+        "68eeeb5e31b4eea15e5f9658023053d06f7e67670e68ea66803d9afc65b10e2b",
+        "051a9ee9656ca7fcf2b839d549992ea5b9af035c8bfe4fecc4129bee1f687e0c",
+        "d280b29c69f12253c13319d6bae785c420413a2f330174ee8b31a37705c39b22"
+    ],
+    "Q_5GAD_faith_7915": [
+        "d04d7b90beaea4f24c6ff6c844887b53b70ba05175774f0d02c4dab7c25e2d23",
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688",
+        "68eeeb5e31b4eea15e5f9658023053d06f7e67670e68ea66803d9afc65b10e2b",
+        "47d8ab0ed551fe82db3fa6e9a5676290790d18a6c1a43cc7d3718721e10df7cd",
+        "06006e8f1fd1dfb778feb813fc5c12e46fd8c97c72aee13b7b5ac3981ac66215",
+        "d63ffa26e088ddb546305330ab20f094815d96f52c88229ccd613d4ca02799e3",
+        "051a9ee9656ca7fcf2b839d549992ea5b9af035c8bfe4fecc4129bee1f687e0c"
+    ],
+    "Q_NIDD_faith_228693": [
+        "47d8ab0ed551fe82db3fa6e9a5676290790d18a6c1a43cc7d3718721e10df7cd",
+        "d280b29c69f12253c13319d6bae785c420413a2f330174ee8b31a37705c39b22",
+        "fc9bdf3d84a5f0676afdf4208b43ab9504f63a97b61039bab4dcc93994e7b688",
+        "68eeeb5e31b4eea15e5f9658023053d06f7e67670e68ea66803d9afc65b10e2b",
+        "0a338daf1a4a0313bf7e8e8e5148d1b5f682890dde9d147cbbb6846c23ea787a"
+    ],
+    "Q_NIDD_control_new1": [
+        "1ccca1165f57d0f74eb759eb95848eeb9d65fc40551932090c50725356f03331",
+        "7a82e14fb747795c4a1e09cba1c7c3cda4269bb7efbc2031d58d0cd5697b875b",
+        "4eb76b50cd97c17dc25832977840118a3147ecd1e39c807333ba800fa3882b7e",
+        "8cf3201ecd8fc27e2d53b5590ab74754b4618866ed8401f95c9587f6f3073b17",
+        "4877c8c9b356905bdbfff5635442f0b0fa9f02a331a8ad57866fa8952c6aaf11"
+    ],
+    "Q_NIDD_control_new2": [],
+    "Q_NIDD_control_new3": [],
+    "Q_NIDD_retadj_new": [],
+    "Q_NIDD_ret_01": [],
+    "Q_NIDD_ret_02": [],
+    "Q_5GAD_ret_03": [],
+    "Q_5GAD_ret_04": [],
+    "Q_NIDD_use_05": [],
+    "Q_NIDD_use_06": [],
+    "Q_NIDD_use_07": [],
+    "Q_NIDD_use_08": [],
+    "Q_NIDD_ret_09": [],
+    "Q_5GAD_ret_10": [],
+    "Q_5GAD_ret_11": [],
+    "Q_NIDD_use_12": [],
+    "Q_5GAD_ret_13": []
 }
