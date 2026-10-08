@@ -13,7 +13,7 @@ from llama_index.core.node_parser import SentenceSplitter
 from llama_index.llms.ollama import Ollama
 from llama_index.embeddings.ollama import OllamaEmbedding
 import chromadb
-from experiment_set import EXPERIMENT_SET
+from experiment_set2 import EXPERIMENT_SET
 
 # --- Setup (same as run_benchmark.py) ---
 Settings.llm = Ollama(model="deepseek-r1:8b", request_timeout=1000.0)
