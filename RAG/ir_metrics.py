@@ -208,6 +208,41 @@ QRELS = {
         "8cf3201ecd8fc27e2d53b5590ab74754b4618866ed8401f95c9587f6f3073b17",
         "4877c8c9b356905bdbfff5635442f0b0fa9f02a331a8ad57866fa8952c6aaf11"
     ],
+    "Q_NIDD_control_new2": [],
+    "Q_NIDD_control_new3": [],
+    "Q_NIDD_retadj_new": [
+        "d7a2c9751380a7df36dba888ad6cfccee2e716530e0eb276a30dcac1a5f1d283"
+    ],
+    "Q_NIDD_ret_01": [
+        "4aa03a764e5c4eee28e26602eded46841a99a03b474271aadf0cba1a6ada801f",
+        "bb06dddb6e2c78e1da523c41d44ab3da2ce24c21c312bf4a4e6d56c75dbf76d9",
+        "ca4edeee6c21cd125c8de2342ba0ad7ef38d32e7cd5c874c70465adc39b7e105",
+        "b08fd9c9bca9fe45c5184bebbef655588923c6f7f9bcff09b583766ab5d09dfb",
+        "eaef73c3ea36fcdbdb5b9fb69fa415fee2afb21497eb1ffe5817b576f0197e9f"
+    ],
+    "Q_NIDD_ret_02": [
+        "4877c8c9b356905bdbfff5635442f0b0fa9f02a331a8ad57866fa8952c6aaf11",
+        "8cf3201ecd8fc27e2d53b5590ab74754b4618866ed8401f95c9587f6f3073b17"
+    ],
+    "Q_5GAD_ret_03": [
+        "0b094e8e3888b61ed4b9e8a1fdb58f7170628234aee80a87520c1bf556d1e35c",
+        "0789aa32734e55007d2c86eedd8f87b4a70220c2eebece0b364ae6025e439edc"
+    ],
+    "Q_5GAD_ret_04": [
+        "e776622834710725281a9d64c69efd4d20fa5639f9ae2f87a280cbfab15e2622",
+        "9293e1a8d508de144d45a7cd48386df2199ab351053c750e7d91e5a3761767eb",
+        "b94a14948a3858178cecef5bd4316f6cc81e1fcf9d3f3b26ea2e2cfa38b641cd",
+        "58af6f092b9bc7c1637e88c60d3d2189f43530fed624b3f50846444714a57733",
+        "839fecce6c71aa9436ff55f26b428ad1668491f0ae34a0580a3716b1eb697b4a"
+    ],
+    "Q_NIDD_use_05": [
+        "688fb53335c7c4d4b1874a98076c3af8d06c1e58fda17b6dfb6df5d7add017c1"
+    ],
+    "Q_NIDD_use_07": [
+        "f98f8406c3ea446ae77fde6195f24a0fa56e376755a02cb3f18ec53843bd9958",
+        "d7a2c9751380a7df36dba888ad6cfccee2e716530e0eb276a30dcac1a5f1d283",
+        "f0c04fba8d1a43dcf7438bbc07c06b8a1beea299544f556a4a0d282eb5a6adfa"
+    ],
     
 }
 
