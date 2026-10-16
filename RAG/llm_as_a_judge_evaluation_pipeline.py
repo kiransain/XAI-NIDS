@@ -12,13 +12,13 @@ from prompt import PROMPT
 # ----------------------------
 # CONFIG
 # ----------------------------
-INPUT_FILE = "paper_raw_results_helper.json"
+INPUT_FILE = "paper_raw_results_helper.json" # this is a temp file; it got now deleted.
 OUTPUT_FILE = "paper_results_llm_as_judge2.json"
 GEMINI_MODEL = "gemini-3.8-flash"
 
 # Key setup - Reads from environment variables or explicitly defined keys
 API_KEYS = [
-    # os.environ.get("GEMINI_API_KEY_2"),
+  # something
 ]
 # Filter out empty strings/None
 API_KEYS = [k for k in API_KEYS if k]
@@ -94,7 +94,7 @@ ENGINE: {engine}
 
         except Exception as e:
             if "503" in str(e) and attempt < max_retries - 1:
-                wait_time = (attempt + 1) * 3
+                wait_time = (attempt + 1) * 10
                 print(f"Server busy for {query_id} (503). Retrying in {wait_time}s... (Attempt {attempt + 1}/{max_retries})")
                 time.sleep(wait_time)
             else:
