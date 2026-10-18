@@ -18,8 +18,9 @@ GEMINI_MODEL = "gemini-3.8-flash"
 
 # Key setup - Reads from environment variables or explicitly defined keys
 API_KEYS = [
-  # something
+# Add your Gemini API keys here, or set them in the GEMINI_API_KEY environment variable
 ]
+
 # Filter out empty strings/None
 API_KEYS = [k for k in API_KEYS if k]
 
