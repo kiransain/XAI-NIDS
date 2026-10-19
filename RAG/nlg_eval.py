@@ -44,7 +44,7 @@ for i, r in enumerate(results):
 
     rows.append(row)
 
-with open("nlg_results.csv", "w", newline="") as csvfile:
+with open("paper_nlg_results.csv", "w", newline="") as csvfile:
     fieldnames = ["query_id", "engine", "rouge1", "rouge2", "rougeL", "bert_precision", "bert_recall", "bert_f1"]
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 

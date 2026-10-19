@@ -20,6 +20,11 @@ __pycache__/
 !prompt_change_eval_results.csv
 !llm_ablation_change_res_stats.csv
 !prompt_ablation_change_res_stats.csv
+!paper_ir_metrics_summary.csv
+!paper_ir_metrics_detailed.csv
+!paper_judge_scores.csv
+!paper_judge_stats.csv
+!paper_nlg_results.csv
 
 *.mp4
 *.png
