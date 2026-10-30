@@ -25,6 +25,7 @@ __pycache__/
 !paper_judge_scores.csv
 !paper_judge_stats.csv
 !paper_nlg_results.csv
+!RAG/*.csv
 
 *.mp4
 *.png
