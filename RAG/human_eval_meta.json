@@ -1,0 +1,23 @@
+{
+  "seed": 42,
+  "numpy_version": "1.26.4",
+  "pandas_version": "2.3.3",
+  "quota_per_category_and_engine": {
+    "knowledge-base | none": 2,
+    "knowledge-base | bm25": 3,
+    "knowledge-base | vector": 2,
+    "SHAP/LIME interpretation | none": 3,
+    "SHAP/LIME interpretation | bm25": 3,
+    "SHAP/LIME interpretation | vector": 3,
+    "other (no KB answer) | none": 2,
+    "other (no KB answer) | bm25": 1,
+    "other (no KB answer) | vector": 1
+  },
+  "min_answers_per_judge_correctness_level": 3,
+  "sampling_attempts_needed": 1,
+  "input_sha256": {
+    "paper_raw_results.json": "06f448e32c69b55546e54c16b8f94aa0113024c9452ee38eefb33bacfa7534de",
+    "paper_judge_scores.csv": "3ce5bcdc6fe0211691ece931fc86b33fa04d0529069513c45fb5a2e19b57d693"
+  },
+  "created": "2026-11-08T07:26:21.925304+00:00"
+}

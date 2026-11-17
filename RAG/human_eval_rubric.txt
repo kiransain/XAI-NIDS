@@ -1,0 +1,27 @@
+HUMAN EVALUATION RUBRIC (same 0-2 scale for every criterion)
+
+You see a question, a reference answer and one answer. Score each criterion separately.
+When unsure between two scores, choose the lower one if the mistake could mislead a 5G network operator.
+
+1. CORRECTNESS (0-2)
+Does the answer capture the main security/technical conclusion and key reasoning of the reference answer?
+2 = captures the main conclusion and key reasoning
+1 = partly captures the conclusion, or misses important implications or supporting reasoning
+0 = incorrect, misleading, or contradicts the reference answer
+
+2. FACTUAL GROUNDING (0-2)
+Are the factual claims in the answer accurate, and free of invented facts, numbers or mechanisms?
+(Judge the claims against the question, the reference answer and your own knowledge.)
+2 = no significant unsupported or invented claims
+1 = some speculative or unsupported claims that do not change the main conclusion
+0 = multiple invented or false claims
+
+3. SECURITY-SPECIFIC REASONING (0-2)
+Does the answer give reasoning specific to the scenario (protocol, attack, traffic pattern),
+or only generic ML/XAI commentary?
+2 = concrete attack- or protocol-specific interpretation
+1 = mix of specific and generic reasoning
+0 = mostly generic ML/XAI explanation
+
+Fill in the columns correctness_0_2, factual_grounding_0_2 and security_reasoning_0_2 in the sheet.
+You may also use the comment rubric for notes.
